@@ -1,0 +1,292 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C6C3F9A2-E452-439E-9003-8EE88F95F40E}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>DepartmentEmployee</RootNamespace>
+    <AssemblyName>DepartmentEmployee</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Google.Protobuf, Version=3.5.1.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Protobuf.3.5.1\lib\net45\Google.Protobuf.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data, Version=8.0.15.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.8.0.15\lib\net452\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Npgsql, Version=4.0.5.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Npgsql.4.0.5\lib\net451\Npgsql.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.4.0\lib\netstandard2.0\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing.Design" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Memory, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.2\lib\netstandard2.0\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.4.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.2\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Database\ConnectionDB\DB.cs" />
+    <Compile Include="Database\ConnectionParams.cs" />
+    <Compile Include="Database\Connection\Connection.cs" />
+    <Compile Include="Database\Connection\MySQLConnection.cs" />
+    <Compile Include="Database\Connection\PostgreSQLConnection.cs" />
+    <Compile Include="Database\ObjectReader\MySQLReader.cs" />
+    <Compile Include="Database\ObjectReader\PostgreSQLReader.cs" />
+    <Compile Include="Database\ObjectReader\Reader.cs" />
+    <Compile Include="GUI\ControlWindows\AnalisisToWork.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\ControlWindows\AnalisisToWork.Designer.cs">
+      <DependentUpon>AnalisisToWork.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\ControlWindows\Authorization.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\ControlWindows\Authorization.Designer.cs">
+      <DependentUpon>Authorization.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\ControlWindows\DetailedTaskAssigment.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\ControlWindows\DetailedTaskAssigment.Designer.cs">
+      <DependentUpon>DetailedTaskAssigment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\ControlWindows\ListPositions.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\ControlWindows\ListPositions.Designer.cs">
+      <DependentUpon>ListPositions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\ControlWindows\ListQialifications.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\ControlWindows\ListQialifications.Designer.cs">
+      <DependentUpon>ListQialifications.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\ControlWindows\ListPriority.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\ControlWindows\ListPriority.Designer.cs">
+      <DependentUpon>ListPriority.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\ControlWindows\TaskEmployee.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\ControlWindows\TaskEmployee.Designer.cs">
+      <DependentUpon>TaskEmployee.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Mainform.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Mainform.Designer.cs">
+      <DependentUpon>Mainform.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\ModalWindows\AddEditPosition.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\ModalWindows\AddEditPosition.Designer.cs">
+      <DependentUpon>AddEditPosition.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\ModalWindows\AddEditPriority.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\ModalWindows\AddEditPriority.Designer.cs">
+      <DependentUpon>AddEditPriority.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\ModalWindows\AddEditQualification.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\ModalWindows\AddEditQualification.Designer.cs">
+      <DependentUpon>AddEditQualification.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\ModalWindows\AddEditTypeResults.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\ModalWindows\AddEditTypeResults.Designer.cs">
+      <DependentUpon>AddEditTypeResults.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\ControlWindows\TypeResults.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\ControlWindows\TypeResults.Designer.cs">
+      <DependentUpon>TypeResults.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\ControlWindows\ListEmployee.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\ControlWindows\ListEmployee.Designer.cs">
+      <DependentUpon>ListEmployee.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\ControlWindows\AssigmentTask.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\ControlWindows\AssigmentTask.Designer.cs">
+      <DependentUpon>AssigmentTask.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\ModalWindows\AddEditTask.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\ModalWindows\AddEditTask.Designer.cs">
+      <DependentUpon>AddEditTask.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\ModalWindows\AddEditEmployee.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\ModalWindows\AddEditEmployee.Designer.cs">
+      <DependentUpon>AddEditEmployee.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\ModalWindows\AddEditTaskAssignment.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\ModalWindows\AddEditTaskAssignment.Designer.cs">
+      <DependentUpon>AddEditTaskAssignment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Database\ConnectionDB\PostgreSQLConnectionParams.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Workflow.cs" />
+    <EmbeddedResource Include="GUI\ControlWindows\AnalisisToWork.resx">
+      <DependentUpon>AnalisisToWork.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\ControlWindows\Authorization.resx">
+      <DependentUpon>Authorization.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\ControlWindows\DetailedTaskAssigment.resx">
+      <DependentUpon>DetailedTaskAssigment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\ControlWindows\ListPositions.resx">
+      <DependentUpon>ListPositions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\ControlWindows\ListPriority.resx">
+      <DependentUpon>ListPriority.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\ControlWindows\ListQialifications.resx">
+      <DependentUpon>ListQialifications.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\ControlWindows\TaskEmployee.resx">
+      <DependentUpon>TaskEmployee.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Mainform.resx">
+      <DependentUpon>Mainform.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\ModalWindows\AddEditPosition.resx">
+      <DependentUpon>AddEditPosition.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\ModalWindows\AddEditPriority.resx">
+      <DependentUpon>AddEditPriority.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\ModalWindows\AddEditQualification.resx">
+      <DependentUpon>AddEditQualification.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\ModalWindows\AddEditTypeResults.resx">
+      <DependentUpon>AddEditTypeResults.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\ControlWindows\TypeResults.resx">
+      <DependentUpon>TypeResults.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\ControlWindows\ListEmployee.resx">
+      <DependentUpon>ListEmployee.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\ControlWindows\AssigmentTask.resx">
+      <DependentUpon>AssigmentTask.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\ModalWindows\AddEditTask.resx">
+      <DependentUpon>AddEditTask.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\ModalWindows\AddEditEmployee.resx">
+      <DependentUpon>AddEditEmployee.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\ModalWindows\AddEditTaskAssignment.resx">
+      <DependentUpon>AddEditTaskAssignment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\kontrol_vypolneniya_programm.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Screenshot_1.jpg" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
