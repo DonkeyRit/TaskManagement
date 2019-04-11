@@ -473,7 +473,6 @@ namespace DepartmentEmployee.GUI.ControlWindows
 			
 			int ID;
 			DateTime Data_start;
-			DateTime Data_end;
 			string Comment;
 
 			try
@@ -686,7 +685,7 @@ namespace DepartmentEmployee.GUI.ControlWindows
 		public int GetId(string query)
 		{
 			DataTable table = connection.GetDataAdapter(query);
-			List<object> identificator = table.ParseDataTable(0, CellType.Integer);
+			List<object> identificator = table.GetColumnValuesDataTable(0, CellType.Integer);
 
 			//Reader reader = Workflow.connection.Select(query);
 			//List<object> identificator = reader.GetValue(0, false);

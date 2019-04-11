@@ -49,7 +49,7 @@ namespace DepartmentEmployee.GUI.ControlWindows
 			//Получаем исполнителя задания под которым авторизовались
 
 			DataTable table = connection.GetDataAdapter("Select Employees.FIO as Employee from AssignedTasks join Tasks on Tasks.id = AssignedTasks.id_Task join Employees on AssignedTasks.id_Employee = Employees.id where Employees.Login = '" + Login + "' AND Employees.Password = '" + Password + "' AND Tasks.id = '" + TaskID + "'");
-			List<object> name = table.ParseDataTable(0, CellType.String);
+			List<object> name = table.GetColumnValuesDataTable(0, CellType.String);
 
 			//Reader reader = Workflow.connection.Select();
 			//List<object> name = reader.GetValue(0, true);
@@ -90,7 +90,7 @@ namespace DepartmentEmployee.GUI.ControlWindows
 			//Получаем и выводим название задания
 
 			table = connection.GetDataAdapter("Select Tasks.Name from AssignedTasks join Tasks on AssignedTasks.id_Task = Tasks.id where AssignedTasks.id = '" + ID + "'");
-			List<object> task_name = table.ParseDataTable(0, CellType.String);
+			List<object> task_name = table.GetColumnValuesDataTable(0, CellType.String);
 
 			//reader = Workflow.connection.Select("Select Tasks.Name from AssignedTasks join Tasks on AssignedTasks.id_Task = Tasks.id where AssignedTasks.id = '" + ID + "'");
 			//List<object> task_name = reader.GetValue(0, true);
@@ -123,7 +123,7 @@ namespace DepartmentEmployee.GUI.ControlWindows
 		public int GetId(string query)
 		{
 			DataTable table = connection.GetDataAdapter(query);
-			List<object> identificator = table.ParseDataTable(0, CellType.Integer);
+			List<object> identificator = table.GetColumnValuesDataTable(0, CellType.Integer);
 
 			//Reader reader = Workflow.connection.Select(query);
 			//List<object> identificator = reader.GetValue(0, false);

@@ -1,5 +1,8 @@
-﻿using System;
+﻿using Core.Database.Connection;
+using Core.Database.Utils;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Text;
 using System.Windows.Forms;
 
@@ -7,17 +10,27 @@ namespace DepartmentEmployee.GUI.ModalWindows
 {
     public partial class AddEditEmployee : Form
     {
+        private readonly Connection _connection;
+
         public AddEditEmployee()
         {
             InitializeComponent();
+
+            _connection = Connection.CreateConnection();
+
             // Это нужно для того чтобы при нажатии ентер нажималась кнопка ОК а при нажатии ESC нажималась кнопка Cancel
             this.AcceptButton = Button1;
             this.CancelButton = Button2;
 
             // Выводим в comboBox1 квалификации
-            Reader reader = Workflow.connection.Select("Select Name from Qualifications");
-            List<object> questions = reader.GetValue(0, true);
-            reader.Close();
+
+
+            DataTable table = _connection.GetDataAdapter("Select Name from Qualifications");
+            List<object> questions = table.GetColumnValuesDataTable(0, CellType.String);
+
+            //Reader reader = Workflow.connection.Select("Select Name from Qualifications");
+            //List<object> questions = reader.GetValue(0, true);
+            //reader.Close();
 
             comboBox1.Items.Clear();
 
@@ -27,9 +40,13 @@ namespace DepartmentEmployee.GUI.ModalWindows
             }
 
             // Выводим в comboBox2 должности
-            reader = Workflow.connection.Select("Select Name from Positions");
-            List<object> results = reader.GetValue(0, true);
-            reader.Close();
+
+            table = _connection.GetDataAdapter("Select Name from Positions");
+            List<object> results = table.GetColumnValuesDataTable(0, CellType.String);
+
+            //reader = Workflow.connection.Select("Select Name from Positions");
+            //List<object> results = reader.GetValue(0, true);
+            //reader.Close();
 
             comboBox2.Items.Clear();
 
@@ -39,9 +56,13 @@ namespace DepartmentEmployee.GUI.ModalWindows
             }
 
             // Выводим в comboBox3 типы учётных записей
-            reader = Workflow.connection.Select("Select Name from Type");
-            List<object> type = reader.GetValue(0, true);
-            reader.Close();
+
+            table = _connection.GetDataAdapter("Select Name from Type");
+            List<object> type = table.GetColumnValuesDataTable(0, CellType.String);
+
+            //reader = Workflow.connection.Select("Select Name from Type");
+            //List<object> type = reader.GetValue(0, true);
+            //reader.Close();
 
             comboBox3.Items.Clear();
 

@@ -2,6 +2,8 @@
 using System.Windows.Forms;
 using Core.Database.Connection;
 using System.Collections.Generic;
+using System.Data;
+using Core.Database.Utils;
 
 namespace DepartmentEmployee.GUI.ControlWindows
 {
@@ -25,10 +27,13 @@ namespace DepartmentEmployee.GUI.ControlWindows
 		private void button1_Click(object sender, EventArgs e)
 		{
 
-			//Запрашиваем тип входящего пользователя из таблицы Users 
-			Reader reader = Workflow.connection.Select("Select Type.Name as Name from Employees join Type on Type.id = Employees.id_Type where Employees.Login = '" + textBox1.Text + "' AND Employees.Password = '" + textBox2.Text + "'");
+            //Запрашиваем тип входящего пользователя из таблицы Users 
+            DataTable table = connection.GetDataAdapter("Select Type.Name as Name from Employees join Type on Type.id = Employees.id_Type where Employees.Login = '" + textBox1.Text + "' AND Employees.Password = '" + textBox2.Text + "'");
+            List<object> task_name = table.GetColumnValuesDataTable(0, CellType.String);
+
+            /*Reader reader = Workflow.connection.Select("Select Type.Name as Name from Employees join Type on Type.id = Employees.id_Type where Employees.Login = '" + textBox1.Text + "' AND Employees.Password = '" + textBox2.Text + "'");
 			List<object> task_name = reader.GetValue(0, true);
-			reader.Close();
+			reader.Close();*/
 
 			string Type;
 

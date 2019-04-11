@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Windows.Forms;
 using Core.Database.Connection;
+using Core.Database.Utils;
 using DepartmentEmployee.GUI.ModalWindows;
 
 namespace DepartmentEmployee.GUI.ControlWindows
@@ -235,10 +236,14 @@ namespace DepartmentEmployee.GUI.ControlWindows
 		//Функционал получения ID
 		public int GetId(string query)
 		{
-			Reader reader = Workflow.connection.Select(query);
-			List<object> identificator = reader.GetValue(0, false);
-			reader.Close();
-			return int.Parse(identificator[0].ToString());
+
+            DataTable table = connection.GetDataAdapter(query);
+            List<object> identificator = table.GetColumnValuesDataTable(0, CellType.String);
+
+            //Reader reader = Workflow.connection.Select(query);
+            //List<object> identificator = reader.GetValue(0, false);
+            //reader.Close();
+            return int.Parse(identificator[0].ToString());
 		}
 	}
 }

@@ -5,7 +5,7 @@ namespace Core.Database.Utils
 {
 	public static class DataTableExtensions
 	{
-		public static List<object> ParseDataTable(this DataTable table, int columnIndex, CellType type)
+		public static List<object> GetColumnValuesDataTable(this DataTable table, int columnIndex, CellType type)
 		{
 			List<object> list = new List<object>();
 

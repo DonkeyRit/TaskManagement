@@ -32,7 +32,7 @@ namespace DepartmentEmployee.GUI.ModalWindows
 			// Выводим в comboBox1 сотрудников
 
 			DataTable table = connection.GetDataAdapter("Select FIO from Employees");
-			List<object> employees = table.ParseDataTable(0, CellType.String);
+			List<object> employees = table.GetColumnValuesDataTable(0, CellType.String);
 
 			//Reader reader = Workflow.connection.Select();
 			//List<object> employees = reader.GetValue(0, true);
@@ -48,7 +48,7 @@ namespace DepartmentEmployee.GUI.ModalWindows
 			// Выводим в comboBox2 список результатов
 
 			table = connection.GetDataAdapter("Select Name from Results");
-			List<object> results = table.ParseDataTable(0, CellType.String);
+			List<object> results = table.GetColumnValuesDataTable(0, CellType.String);
 
 			//reader = Workflow.connection.Select("Select Name from Results");
 			//List<object> results = reader.GetValue(0, true);
@@ -72,7 +72,7 @@ namespace DepartmentEmployee.GUI.ModalWindows
 			// Выводим в comboBox1 сотрудников
 
 			DataTable table = connection.GetDataAdapter("Select FIO from Employees");
-			List<object> employees = table.ParseDataTable(0, CellType.String);
+			List<object> employees = table.GetColumnValuesDataTable(0, CellType.String);
 
 			//Reader reader = Workflow.connection.Select("Select FIO from Employees");
 			//List<object> employees = reader.GetValue(0, true);
@@ -88,7 +88,7 @@ namespace DepartmentEmployee.GUI.ModalWindows
 			// Выводим в comboBox2 список результатов
 
 			table = connection.GetDataAdapter("Select Name from Results");
-			List<object> results = table.ParseDataTable(0, CellType.String);
+			List<object> results = table.GetColumnValuesDataTable(0, CellType.String);
 
 			//reader = Workflow.connection.Select("Select Name from Results");
 			//List<object> results = reader.GetValue(0, true);

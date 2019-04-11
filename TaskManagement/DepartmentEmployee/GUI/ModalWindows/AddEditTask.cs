@@ -21,7 +21,7 @@ namespace DepartmentEmployee.GUI.ModalWindows
 			this.CancelButton = Button2;
 
 			DataTable table = connection.GetDataAdapter("Select Name from Priority");
-			List<object> priority = table.ParseDataTable(0, CellType.String);
+			List<object> priority = table.GetColumnValuesDataTable(0, CellType.String);
 
 			// Выводим в comboBox1 квалификации
 			//Reader reader = Workflow.connection.Select("Select Name from Priority");
