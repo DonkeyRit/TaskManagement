@@ -2,169 +2,156 @@
 using System;
 using System.Data;
 using System.Windows.Forms;
-using Core.Database.ConnectionDB;
+using Core.Database.Connection;
 
 namespace DepartmentEmployee.GUI.ControlWindows
 {
-    public partial class ListPriority : Form
-    {
+	public partial class ListPriority : Form
+	{
+		private readonly Connection connection;
 
-        PostgreSQLConnectionParams postgresql_params = new PostgreSQLConnectionParams();
-        DB db;
+		public ListPriority()
+		{
+			InitializeComponent();
+			connection = Connection.CreateConnection();
+			RefreshGrid(); // Обновляем список результов.
+		}
 
-        public ListPriority()
-        {
-            InitializeComponent();
+		//Функционал вывода всех видов приоритетов
+		private async void RefreshGrid()
+		{
 
-            //!!!!!!!!!!УЧЕТНЫЕ ДАННЫЕ PostgreSQL!!!!!!!!!!!!!!!
-            postgresql_params.hostname = "127.0.0.1";        // Hostname
-            postgresql_params.port = "5432";                 // Port
-            postgresql_params.database = "TaskPerformance";  // Database
-            postgresql_params.user = "postgres";             // Username
-            postgresql_params.password = "123456";           // Password
+			DataTable dt = await connection.GetDataAdapterAsync("Select * from Priority ORDER BY id ASC");
+			dataGridView1.DataSource = dt; //Присвеиваем DataTable в качестве источника данных DataGridView
+			
 
-            //!!!!!!!!!!УЧЕТНЫЕ ДАННЫЕ PostgreSQL!!!!!!!!!!!!!!!
+			try
+			{
+				// Скроем столбец ненужные столбцы
+				dataGridView1.Columns["id"].Visible = false;
 
-            db = new DB(postgresql_params);
+				//Заголовки таблицы
+				dataGridView1.Columns["Name"].HeaderText = "Наименование";
+			}
+			catch { }
 
-            RefreshGrid(); // Обновляем список результов.
-        }
+			// выбираем первую строчку
+			try
+			{
+				dataGridView1.CurrentCell = dataGridView1.Rows[0].Cells[0];
+			}
+			catch { }
+		}
 
-        //Функционал вывода всех видов приоритетов
-        private async void RefreshGrid()
-        {
+		
+		//Функционал добавления нового вида приоритета
+		private async void Button1_Click(object sender, EventArgs e)
+		{
+			AddEditPriority form = new AddEditPriority();
 
-            DataTable dt = await db.GetDatatableFromPostgreSQLAsync("Select * from Priority ORDER BY id ASC");
-            dataGridView1.DataSource = dt; //Присвеиваем DataTable в качестве источника данных DataGridView
-            
+			if (form.ShowDialog() != DialogResult.OK)
+			{ return; }
 
-            try
-            {
-                // Скроем столбец ненужные столбцы
-                dataGridView1.Columns["id"].Visible = false;
+			string ResultName = form.textBox1.Text.Replace("'", "''");
 
-                //Заголовки таблицы
-                dataGridView1.Columns["Name"].HeaderText = "Наименование";
-            }
-            catch { }
+			if (string.IsNullOrEmpty(ResultName) || string.IsNullOrWhiteSpace(ResultName))
+			{
+				MessageBox.Show("Нужно верно заполните поле 'Наименование'");
+			}
+			if (form.textBox1.TextLength > 50)
+			{
+				MessageBox.Show("ФИО должно быть не больше 50 символов");
+			}
+			else
+			{
+				//записываем данные из текстбоксов AddEditStudent.Form в наши переменные
+				// А потом экранируем кавычечку
+				bool sqlresult = await connection.ExecNonQueryAsync("INSERT into Priority(Name) values('" + ResultName + "')");
+			}
+			RefreshGrid();
+		}
 
-            // выбираем первую строчку
-            try
-            {
-                dataGridView1.CurrentCell = dataGridView1.Rows[0].Cells[0];
-            }
-            catch { }
-        }
+		//Функционал редактирования выбранного типа приоритета
+		private async void Button2_Click(object sender, EventArgs e)
+		{
+			string ID = "";
+			string ResultName;
 
-        
-        //Функционал добавления нового вида приоритета
-        private async void Button1_Click(object sender, EventArgs e)
-        {
-            AddEditPriority form = new AddEditPriority();
+			try
+			{
+				ID = dataGridView1.CurrentRow.Cells["id"].Value.ToString();
+			}
+			catch
+			{
+				MessageBox.Show("Сначала выберите вид приоритета", "Error", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
+				return;
+			}
 
-            if (form.ShowDialog() != DialogResult.OK)
-            { return; }
+			AddEditPriority form = new AddEditPriority();
 
-            string ResultName = form.textBox1.Text.Replace("'", "''");
+			//Заполняем в AddEditStudent.Form поля для того чтобы было что редактировать.
+			form.textBox1.Text = dataGridView1.CurrentRow.Cells["Name"].Value.ToString();
 
-            if (string.IsNullOrEmpty(ResultName) || string.IsNullOrWhiteSpace(ResultName))
-            {
-                MessageBox.Show("Нужно верно заполните поле 'Наименование'");
-            }
-            if (form.textBox1.TextLength > 50)
-            {
-                MessageBox.Show("ФИО должно быть не больше 50 символов");
-            }
-            else
-            {
-                //записываем данные из текстбоксов AddEditStudent.Form в наши переменные
-                // А потом экранируем кавычечку
-                bool sqlresult = await db.ExecSQLAsync("INSERT into Priority(Name) values('" + ResultName + "')");
-            }
-            RefreshGrid();
-        }
+			if (form.ShowDialog() != DialogResult.OK)
+			{ return; }
 
-        //Функционал редактирования выбранного типа приоритета
-        private async void Button2_Click(object sender, EventArgs e)
-        {
-            string ID = "";
-            string ResultName;
+			ResultName = form.textBox1.Text.Replace("'", "''");
 
-            try
-            {
-                ID = dataGridView1.CurrentRow.Cells["id"].Value.ToString();
-            }
-            catch
-            {
-                MessageBox.Show("Сначала выберите вид приоритета", "Error", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
-                return;
-            }
+			if (string.IsNullOrEmpty(ResultName) || string.IsNullOrWhiteSpace(ResultName))
+			{
+				MessageBox.Show("Нужно верно заполните поле 'Наименование'");
+			}
+			if (form.textBox1.TextLength > 50)
+			{
+				MessageBox.Show("ФИО должно быть не больше 50 символов");
+			}
+			else
+			{
+				bool sqlresult = await connection.ExecNonQueryAsync("UPDATE Priority set Name ='" + ResultName + "' where ID = '" + ID + "'");
+			}
 
-            AddEditPriority form = new AddEditPriority();
+			RefreshGrid();
+		}
 
-            //Заполняем в AddEditStudent.Form поля для того чтобы было что редактировать.
-            form.textBox1.Text = dataGridView1.CurrentRow.Cells["Name"].Value.ToString();
+		//Функционал удаления выбранного вида приоритета
+		private async void Button3_Click(object sender, EventArgs e)
+		{
+			string ID = "";
 
-            if (form.ShowDialog() != DialogResult.OK)
-            { return; }
+			try
+			{
+				ID = dataGridView1.CurrentRow.Cells["id"].Value.ToString();
+			}
+			catch
+			{
+				MessageBox.Show("Сначала выберите вид приоритета", "Error", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
+				return;
+			}
 
-            ResultName = form.textBox1.Text.Replace("'", "''");
+			//Удаляем из базы
+			if ((DialogResult = MessageBox.Show("Вы действительно хотите удалить данный вид приоритета: " + dataGridView1.CurrentRow.Cells["id"].Value + "?", "Delete Priority", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1)) == DialogResult.Yes)
+			{
+				bool sqlresult = await connection.ExecNonQueryAsync("DELETE FROM Priority where id = '" + ID + "'");
+			}
 
-            if (string.IsNullOrEmpty(ResultName) || string.IsNullOrWhiteSpace(ResultName))
-            {
-                MessageBox.Show("Нужно верно заполните поле 'Наименование'");
-            }
-            if (form.textBox1.TextLength > 50)
-            {
-                MessageBox.Show("ФИО должно быть не больше 50 символов");
-            }
-            else
-            {
-                bool sqlresult = await db.ExecSQLAsync("UPDATE Priority set Name ='" + ResultName + "' where ID = '" + ID + "'");
-            }
+			//Удаляем из DataGridView
+			dataGridView1.Rows.Remove(dataGridView1.CurrentRow);
+		}
 
-            RefreshGrid();
-        }
+		//Функционал для перехода обратно на стартовую страницу
+		private void BackwardToMainformToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			Mainform newForm = new Mainform();
+			newForm.TaskEmployeeToolStripMenuItem.Visible = false;
+			newForm.DirectorToolStripMenuItem.Visible = false;
+			newForm.Show();
+			Hide();
+		}
 
-        //Функционал удаления выбранного вида приоритета
-        private async void Button3_Click(object sender, EventArgs e)
-        {
-            string ID = "";
-
-            try
-            {
-                ID = dataGridView1.CurrentRow.Cells["id"].Value.ToString();
-            }
-            catch
-            {
-                MessageBox.Show("Сначала выберите вид приоритета", "Error", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
-                return;
-            }
-
-            //Удаляем из базы
-            if ((DialogResult = MessageBox.Show("Вы действительно хотите удалить данный вид приоритета: " + dataGridView1.CurrentRow.Cells["id"].Value + "?", "Delete Priority", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1)) == DialogResult.Yes)
-            {
-                bool sqlresult = await db.ExecSQLAsync("DELETE FROM Priority where id = '" + ID + "'");
-            }
-
-            //Удаляем из DataGridView
-            dataGridView1.Rows.Remove(dataGridView1.CurrentRow);
-        }
-
-        //Функционал для перехода обратно на стартовую страницу
-        private void BackwardToMainformToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Mainform newForm = new Mainform();
-            newForm.TaskEmployeeToolStripMenuItem.Visible = false;
-            newForm.DirectorToolStripMenuItem.Visible = false;
-            newForm.Show();
-            Hide();
-        }
-
-        //Функционал для выхода из приложения
-        private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
-    }
+		//Функционал для выхода из приложения
+		private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			Application.Exit();
+		}
+	}
 }

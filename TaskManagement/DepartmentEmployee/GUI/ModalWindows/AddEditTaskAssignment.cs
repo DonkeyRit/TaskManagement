@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using Core.Database.ObjectReader;
 using DepartmentEmployee.GUI.ControlWindows;
 
 

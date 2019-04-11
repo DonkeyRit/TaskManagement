@@ -1,169 +1,157 @@
 ﻿using System;
 using System.Data;
 using System.Windows.Forms;
-using Core.Database.ConnectionDB;
+using Core.Database.Connection;
 using DepartmentEmployee.GUI.ModalWindows;
 
 namespace DepartmentEmployee.GUI.ControlWindows
 {
-    public partial class TypeResults : Form
-    {
+	public partial class TypeResults : Form
+	{
 
-        PostgreSQLConnectionParams postgresql_params = new PostgreSQLConnectionParams();
-        DB db;
+		private readonly Connection connection;
 
-        public TypeResults()
-        {
-            InitializeComponent();
+		public TypeResults()
+		{
+			InitializeComponent();
+			connection = Connection.CreateConnection();
+			RefreshGrid(); // Обновляем список результов.
+		}
 
-            //!!!!!!!!!!УЧЕТНЫЕ ДАННЫЕ PostgreSQL!!!!!!!!!!!!!!!
-            postgresql_params.hostname = "127.0.0.1";        // Hostname
-            postgresql_params.port = "5432";                 // Port
-            postgresql_params.database = "TaskPerformance";  // Database
-            postgresql_params.user = "postgres";             // Username
-            postgresql_params.password = "123456";           // Password
+		//Функционал вывода всех типов результатов
+		private async void RefreshGrid()
+		{
 
-            //!!!!!!!!!!УЧЕТНЫЕ ДАННЫЕ PostgreSQL!!!!!!!!!!!!!!!
+			DataTable dt = await connection.GetDataAdapterAsync("Select * from Results ORDER BY id ASC");
+			dataGridView1.DataSource = dt; //Присвеиваем DataTable в качестве источника данных DataGridView
 
-            db = new DB(postgresql_params);
+			try
+			{
+				// Скроем столбец ненужные столбцы
+				dataGridView1.Columns["id"].Visible = false;
 
-            RefreshGrid(); // Обновляем список результов.
-        }
+				//Заголовки таблицы
+				dataGridView1.Columns["Name"].HeaderText = "Наименование";
+			}
+			catch { }
 
-        //Функционал вывода всех типов результатов
-        private async void RefreshGrid()
-        {
+			// выбираем первую строчку
+			try
+			{
+				dataGridView1.CurrentCell = dataGridView1.Rows[0].Cells[0];
+			}
+			catch { }
+		}
 
-            DataTable dt = await db.GetDatatableFromPostgreSQLAsync("Select * from Results ORDER BY id ASC");
-            dataGridView1.DataSource = dt; //Присвеиваем DataTable в качестве источника данных DataGridView
+		
+		//Функционал добавления нового типа результата
+		private async void Button1_Click(object sender, EventArgs e)
+		{
+			AddEditTypeResults form = new AddEditTypeResults();
 
-            try
-            {
-                // Скроем столбец ненужные столбцы
-                dataGridView1.Columns["id"].Visible = false;
+			if (form.ShowDialog() != DialogResult.OK)
+			{ return; }
 
-                //Заголовки таблицы
-                dataGridView1.Columns["Name"].HeaderText = "Наименование";
-            }
-            catch { }
+			string ResultName = form.textBox1.Text.Replace("'", "''");
 
-            // выбираем первую строчку
-            try
-            {
-                dataGridView1.CurrentCell = dataGridView1.Rows[0].Cells[0];
-            }
-            catch { }
-        }
+			if (string.IsNullOrEmpty(ResultName) || string.IsNullOrWhiteSpace(ResultName))
+			{
+				MessageBox.Show("Нужно верно заполните поле 'Название'");
+			}
+			if (form.textBox1.TextLength > 30)
+			{
+				MessageBox.Show("Название должно быть не больше 20 символов");
+			}
+			else
+			{
+				//записываем данные из текстбоксов AddEditStudent.Form в наши переменные
+				// А потом экранируем кавычечку
+				bool sqlresult = await connection.ExecNonQueryAsync("INSERT into Results(Name) values('" + ResultName + "')");
+			}
+			RefreshGrid();
+		}
 
-        
-        //Функционал добавления нового типа результата
-        private async void Button1_Click(object sender, EventArgs e)
-        {
-            AddEditTypeResults form = new AddEditTypeResults();
+		//Функционал редактирования выбранного типа результата
+		private async void Button2_Click_1(object sender, EventArgs e)
+		{
+			string ID = "";
+			string ResultName;
+			
+			try
+			{
+				ID = dataGridView1.CurrentRow.Cells["id"].Value.ToString();
+			}
+			catch
+			{
+				MessageBox.Show("Сначала выберите тип результата", "Error", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
+				return;
+			}
 
-            if (form.ShowDialog() != DialogResult.OK)
-            { return; }
+			AddEditTypeResults form = new AddEditTypeResults();
 
-            string ResultName = form.textBox1.Text.Replace("'", "''");
+			//Заполняем в AddEditStudent.Form поля для того чтобы было что редактировать.
+			form.textBox1.Text = dataGridView1.CurrentRow.Cells["Name"].Value.ToString();
 
-            if (string.IsNullOrEmpty(ResultName) || string.IsNullOrWhiteSpace(ResultName))
-            {
-                MessageBox.Show("Нужно верно заполните поле 'Название'");
-            }
-            if (form.textBox1.TextLength > 30)
-            {
-                MessageBox.Show("Название должно быть не больше 20 символов");
-            }
-            else
-            {
-                //записываем данные из текстбоксов AddEditStudent.Form в наши переменные
-                // А потом экранируем кавычечку
-                bool sqlresult = await db.ExecSQLAsync("INSERT into Results(Name) values('" + ResultName + "')");
-            }
-            RefreshGrid();
-        }
+			if (form.ShowDialog() != DialogResult.OK)
+			{ return; }
 
-        //Функционал редактирования выбранного типа результата
-        private async void Button2_Click_1(object sender, EventArgs e)
-        {
-            string ID = "";
-            string ResultName;
-            
-            try
-            {
-                ID = dataGridView1.CurrentRow.Cells["id"].Value.ToString();
-            }
-            catch
-            {
-                MessageBox.Show("Сначала выберите тип результата", "Error", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
-                return;
-            }
+			ResultName = form.textBox1.Text.Replace("'", "''");
 
-            AddEditTypeResults form = new AddEditTypeResults();
+			if (string.IsNullOrEmpty(ResultName) || string.IsNullOrWhiteSpace(ResultName))
+			{
+				MessageBox.Show("Нужно верно заполните поле 'Название'");
+			}
+			if (form.textBox1.TextLength > 30)
+			{
+				MessageBox.Show("Название должно быть не больше 20 символов");
+			}
+			else
+			{
+				bool sqlresult = await connection.ExecNonQueryAsync("UPDATE Results set Name ='" + ResultName + "' where ID = '" + ID + "'");
+			}
 
-            //Заполняем в AddEditStudent.Form поля для того чтобы было что редактировать.
-            form.textBox1.Text = dataGridView1.CurrentRow.Cells["Name"].Value.ToString();
+			RefreshGrid();
+		}
 
-            if (form.ShowDialog() != DialogResult.OK)
-            { return; }
+		//Функционал удаления выбранного типа результата
+		private async void Button3_Click_1(object sender, EventArgs e)
+		{
+			string ID = "";
 
-            ResultName = form.textBox1.Text.Replace("'", "''");
+			try
+			{
+				ID = dataGridView1.CurrentRow.Cells["id"].Value.ToString();
+			}
+			catch
+			{
+				MessageBox.Show("Сначала выберите тип результата", "Error", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
+				return;
+			}
 
-            if (string.IsNullOrEmpty(ResultName) || string.IsNullOrWhiteSpace(ResultName))
-            {
-                MessageBox.Show("Нужно верно заполните поле 'Название'");
-            }
-            if (form.textBox1.TextLength > 30)
-            {
-                MessageBox.Show("Название должно быть не больше 20 символов");
-            }
-            else
-            {
-                bool sqlresult = await db.ExecSQLAsync("UPDATE Results set Name ='" + ResultName + "' where ID = '" + ID + "'");
-            }
+			//Удаляем из базы
+			if ((DialogResult = MessageBox.Show("Вы действительно хотите удалить данный тип результата: " + dataGridView1.CurrentRow.Cells["id"].Value + "?", "Delete Student", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1)) == DialogResult.Yes)
+			{
+				bool sqlresult = await connection.ExecNonQueryAsync("DELETE FROM Results where id = '" + ID + "'");
+			}
 
-            RefreshGrid();
-        }
+			//Удаляем из DataGridView
+			dataGridView1.Rows.Remove(dataGridView1.CurrentRow);
+		}
 
-        //Функционал удаления выбранного типа результата
-        private async void Button3_Click_1(object sender, EventArgs e)
-        {
-            string ID = "";
+		//Функционал для перехода обратно на стартовую страницу
+		private void BackwardToMainformToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			Mainform newForm = new Mainform();
+			newForm.TaskEmployeeToolStripMenuItem.Visible = false;
+			newForm.DirectorToolStripMenuItem.Visible = false;
+			newForm.Show();
+			Hide();
+		}
 
-            try
-            {
-                ID = dataGridView1.CurrentRow.Cells["id"].Value.ToString();
-            }
-            catch
-            {
-                MessageBox.Show("Сначала выберите тип результата", "Error", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
-                return;
-            }
-
-            //Удаляем из базы
-            if ((DialogResult = MessageBox.Show("Вы действительно хотите удалить данный тип результата: " + dataGridView1.CurrentRow.Cells["id"].Value + "?", "Delete Student", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1)) == DialogResult.Yes)
-            {
-                bool sqlresult = await db.ExecSQLAsync("DELETE FROM Results where id = '" + ID + "'");
-            }
-
-            //Удаляем из DataGridView
-            dataGridView1.Rows.Remove(dataGridView1.CurrentRow);
-        }
-
-        //Функционал для перехода обратно на стартовую страницу
-        private void BackwardToMainformToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Mainform newForm = new Mainform();
-            newForm.TaskEmployeeToolStripMenuItem.Visible = false;
-            newForm.DirectorToolStripMenuItem.Visible = false;
-            newForm.Show();
-            Hide();
-        }
-
-        //Функционал для выхода из приложения
-        private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
-    }
+		//Функционал для выхода из приложения
+		private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			Application.Exit();
+		}
+	}
 }
