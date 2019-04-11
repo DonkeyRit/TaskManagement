@@ -8,7 +8,7 @@ using NpgsqlTypes;
 
 namespace DepartmentEmployee.Database.ConnectionDB
 {
-    class DB
+    public class DB
     {
         private PostgreSQLConnectionParams postgresqlconn_params;
         private NpgsqlConnection conn = new NpgsqlConnection(); //Объявляем переменную нашего Connection

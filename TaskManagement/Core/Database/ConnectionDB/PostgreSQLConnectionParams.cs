@@ -1,6 +1,6 @@
 ﻿namespace DepartmentEmployee.Database.ConnectionDB
 {
-    class PostgreSQLConnectionParams
+    public class PostgreSQLConnectionParams
     {        
         public string hostname { get; set; }
 
