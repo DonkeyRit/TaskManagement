@@ -71,9 +71,6 @@
     <Compile Include="Database\Connection\Connection.cs" />
     <Compile Include="Database\Connection\MSSQLConnection.cs" />
     <Compile Include="Database\Connection\PostgreSQLConnection.cs" />
-    <Compile Include="Database\ObjectReader\MSSQLReader.cs" />
-    <Compile Include="Database\ObjectReader\PostgreSQLReader.cs" />
-    <Compile Include="Database\ObjectReader\Reader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

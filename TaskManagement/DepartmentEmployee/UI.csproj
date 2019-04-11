@@ -161,7 +161,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Workflow.cs" />
     <EmbeddedResource Include="GUI\ControlWindows\AnalisisToWork.resx">
       <DependentUpon>AnalisisToWork.cs</DependentUpon>
     </EmbeddedResource>
