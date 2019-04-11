@@ -1,5 +1,6 @@
 ﻿using DepartmentEmployee.Database.ObjectReader;
 using System;
+using System.Configuration;
 
 namespace DepartmentEmployee.Database.Connection
 {
@@ -12,17 +13,24 @@ namespace DepartmentEmployee.Database.Connection
         {
             connParameters = connParams;
 
-            switch (connParams.RDBMS)
+            var configuration = ConfigurationManager.ConnectionStrings["DefaultConnection"];
+            string provider = configuration.ProviderName,
+	            connectionString = configuration.ConnectionString;
+
+            connection = new MSSQLConnection(connectionString);
+
+
+			/*switch (connParams.RDBMS)
             {
-                case "MySQL":
-                    connection = new MySQLConnection();
+                case "MSSQL":
+                    connection = new MSSQLConnection(connectionString);
                     break;
                 case "PostgreSQL":
                     connection = new PostgreSQLConnection();
                     break;
                 default:
                     throw new Exception("This database does not support now.");
-            }
+            }*/
 
             return connection;
         }
