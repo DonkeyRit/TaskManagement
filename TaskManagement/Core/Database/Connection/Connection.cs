@@ -1,50 +1,43 @@
-﻿using DepartmentEmployee.Database.ObjectReader;
-using System;
-using System.Configuration;
+﻿using System;
+using DepartmentEmployee.Database.Connection;
+using DepartmentEmployee.Database.ObjectReader;
 
-namespace DepartmentEmployee.Database.Connection
+namespace Core.Database.Connection
 {
-    public abstract class Connection
-    {
-        protected static Connection connection;
-        protected static ConnectionParams connParameters;
+	public abstract class Connection
+	{
+		protected readonly ConnectionParams _connectionParams;
 
-        public static Connection CreateConnection(ConnectionParams connParams)
-        {
-            connParameters = connParams;
+		protected Connection(ConnectionParams connectionParams)
+		{
+			_connectionParams = connectionParams;
+		}
 
-            var configuration = ConfigurationManager.ConnectionStrings["DefaultConnection"];
-            string provider = configuration.ProviderName,
-	            connectionString = configuration.ConnectionString;
+		public static Connection CreateConnection()
+		{
+			ConnectionParams connectionParams = ConnectionParams.GetInstance();
 
-            connection = new MSSQLConnection(connectionString);
+			switch (connectionParams.Provider)
+			{
+				case "MSSQLProvider":
+					return new MSSQLConnection(connectionParams);
+				case "Npgsql":
+					return new PostgreSQLConnection(connectionParams);
+				default:
+					throw new Exception("This database does not support now.");
+			}
+		}
 
+		public abstract Reader Select(string query);
 
-			/*switch (connParams.RDBMS)
-            {
-                case "MSSQL":
-                    connection = new MSSQLConnection(connectionString);
-                    break;
-                case "PostgreSQL":
-                    connection = new PostgreSQLConnection();
-                    break;
-                default:
-                    throw new Exception("This database does not support now.");
-            }*/
+		public abstract void Insert(string query);
 
-            return connection;
-        }
+		public abstract void Update(string query);
 
-        public abstract Reader Select(string query);
+		public abstract void Delete(string query);
 
-        public abstract void Insert(string query);
+		public abstract Connection OpenConnection();
 
-        public abstract void Update(string query);
-
-        public abstract void Delete(string query);
-
-        public abstract Connection OpenConnection();
-
-        public abstract void CloseConnection();
-    }
+		public abstract void CloseConnection();
+	}
 }

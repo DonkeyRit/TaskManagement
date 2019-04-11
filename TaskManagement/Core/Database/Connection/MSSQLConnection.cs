@@ -1,17 +1,14 @@
-﻿using System.Data.SqlClient;
+﻿using Core.Database;
+using System.Data.SqlClient;
 using DepartmentEmployee.Database.ObjectReader;
 
 namespace DepartmentEmployee.Database.Connection
 {
-	public class MSSQLConnection : Connection
+	public class MSSQLConnection : Core.Database.Connection.Connection
 	{
 		private SqlConnection connection;
-		private string connectionString;
 
-		public MSSQLConnection(string connectionString)
-		{
-			this.connectionString = connectionString;
-		}
+		public MSSQLConnection(ConnectionParams connectionParams) : base(connectionParams) {}
 
 		public override void CloseConnection()
 		{
@@ -36,9 +33,9 @@ namespace DepartmentEmployee.Database.Connection
 			reader.Close();
 		}
 
-		public override Connection OpenConnection()
+		public override Core.Database.Connection.Connection OpenConnection()
 		{
-			connection = new SqlConnection(connectionString);
+			connection = new SqlConnection(_connectionParams.ConnectionString);
 			connection.Open();
 
 			return this;
