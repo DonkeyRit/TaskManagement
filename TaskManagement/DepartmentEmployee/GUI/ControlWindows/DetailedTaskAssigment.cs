@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Windows.Forms;
 using Core.Database.Connection;
+using Core.Database.Utils;
 
 namespace DepartmentEmployee.GUI.ControlWindows
 {
@@ -46,10 +47,14 @@ namespace DepartmentEmployee.GUI.ControlWindows
 			int TaskID = GetId(String.Format("Select id_Task from AssignedTasks where id = '" + ID + "'"));
 
 			//Получаем исполнителя задания под которым авторизовались
-			Reader reader = Workflow.connection.Select("Select Employees.FIO as Employee from AssignedTasks join Tasks on Tasks.id = AssignedTasks.id_Task join Employees on AssignedTasks.id_Employee = Employees.id where Employees.Login = '" + Login + "' AND Employees.Password = '" + Password + "' AND Tasks.id = '" + TaskID + "'");
-			List<object> name = reader.GetValue(0, true);
-			reader.Close();
-			
+
+			DataTable table = connection.GetDataAdapter("Select Employees.FIO as Employee from AssignedTasks join Tasks on Tasks.id = AssignedTasks.id_Task join Employees on AssignedTasks.id_Employee = Employees.id where Employees.Login = '" + Login + "' AND Employees.Password = '" + Password + "' AND Tasks.id = '" + TaskID + "'");
+			List<object> name = table.ParseDataTable(0, CellType.String);
+
+			//Reader reader = Workflow.connection.Select();
+			//List<object> name = reader.GetValue(0, true);
+			//reader.Close();
+
 			//Записываем исполнителя в строку для дальнейшего сравнения
 			string EmployeeUser = String.Join("", name);
 			
@@ -83,9 +88,13 @@ namespace DepartmentEmployee.GUI.ControlWindows
 			int Complexity= GetId(String.Format("Select complexity from Tasks where id = '" + TaskID + "'"));
 
 			//Получаем и выводим название задания
-			reader = Workflow.connection.Select("Select Tasks.Name from AssignedTasks join Tasks on AssignedTasks.id_Task = Tasks.id where AssignedTasks.id = '" + ID + "'");
-			List<object> task_name = reader.GetValue(0, true);
-			reader.Close();
+
+			table = connection.GetDataAdapter("Select Tasks.Name from AssignedTasks join Tasks on AssignedTasks.id_Task = Tasks.id where AssignedTasks.id = '" + ID + "'");
+			List<object> task_name = table.ParseDataTable(0, CellType.String);
+
+			//reader = Workflow.connection.Select("Select Tasks.Name from AssignedTasks join Tasks on AssignedTasks.id_Task = Tasks.id where AssignedTasks.id = '" + ID + "'");
+			//List<object> task_name = reader.GetValue(0, true);
+			//reader.Close();
 
 			string TextLabel = String.Join("", task_name);
 			label1.Text = "Описание задания: " + TextLabel + " (Трудоёмкость: " + Complexity + " часов)";
@@ -113,9 +122,12 @@ namespace DepartmentEmployee.GUI.ControlWindows
 		//Функционал получения ID
 		public int GetId(string query)
 		{
-			Reader reader = Workflow.connection.Select(query);
-			List<object> identificator = reader.GetValue(0, false);
-			reader.Close();
+			DataTable table = connection.GetDataAdapter(query);
+			List<object> identificator = table.ParseDataTable(0, CellType.Integer);
+
+			//Reader reader = Workflow.connection.Select(query);
+			//List<object> identificator = reader.GetValue(0, false);
+			//reader.Close();
 			return int.Parse(identificator[0].ToString());
 		}
 	}

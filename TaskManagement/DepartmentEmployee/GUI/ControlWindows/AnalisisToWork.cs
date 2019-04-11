@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Windows.Forms;
 using Core.Database.Connection;
+using Core.Database.Utils;
 
 namespace DepartmentEmployee.GUI.ControlWindows
 {
@@ -20,9 +21,13 @@ namespace DepartmentEmployee.GUI.ControlWindows
 			AssigmentTask newform = new AssigmentTask();
 
 			// Выводим в comboBox1 Фамилии студентов
-			Reader reader = Workflow.connection.Select("Select FIO from Students");
-			List<object> questions = reader.GetValue(0, true);
-			reader.Close();
+
+			DataTable table = connection.GetDataAdapter("Select FIO from Students");
+			List<object> questions = table.ParseDataTable(0, CellType.String);
+
+			//Reader reader = Workflow.connection.Select("Select FIO from Students");
+			//List<object> questions = reader.GetValue(0, true);
+			//reader.Close();
 
 			comboBox1.Items.Clear();
 
@@ -32,9 +37,13 @@ namespace DepartmentEmployee.GUI.ControlWindows
 			}
 
 			// Выводим в comboBox2 список результатов
-			reader = Workflow.connection.Select("Select Task_name from Tasks");
-			List<object> results = reader.GetValue(0, true);
-			reader.Close();
+
+			table = connection.GetDataAdapter("Select Task_name from Tasks");
+			List<object> results = table.ParseDataTable(0, CellType.String);
+
+			//reader = Workflow.connection.Select("Select Task_name from Tasks");
+			//List<object> results = reader.GetValue(0, true);
+			//reader.Close();
 
 			comboBox2.Items.Clear();
 

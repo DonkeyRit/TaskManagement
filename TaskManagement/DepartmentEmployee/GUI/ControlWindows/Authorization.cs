@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows.Forms;
 using Core.Database.Connection;
+using System.Collections.Generic;
 
 namespace DepartmentEmployee.GUI.ControlWindows
 {

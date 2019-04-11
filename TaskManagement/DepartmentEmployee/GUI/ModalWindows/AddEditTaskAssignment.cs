@@ -1,95 +1,118 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Windows.Forms;
+using Core.Database.Connection;
+using Core.Database.Utils;
 using DepartmentEmployee.GUI.ControlWindows;
 
 
 namespace DepartmentEmployee.GUI.ModalWindows
 {
-    public partial class AddEditTaskAssignment : Form
-    {
-        public AddEditTaskAssignment(int TaskID)
-        {
-            InitializeComponent();
-            // Это нужно для того чтобы при нажатии ентер нажималась кнопка ОК а при нажатии ESC нажималась кнопка Cancel
-            this.AcceptButton = Button1;
-            this.CancelButton = Button2;
+	public partial class AddEditTaskAssignment : Form
+	{
+		private Connection connection;
 
-            AssigmentTask newform = new AssigmentTask();
+		public AddEditTaskAssignment(int TaskID)
+		{
+			connection = Connection.CreateConnection();
 
-            int Complexity = newform.GetId(String.Format("Select Complexity from Tasks where id  = '{0}'", TaskID));
+			InitializeComponent();
+			// Это нужно для того чтобы при нажатии ентер нажималась кнопка ОК а при нажатии ESC нажималась кнопка Cancel
+			this.AcceptButton = Button1;
+			this.CancelButton = Button2;
 
-            DateTime CurrentTime = DateTime.UtcNow;
-            dateTimePicker1.Value = CurrentTime; // Задаем в поле с выбором Даты выдачи задания текущую дату
+			AssigmentTask newform = new AssigmentTask();
 
-            // Выводим в comboBox1 сотрудников
-            Reader reader = Workflow.connection.Select("Select FIO from Employees");
-            List<object> employees = reader.GetValue(0, true);
-            reader.Close();
+			int Complexity = newform.GetId(String.Format("Select Complexity from Tasks where id  = '{0}'", TaskID));
 
-            comboBox1.Items.Clear();
+			DateTime CurrentTime = DateTime.UtcNow;
+			dateTimePicker1.Value = CurrentTime; // Задаем в поле с выбором Даты выдачи задания текущую дату
 
-            for (int i = 0; i < employees.Count; i++)
-            {
-                comboBox1.Items.Add(employees[i].ToString());
-            }
+			// Выводим в comboBox1 сотрудников
 
-            // Выводим в comboBox2 список результатов
-            reader = Workflow.connection.Select("Select Name from Results");
-            List<object> results = reader.GetValue(0, true);
-            reader.Close();
+			DataTable table = connection.GetDataAdapter("Select FIO from Employees");
+			List<object> employees = table.ParseDataTable(0, CellType.String);
 
-            comboBox2.Items.Clear();
+			//Reader reader = Workflow.connection.Select();
+			//List<object> employees = reader.GetValue(0, true);
+			//reader.Close();
 
-            for (int i = 0; i < results.Count; i++)
-            {
-                comboBox2.Items.Add(results[i].ToString());
-            }
-        }
+			comboBox1.Items.Clear();
 
-        public AddEditTaskAssignment()
-        {
-            InitializeComponent();
-            // Это нужно для того чтобы при нажатии ентер нажималась кнопка ОК а при нажатии ESC нажималась кнопка Cancel
-            this.AcceptButton = Button1;
-            this.CancelButton = Button2;
+			for (int i = 0; i < employees.Count; i++)
+			{
+				comboBox1.Items.Add(employees[i].ToString());
+			}
 
-            // Выводим в comboBox1 сотрудников
-            Reader reader = Workflow.connection.Select("Select FIO from Employees");
-            List<object> employees = reader.GetValue(0, true);
-            reader.Close();
+			// Выводим в comboBox2 список результатов
 
-            comboBox1.Items.Clear();
+			table = connection.GetDataAdapter("Select Name from Results");
+			List<object> results = table.ParseDataTable(0, CellType.String);
 
-            for (int i = 0; i < employees.Count; i++)
-            {
-                comboBox1.Items.Add(employees[i].ToString());
-            }
+			//reader = Workflow.connection.Select("Select Name from Results");
+			//List<object> results = reader.GetValue(0, true);
+			//reader.Close();
 
-            // Выводим в comboBox2 список результатов
-            reader = Workflow.connection.Select("Select Name from Results");
-            List<object> results = reader.GetValue(0, true);
-            reader.Close();
+			comboBox2.Items.Clear();
 
-            comboBox2.Items.Clear();
+			for (int i = 0; i < results.Count; i++)
+			{
+				comboBox2.Items.Add(results[i].ToString());
+			}
+		}
 
-            for (int i = 0; i < results.Count; i++)
-            {
-                comboBox2.Items.Add(results[i].ToString());
-            }
-        }
+		public AddEditTaskAssignment()
+		{
+			InitializeComponent();
+			// Это нужно для того чтобы при нажатии ентер нажималась кнопка ОК а при нажатии ESC нажималась кнопка Cancel
+			this.AcceptButton = Button1;
+			this.CancelButton = Button2;
 
-        private void Button1_Click(object sender, EventArgs e)
-        {
-            this.DialogResult = DialogResult.OK;
-            this.Close();
-        }
+			// Выводим в comboBox1 сотрудников
 
-        private void Button2_Click(object sender, EventArgs e)
-        {
-            this.DialogResult = DialogResult.Cancel;
-            this.Close();
-        }
+			DataTable table = connection.GetDataAdapter("Select FIO from Employees");
+			List<object> employees = table.ParseDataTable(0, CellType.String);
 
-    }
+			//Reader reader = Workflow.connection.Select("Select FIO from Employees");
+			//List<object> employees = reader.GetValue(0, true);
+			//reader.Close();
+
+			comboBox1.Items.Clear();
+
+			for (int i = 0; i < employees.Count; i++)
+			{
+				comboBox1.Items.Add(employees[i].ToString());
+			}
+
+			// Выводим в comboBox2 список результатов
+
+			table = connection.GetDataAdapter("Select Name from Results");
+			List<object> results = table.ParseDataTable(0, CellType.String);
+
+			//reader = Workflow.connection.Select("Select Name from Results");
+			//List<object> results = reader.GetValue(0, true);
+			//reader.Close();
+
+			comboBox2.Items.Clear();
+
+			for (int i = 0; i < results.Count; i++)
+			{
+				comboBox2.Items.Add(results[i].ToString());
+			}
+		}
+
+		private void Button1_Click(object sender, EventArgs e)
+		{
+			this.DialogResult = DialogResult.OK;
+			this.Close();
+		}
+
+		private void Button2_Click(object sender, EventArgs e)
+		{
+			this.DialogResult = DialogResult.Cancel;
+			this.Close();
+		}
+
+	}
 }
