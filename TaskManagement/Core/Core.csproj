@@ -67,8 +67,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Database\ConnectionDB\DB.cs" />
-    <Compile Include="Database\ConnectionDB\PostgreSQLConnectionParams.cs" />
     <Compile Include="Database\ConnectionParams.cs" />
     <Compile Include="Database\Connection\Connection.cs" />
     <Compile Include="Database\Connection\MSSQLConnection.cs" />
