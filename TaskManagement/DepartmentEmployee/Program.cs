@@ -2,8 +2,6 @@
 using System.Windows.Forms;
 using Core.Database;
 using Core.Database.Connection;
-using DepartmentEmployee.Database;
-using DepartmentEmployee.Database.Connection;
 using DepartmentEmployee.GUI.ControlWindows;
 
 namespace DepartmentEmployee

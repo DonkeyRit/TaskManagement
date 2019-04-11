@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
-using DepartmentEmployee.Database.ConnectionDB;
-using DepartmentEmployee.Database.ObjectReader;
+using Core.Database.ConnectionDB;
+using Core.Database.ObjectReader;
 using DepartmentEmployee.GUI.ModalWindows;
 
 namespace DepartmentEmployee.GUI.ControlWindows

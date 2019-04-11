@@ -1,4 +1,4 @@
-﻿namespace DepartmentEmployee.Database.ConnectionDB
+﻿namespace Core.Database.ConnectionDB
 {
     public class PostgreSQLConnectionParams
     {        

@@ -1,8 +1,7 @@
-﻿using Core.Database;
-using System.Data.SqlClient;
-using DepartmentEmployee.Database.ObjectReader;
+﻿using System.Data.SqlClient;
+using Core.Database.ObjectReader;
 
-namespace DepartmentEmployee.Database.Connection
+namespace Core.Database.Connection
 {
 	public class MSSQLConnection : Core.Database.Connection.Connection
 	{

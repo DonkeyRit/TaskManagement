@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace DepartmentEmployee.Database.ObjectReader
+namespace Core.Database.ObjectReader
 
 {
     public abstract class Reader

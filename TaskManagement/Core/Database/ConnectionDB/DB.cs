@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Data;
-using Npgsql;
+using System.Threading.Tasks;
 using System.Windows.Forms;
+using Npgsql;
 using NpgsqlTypes;
 
-namespace DepartmentEmployee.Database.ConnectionDB
+namespace Core.Database.ConnectionDB
 {
     public class DB
     {

@@ -1,7 +1,7 @@
-﻿using DepartmentEmployee.Database.ConnectionDB;
-using System;
+﻿using System;
 using System.Data;
 using System.Windows.Forms;
+using Core.Database.ConnectionDB;
 using DepartmentEmployee.GUI.ModalWindows;
 
 namespace DepartmentEmployee.GUI.ControlWindows

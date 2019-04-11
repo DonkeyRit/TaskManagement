@@ -1,8 +1,7 @@
-﻿using Npgsql;
-using Core.Database;
-using DepartmentEmployee.Database.ObjectReader;
+﻿using Core.Database.ObjectReader;
+using Npgsql;
 
-namespace DepartmentEmployee.Database.Connection
+namespace Core.Database.Connection
 {
 	public class PostgreSQLConnection : Core.Database.Connection.Connection
 	{

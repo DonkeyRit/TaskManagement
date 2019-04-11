@@ -1,6 +1,5 @@
 ﻿using System;
-using DepartmentEmployee.Database.Connection;
-using DepartmentEmployee.Database.ObjectReader;
+using Core.Database.ObjectReader;
 
 namespace Core.Database.Connection
 {

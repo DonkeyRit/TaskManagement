@@ -1,7 +1,7 @@
-﻿using System.Data.SqlClient;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Data.SqlClient;
 
-namespace DepartmentEmployee.Database.ObjectReader
+namespace Core.Database.ObjectReader
 {
 	public class MSSQLReader : Reader
 	{

@@ -1,8 +1,7 @@
-﻿using Npgsql;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Collections.Generic;
+using Npgsql;
 
-namespace DepartmentEmployee.Database.ObjectReader
+namespace Core.Database.ObjectReader
 {
     public class PostgreSQLReader : Reader
     {

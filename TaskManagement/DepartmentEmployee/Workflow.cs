@@ -1,5 +1,4 @@
 ﻿using Core.Database.Connection;
-using DepartmentEmployee.Database.Connection;
 
 namespace DepartmentEmployee
 {
