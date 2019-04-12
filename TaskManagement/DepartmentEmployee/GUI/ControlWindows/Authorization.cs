@@ -1,13 +1,13 @@
 ﻿using System;
+using Core.Model;
 using System.Data;
 using System.Linq;
 using Core.Exceptions;
+using Core.Model.Enums;
 using Core.Database.Utils;
 using System.Windows.Forms;
 using Core.Database.Connection;
 using System.Collections.Generic;
-using Core.Model;
-using Core.Model.Enums;
 using DepartmentEmployee.Context;
 using DepartmentEmployee.Controllers;
 
@@ -15,10 +15,7 @@ namespace DepartmentEmployee.GUI.ControlWindows
 {
 	public partial class Authorization : Form
 	{
-		public static string Login;
-		public static string Password;
 		private readonly Connection _connection;
-
 
 		public Authorization()
 		{

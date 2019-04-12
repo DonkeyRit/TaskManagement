@@ -1,10 +1,11 @@
 ﻿using System;
+using Core.Model;
 using System.Data;
 using System.Drawing;
-using System.Windows.Forms;
-using System.Collections.Generic;
-using Core.Database.Connection;
 using Core.Database.Utils;
+using System.Windows.Forms;
+using Core.Database.Connection;
+using System.Collections.Generic;
 using DepartmentEmployee.GUI.ModalWindows;
 
 namespace DepartmentEmployee.GUI.ControlWindows
@@ -13,9 +14,7 @@ namespace DepartmentEmployee.GUI.ControlWindows
 	{
 
 		private readonly Connection connection;
-
-		string Login = Authorization.Login;
-		string Password = Authorization.Password;
+		private readonly User _user;
 
 		public AssigmentTask()
 		{
@@ -32,8 +31,7 @@ namespace DepartmentEmployee.GUI.ControlWindows
 		//Функционал для обновления дерева со списком заданий
 		private async void RefreshDeparts()
 		{
-
-			int TaskManager = GetId(String.Format("Select id from Employees where Login = '" + Login + "' AND Password = '" + Password + "'"));
+			var taskManager = GetId(string.Format("Select id from Employees where Login = '" + _user.Username + "' AND Password = '" + _user.Password + "'"));
 
 			//Очищаем treeview на случай если там что-то есть
 			TreeView1.Nodes.Clear();
@@ -41,7 +39,7 @@ namespace DepartmentEmployee.GUI.ControlWindows
 			//Этим этапом (всей этой функцией рефреша) мы подгружаем только корневые ноды. Тоесть те у которых ParentID = null, остальные (внутренние) мы подгружаем с помощью обработки события выделения ноды TreeView1_AfterSelect.
 
 			//Получаем datatable из соответвующей функции - получаем только корневые папки - где парект ID = 0
-			DataTable dt_tt = await connection.GetDataAdapterAsync("SELECT id, Name, id_ParentTask FROM Tasks WHERE id_TaskManager = '" + TaskManager + "' AND id_ParentTask IS NULL");
+			DataTable dt_tt = await connection.GetDataAdapterAsync("SELECT id, Name, id_ParentTask FROM Tasks WHERE id_TaskManager = '" + taskManager + "' AND id_ParentTask IS NULL");
 			
 			// для каждого элемента в datatable
 			foreach (DataRow row in dt_tt.Rows)
@@ -72,7 +70,7 @@ namespace DepartmentEmployee.GUI.ControlWindows
 		private void TreeView1_AfterSelect(object sender, TreeViewEventArgs e)
 		{
 
-			int TaskManager = GetId(String.Format("Select id from Employees where Login = '" + Login + "' AND Password = '" + Password + "'"));
+			int TaskManager = GetId(String.Format("Select id from Employees where Login = '" + _user.Username + "' AND Password = '" + _user.Password + "'"));
 
 			//Получаем datatable
 			DataTable dt_tt = connection.GetDataAdapter("SELECT id, Name, id_ParentTask FROM Tasks WHERE id_TaskManager = '" + TaskManager + "' AND id_ParentTask = '" + e.Node.Tag.ToString() + "'");
@@ -250,7 +248,7 @@ namespace DepartmentEmployee.GUI.ControlWindows
 				string description = tasks_form.richTextBox1.Text.Replace("'", "''");
 				string complexity = tasks_form.textBox3.Text.Replace("'", "''");
 				DateTime DataOfDelivery = tasks_form.dateTimePicker1.Value.Date;
-				int TaskManager = GetId(String.Format("Select id from Employees where Login = '" + Login + "' AND Password = '" + Password + "'"));
+				int TaskManager = GetId(String.Format("Select id from Employees where Login = '" + _user.Username + "' AND Password = '" + _user.Password + "'"));
 				int Priority = GetId(String.Format("Select id from Priority where Name = '{0}'", tasks_form.comboBox1.Text));
 				string tag = "";
 				

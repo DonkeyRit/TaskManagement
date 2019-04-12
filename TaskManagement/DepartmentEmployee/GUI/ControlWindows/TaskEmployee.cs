@@ -2,30 +2,36 @@
 using System.Data;
 using System.Windows.Forms;
 using Core.Database.Connection;
+using Core.Model;
+using DepartmentEmployee.Context;
 
 namespace DepartmentEmployee.GUI.ControlWindows
 {
 	public partial class TaskEmployee : Form
 	{
-		private readonly Connection connection;
+		private readonly Connection _connection;
+		private readonly User _currentUser;
 
 		public static int ID;
 
 		public TaskEmployee()
 		{
 			InitializeComponent();
-			connection = Connection.CreateConnection();
+
+			_connection = Connection.CreateConnection();
+			_currentUser = CustomContext.GetInstance().CurrentUser;
+
 			RefreshGrid();
 		}
 
 		private async void RefreshGrid()
 		{
 
-			string Login = Authorization.Login;
-			string Password = Authorization.Password;
+			string login = _currentUser.Username;
+			string password = _currentUser.Password;
 
 
-			DataTable dt = await connection.GetDataAdapterAsync("select AssignedTasks.id as id, Tasks.Name as Name, AssignedTasks.Date_Start as Date_Start, Tasks.Date_Delivery as Date_Delivery from AssignedTasks join Tasks on Tasks.id = AssignedTasks.id_Task join Employees on Employees.id = AssignedTasks.id_Employee where Employees.id  = (select id from Employees where Login = '" + Login + "' AND Password = '" + Password + "') ORDER BY Tasks.Date_Delivery ASC");
+			DataTable dt = await _connection.GetDataAdapterAsync("select AssignedTasks.id as id, Tasks.Name as Name, AssignedTasks.Date_Start as Date_Start, Tasks.Date_Delivery as Date_Delivery from AssignedTasks join Tasks on Tasks.id = AssignedTasks.id_Task join Employees on Employees.id = AssignedTasks.id_Employee where Employees.id  = (select id from Employees where Login = '" + login + "' AND Password = '" + password + "') ORDER BY Tasks.Date_Delivery ASC");
 			dataGridView1.DataSource = dt; //Присвеиваем DataTable в качестве источника данных DataGridView
 			ID = int.Parse(dataGridView1.CurrentRow.Cells["id"].Value.ToString());
 			try
