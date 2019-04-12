@@ -1,6 +1,6 @@
 ﻿using System.Data;
-using System.Collections.Generic;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace Core.Database.Utils
 {
@@ -20,27 +20,6 @@ namespace Core.Database.Utils
 					list = table.AsEnumerable().Select(row => row.Field<string>(columnIndex)).Cast<object>().ToList();
 					break;
 			}
-
-			//if (reader.HasRows)
-			//{
-
-			//	while (reader.Read())
-			//	{
-			//		if (type)
-			//		{
-			//			list.Add(reader.GetString(index));
-			//		}
-			//		else
-			//		{
-			//			list.Add(reader.GetInt32(index));
-			//		}
-			//	}
-			//}
-			//else
-			//{
-			//	return null;
-			//}
-
 			return list;
 		} 
 

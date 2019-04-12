@@ -4,13 +4,13 @@ namespace Core.Database
 {
 	public class ConnectionParams
 	{
-		private static ConnectionParams instance;
+		private static ConnectionParams _instance;
 		public string Provider { get; }
 		public string ConnectionString { get; }
 
 		public static ConnectionParams GetInstance()
 		{
-			return instance ?? (instance = new ConnectionParams());
+			return _instance ?? (_instance = new ConnectionParams());
 		}
 
 		private ConnectionParams()
