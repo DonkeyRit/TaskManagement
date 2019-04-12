@@ -5,7 +5,7 @@ namespace Core.Database.Connection
 {
 	public class PostgreSqlConnection : Connection
 	{
-		public PostgreSqlConnection(ConnectionParams connectionParams) : base(new NpgsqlConnection(), connectionParams) {}
+		public PostgreSqlConnection(ConnectionParams connectionParams) : base(new NpgsqlConnection(connectionParams.ConnectionString), connectionParams) {}
 
 		protected override DbDataAdapter CreateAdapter(DbCommand command)
 		{
