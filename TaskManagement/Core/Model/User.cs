@@ -5,13 +5,13 @@ namespace Core.Model
 	public class User
 	{
 		public string Username { get; }
-		public string PasswordHash { get; }
+		public string Password { get; }
 		public Role Role { get; }
 
-		public User(string username, string passwordHash, Role role)
+		public User(string username, string password, Role role)
 		{
 			Username = username;
-			PasswordHash = passwordHash;
+			Password = password;
 			Role = role;
 		}
 	}

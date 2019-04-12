@@ -81,7 +81,7 @@ namespace DepartmentEmployee.GUI.ControlWindows
 					}
 
 					CustomContext context = CustomContext.GetInstance();
-					User currentUser = new User(LoginField.Text, PasswordField.Text.GetHashCode().ToString(), role);
+					var currentUser = new User(LoginField.Text, PasswordField.Text, role);
 					context.CurrentUser = currentUser;
 
 					mainForm.Show();
