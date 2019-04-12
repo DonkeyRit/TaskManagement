@@ -5,10 +5,10 @@ namespace Core.Database.Connection
 {
 	public class MssqlConnection : Connection
 	{
-		public MssqlConnection(ConnectionParams connectionParams) : base(new SqlConnection(), connectionParams) {}
-		protected override DbDataAdapter CreateAdapter()
+		public MssqlConnection(ConnectionParams connectionParams) : base(new SqlConnection(connectionParams.ConnectionString), connectionParams) {}
+		protected override DbDataAdapter CreateAdapter(DbCommand command)
 		{
-			return new SqlDataAdapter();
+			return new SqlDataAdapter((SqlCommand) command);
 		}	
 	}
 }

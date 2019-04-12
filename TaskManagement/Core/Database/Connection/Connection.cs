@@ -109,7 +109,7 @@ namespace Core.Database.Connection
 				var command = _connection.CreateCommand();
 				command.CommandText = sqlCommand;
 
-				DbDataAdapter adapter = CreateAdapter();
+				DbDataAdapter adapter = CreateAdapter(command);
 				DataTable results = new DataTable();
 
 				adapter?.Fill(results);
@@ -121,13 +121,14 @@ namespace Core.Database.Connection
 
 				return results;
 			}
-			catch
+			catch (Exception ex)
 			{
+				Console.WriteLine(ex);
 				DataTable results = new DataTable();
 				return results;
 			}
 		}
 
-		protected abstract DbDataAdapter CreateAdapter();
+		protected abstract DbDataAdapter CreateAdapter(DbCommand command);
 	}
 }
