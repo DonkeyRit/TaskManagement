@@ -29,7 +29,7 @@ namespace DepartmentEmployee.GUI
 
         private void AnalisisToWorkToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            AnalisisToWork newForm = new AnalisisToWork();
+            AnalysisToWork newForm = new AnalysisToWork();
             newForm.Show();
             Hide();
         }

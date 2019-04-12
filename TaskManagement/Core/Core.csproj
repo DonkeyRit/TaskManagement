@@ -72,6 +72,9 @@
     <Compile Include="Database\Connection\MSSQLConnection.cs" />
     <Compile Include="Database\Connection\PostgreSQLConnection.cs" />
     <Compile Include="Database\Utils\DataTableExtensions.cs" />
+    <Compile Include="Exceptions\TaskManagementProjectException.cs" />
+    <Compile Include="Model\Enums\Role.cs" />
+    <Compile Include="Model\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

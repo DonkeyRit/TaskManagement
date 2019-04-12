@@ -51,11 +51,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GUI\ControlWindows\AnalisisToWork.cs">
+    <Compile Include="Context\CustomContext.cs" />
+    <Compile Include="Controllers\FieldController.cs" />
+    <Compile Include="Controllers\ModalDialogController.cs" />
+    <Compile Include="GUI\ControlWindows\AnalysisToWork.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GUI\ControlWindows\AnalisisToWork.Designer.cs">
-      <DependentUpon>AnalisisToWork.cs</DependentUpon>
+    <Compile Include="GUI\ControlWindows\AnalysisToWork.Designer.cs">
+      <DependentUpon>AnalysisToWork.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\ControlWindows\Authorization.cs">
       <SubType>Form</SubType>
@@ -161,8 +164,8 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="GUI\ControlWindows\AnalisisToWork.resx">
-      <DependentUpon>AnalisisToWork.cs</DependentUpon>
+    <EmbeddedResource Include="GUI\ControlWindows\AnalysisToWork.resx">
+      <DependentUpon>AnalysisToWork.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\ControlWindows\Authorization.resx">
       <DependentUpon>Authorization.cs</DependentUpon>
@@ -252,5 +255,6 @@
       <Name>Core</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
