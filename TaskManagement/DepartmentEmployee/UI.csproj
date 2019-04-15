@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Context\CustomContext.cs" />
+    <Compile Include="Controllers\DataTableController.cs" />
     <Compile Include="Controllers\FieldController.cs" />
     <Compile Include="Controllers\ModalDialogController.cs" />
     <Compile Include="GUI\ControlWindows\AnalysisToWork.cs">

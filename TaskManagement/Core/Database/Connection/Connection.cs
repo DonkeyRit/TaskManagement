@@ -19,7 +19,7 @@ namespace Core.Database.Connection
 
 		public static Connection CreateConnection()
 		{
-			ConnectionParams connectionParams = ConnectionParams.GetInstance();
+			var connectionParams = ConnectionParams.GetInstance();
 
 			switch (connectionParams.Provider)
 			{
@@ -69,7 +69,7 @@ namespace Core.Database.Connection
 
 			try
 			{
-				DbCommand command = _connection.CreateCommand();
+				var command = _connection.CreateCommand();
 				command.CommandText = sqlCommand;
 				command.ExecuteNonQuery();
 
@@ -109,8 +109,8 @@ namespace Core.Database.Connection
 				var command = _connection.CreateCommand();
 				command.CommandText = sqlCommand;
 
-				DbDataAdapter adapter = CreateAdapter(command);
-				DataTable results = new DataTable();
+				var adapter = CreateAdapter(command);
+				var results = new DataTable();
 
 				adapter?.Fill(results);
 
@@ -124,7 +124,7 @@ namespace Core.Database.Connection
 			catch (Exception ex)
 			{
 				Console.WriteLine(ex);
-				DataTable results = new DataTable();
+				var results = new DataTable();
 				return results;
 			}
 		}
