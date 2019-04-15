@@ -19,13 +19,6 @@ namespace DepartmentEmployee.GUI
             Hide();
         }
 
-        private void ListResultsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            TypeResults newForm = new TypeResults();
-            newForm.Show();
-            Hide();
-        }
-
 
         private void AnalisisToWorkToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -61,12 +54,6 @@ namespace DepartmentEmployee.GUI
             Hide();
         }
 
-        private void PositionsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ListPositions newForm = new ListPositions();
-            newForm.Show();
-            Hide();
-        }
 
         private void ExitUserAccountToolStripMenuItem_Click(object sender, EventArgs e)
         {

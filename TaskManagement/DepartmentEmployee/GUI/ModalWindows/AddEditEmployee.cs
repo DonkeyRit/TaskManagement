@@ -39,22 +39,6 @@ namespace DepartmentEmployee.GUI.ModalWindows
                 comboBox1.Items.Add(questions[i].ToString());
             }
 
-            // Выводим в comboBox2 должности
-
-            table = _connection.GetDataAdapter("Select Name from Positions");
-            List<object> results = table.GetColumnValuesDataTable(0, CellType.String);
-
-            //reader = Workflow.connection.Select("Select Name from Positions");
-            //List<object> results = reader.GetValue(0, true);
-            //reader.Close();
-
-            comboBox2.Items.Clear();
-
-            for (int i = 0; i < results.Count; i++)
-            {
-                comboBox2.Items.Add(results[i].ToString());
-            }
-
             // Выводим в comboBox3 типы учётных записей
 
             table = _connection.GetDataAdapter("Select Name from Type");

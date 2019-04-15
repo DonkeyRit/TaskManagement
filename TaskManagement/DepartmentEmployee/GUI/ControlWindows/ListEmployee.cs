@@ -24,7 +24,7 @@ namespace DepartmentEmployee.GUI.ControlWindows
 		private async void RefreshGrid()
 		{
  
-			DataTable dt = await connection.GetDataAdapterAsync("Select Employees.id as id, Employees.FIO as FIO, Employees.DateOfBirth as DateOfBirth, Qualifications.Name as Qualification, Positions.Name as Position, Employees.Login as Login, Employees.Password as Password, Type.Name as Type from Employees join Positions on Positions.id = Employees.id_Position join Qualifications on Qualifications.id = Employees.id_Qualification join Type on Employees.id_Type = Type.id ORDER BY Employees.id ASC");
+			DataTable dt = await connection.GetDataAdapterAsync("Select Employees.id as id, Employees.FIO as FIO, Employees.DateOfBirth as DateOfBirth, Qualifications.Name as Qualification, Employees.Login as Login, Employees.Password as Password, Type.Name as Type from Employees join Qualifications on Qualifications.id = Employees.id_Qualification join Type on Employees.id_Type = Type.id ORDER BY Employees.id ASC");
 			dataGridView1.DataSource = dt; //Присвеиваем DataTable в качестве источника данных DataGridView
 			
 			try
@@ -38,7 +38,6 @@ namespace DepartmentEmployee.GUI.ControlWindows
 				dataGridView1.Columns["DateOfBirth"].HeaderText = "Дата рождения";
 				dataGridView1.Columns["Qualification"].HeaderText = "Квалификация";
 				dataGridView1.Columns["Qualification"].Width = 200;
-				dataGridView1.Columns["Position"].HeaderText = "Должность";
 				dataGridView1.Columns["Login"].HeaderText = "Логин";
 				dataGridView1.Columns["Password"].HeaderText = "Пароль";
 				dataGridView1.Columns["Type"].HeaderText = "Роль";
@@ -71,11 +70,6 @@ namespace DepartmentEmployee.GUI.ControlWindows
 				MessageBox.Show("Нужно верно заполните поле: " + form.label5.Text);
 				return;
 			}
-			if (string.IsNullOrEmpty(form.comboBox2.Text) || string.IsNullOrWhiteSpace(form.comboBox2.Text))
-			{
-				MessageBox.Show("Нужно верно заполните поле: " + form.label5.Text);
-				return;
-			}
 			if (string.IsNullOrEmpty(form.textBox2.Text) || string.IsNullOrWhiteSpace(form.textBox2.Text))
 			{
 				MessageBox.Show("Нужно верно заполните поле: " + form.label5.Text);
@@ -102,14 +96,13 @@ namespace DepartmentEmployee.GUI.ControlWindows
 				string EmployeeFIO = form.textBox1.Text.Replace("'", "''");
 				DateTime DataOfBirth = form.dateTimePicker1.Value.Date;
 				int QualificationID = GetId(String.Format("Select id from Qualifications where Name = '{0}'", form.comboBox1.Text));
-				int PositionID = GetId(String.Format("Select id from Positions where Name = '{0}'", form.comboBox2.Text));
 				string Login = form.textBox2.Text.Replace("'", "''");
 				string Password = form.textBox3.Text.Replace("'", "''");
 				int TypeID = GetId(String.Format("Select id from Type where Name = '{0}'", form.comboBox3.Text));
 
 				//записываем данные из текстбоксов AddEditStudent.Form в наши переменные
 				// А потом экранируем кавычечку
-				bool sqlresult = await connection.ExecNonQueryAsync("INSERT into Employees(FIO, DateOfBirth, id_Qualification, id_Position, Login, Password, id_Type) values('" + EmployeeFIO + "', '" + DataOfBirth + "', '" + QualificationID + "', '" + PositionID + "', '" + Login + "', '" + Password + "', '" + TypeID + "')");
+				bool sqlresult = await connection.ExecNonQueryAsync("INSERT into Employees(FIO, DateOfBirth, id_Qualification, Login, Password, id_Type) values('" + EmployeeFIO + "', '" + DataOfBirth + "', '" + QualificationID + "', '" + Login + "', '" + Password + "', '" + TypeID + "')");
 			}
 			RefreshGrid();
 		}
@@ -136,7 +129,6 @@ namespace DepartmentEmployee.GUI.ControlWindows
 			form.textBox1.Text = dataGridView1.CurrentRow.Cells["FIO"].Value.ToString();
 			form.dateTimePicker1.Value = (DateTime)dataGridView1.CurrentRow.Cells["DateOfBirth"].Value;
 			form.comboBox1.Text = dataGridView1.CurrentRow.Cells["Qualification"].Value.ToString();
-			form.comboBox2.Text = dataGridView1.CurrentRow.Cells["Position"].Value.ToString();
 			form.textBox2.Text = dataGridView1.CurrentRow.Cells["Login"].Value.ToString();
 			form.textBox3.Text = dataGridView1.CurrentRow.Cells["Password"].Value.ToString();
 			form.comboBox3.Text = dataGridView1.CurrentRow.Cells["Type"].Value.ToString();
@@ -150,11 +142,6 @@ namespace DepartmentEmployee.GUI.ControlWindows
 				return;
 			}
 			if (string.IsNullOrEmpty(form.comboBox1.Text) || string.IsNullOrWhiteSpace(form.comboBox1.Text))
-			{
-				MessageBox.Show("Нужно верно заполните поле: " + form.label5.Text);
-				return;
-			}
-			if (string.IsNullOrEmpty(form.comboBox2.Text) || string.IsNullOrWhiteSpace(form.comboBox2.Text))
 			{
 				MessageBox.Show("Нужно верно заполните поле: " + form.label5.Text);
 				return;
@@ -183,12 +170,11 @@ namespace DepartmentEmployee.GUI.ControlWindows
 				string EmployeeFIO = form.textBox1.Text.Replace("'", "''");
 				DateTime DataOfBirth = form.dateTimePicker1.Value.Date;
 				int QualificationID = GetId(String.Format("Select id from Qualifications where Name = '{0}'", form.comboBox1.Text));
-				int PositionID = GetId(String.Format("Select id from Positions where Name = '{0}'", form.comboBox2.Text));
 				string Login = form.textBox2.Text.Replace("'", "''");
 				string Password = form.textBox3.Text.Replace("'", "''");
 				int TypeID = GetId(String.Format("Select id from Type where Name = '{0}'", form.comboBox3.Text));
 
-				bool sqlresult = await connection.ExecNonQueryAsync("UPDATE Employees set FIO ='" + EmployeeFIO + "', DateOfBirth = '" + DataOfBirth + "' ,id_Qualification = '" + QualificationID + "', id_Position = '" + PositionID + "', Login = '" + Login + "', Password = '" + Password + "', id_Type = '" + TypeID + "' where ID = '" + ID + "'");
+				bool sqlresult = await connection.ExecNonQueryAsync("UPDATE Employees set FIO ='" + EmployeeFIO + "', DateOfBirth = '" + DataOfBirth + "' ,id_Qualification = '" + QualificationID + "', Login = '" + Login + "', Password = '" + Password + "', id_Type = '" + TypeID + "' where ID = '" + ID + "'");
 			}
 			RefreshGrid();
 		}
@@ -238,7 +224,7 @@ namespace DepartmentEmployee.GUI.ControlWindows
 		{
 
             DataTable table = connection.GetDataAdapter(query);
-            List<object> identificator = table.GetColumnValuesDataTable(0, CellType.String);
+            List<object> identificator = table.GetColumnValuesDataTable(0, CellType.Integer);
 
             //Reader reader = Workflow.connection.Select(query);
             //List<object> identificator = reader.GetValue(0, false);

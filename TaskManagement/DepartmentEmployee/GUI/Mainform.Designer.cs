@@ -33,8 +33,6 @@
             this.ToolDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ViewListStudentsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.PriorityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ListResultsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.PositionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.QualificationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.DirectorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.AnalisisToWorkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -63,8 +61,6 @@
             this.ToolDataToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ViewListStudentsToolStripMenuItem,
             this.PriorityToolStripMenuItem,
-            this.ListResultsToolStripMenuItem,
-            this.PositionsToolStripMenuItem,
             this.QualificationsToolStripMenuItem});
             this.ToolDataToolStripMenuItem.Name = "ToolDataToolStripMenuItem";
             this.ToolDataToolStripMenuItem.Size = new System.Drawing.Size(122, 20);
@@ -83,20 +79,6 @@
             this.PriorityToolStripMenuItem.Size = new System.Drawing.Size(281, 22);
             this.PriorityToolStripMenuItem.Text = "Настройка выбираемых приоритетов";
             this.PriorityToolStripMenuItem.Click += new System.EventHandler(this.PriorityToolStripMenuItem_Click);
-            // 
-            // ListResultsToolStripMenuItem
-            // 
-            this.ListResultsToolStripMenuItem.Name = "ListResultsToolStripMenuItem";
-            this.ListResultsToolStripMenuItem.Size = new System.Drawing.Size(281, 22);
-            this.ListResultsToolStripMenuItem.Text = "Настройка выбираемых результатов";
-            this.ListResultsToolStripMenuItem.Click += new System.EventHandler(this.ListResultsToolStripMenuItem_Click);
-            // 
-            // PositionsToolStripMenuItem
-            // 
-            this.PositionsToolStripMenuItem.Name = "PositionsToolStripMenuItem";
-            this.PositionsToolStripMenuItem.Size = new System.Drawing.Size(281, 22);
-            this.PositionsToolStripMenuItem.Text = "Настройка списка должностей";
-            this.PositionsToolStripMenuItem.Click += new System.EventHandler(this.PositionsToolStripMenuItem_Click);
             // 
             // QualificationsToolStripMenuItem
             // 
@@ -204,8 +186,6 @@
         internal System.Windows.Forms.ToolStripMenuItem ToolDataToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ViewListStudentsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem PriorityToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem ListResultsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem PositionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem QualificationsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem AnalisisToWorkToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem AssigmentTaskToolStripMenuItem;

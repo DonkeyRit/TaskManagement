@@ -73,12 +73,6 @@
     <Compile Include="GUI\ControlWindows\DetailedTaskAssigment.Designer.cs">
       <DependentUpon>DetailedTaskAssigment.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\ControlWindows\ListPositions.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GUI\ControlWindows\ListPositions.Designer.cs">
-      <DependentUpon>ListPositions.cs</DependentUpon>
-    </Compile>
     <Compile Include="GUI\ControlWindows\ListQialifications.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -103,12 +97,6 @@
     <Compile Include="GUI\Mainform.Designer.cs">
       <DependentUpon>Mainform.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\ModalWindows\AddEditPosition.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GUI\ModalWindows\AddEditPosition.Designer.cs">
-      <DependentUpon>AddEditPosition.cs</DependentUpon>
-    </Compile>
     <Compile Include="GUI\ModalWindows\AddEditPriority.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -120,18 +108,6 @@
     </Compile>
     <Compile Include="GUI\ModalWindows\AddEditQualification.Designer.cs">
       <DependentUpon>AddEditQualification.cs</DependentUpon>
-    </Compile>
-    <Compile Include="GUI\ModalWindows\AddEditTypeResults.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GUI\ModalWindows\AddEditTypeResults.Designer.cs">
-      <DependentUpon>AddEditTypeResults.cs</DependentUpon>
-    </Compile>
-    <Compile Include="GUI\ControlWindows\TypeResults.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GUI\ControlWindows\TypeResults.Designer.cs">
-      <DependentUpon>TypeResults.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\ControlWindows\ListEmployee.cs">
       <SubType>Form</SubType>
@@ -174,9 +150,6 @@
     <EmbeddedResource Include="GUI\ControlWindows\DetailedTaskAssigment.resx">
       <DependentUpon>DetailedTaskAssigment.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\ControlWindows\ListPositions.resx">
-      <DependentUpon>ListPositions.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="GUI\ControlWindows\ListPriority.resx">
       <DependentUpon>ListPriority.cs</DependentUpon>
     </EmbeddedResource>
@@ -189,20 +162,11 @@
     <EmbeddedResource Include="GUI\Mainform.resx">
       <DependentUpon>Mainform.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\ModalWindows\AddEditPosition.resx">
-      <DependentUpon>AddEditPosition.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="GUI\ModalWindows\AddEditPriority.resx">
       <DependentUpon>AddEditPriority.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\ModalWindows\AddEditQualification.resx">
       <DependentUpon>AddEditQualification.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GUI\ModalWindows\AddEditTypeResults.resx">
-      <DependentUpon>AddEditTypeResults.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GUI\ControlWindows\TypeResults.resx">
-      <DependentUpon>TypeResults.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\ControlWindows\ListEmployee.resx">
       <DependentUpon>ListEmployee.cs</DependentUpon>

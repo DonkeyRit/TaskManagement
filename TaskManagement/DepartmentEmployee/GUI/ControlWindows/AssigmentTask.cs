@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using Core.Database.Connection;
 using System.Collections.Generic;
 using DepartmentEmployee.GUI.ModalWindows;
+using DepartmentEmployee.Context;
 
 namespace DepartmentEmployee.GUI.ControlWindows
 {
@@ -19,7 +20,8 @@ namespace DepartmentEmployee.GUI.ControlWindows
 		public AssigmentTask()
 		{
 			InitializeComponent();
-			connection = Connection.CreateConnection();
+            _user = CustomContext.GetInstance().CurrentUser;
+            connection = Connection.CreateConnection();
 			RefreshDeparts(); // Обновляем список заданий.
 		}
 
@@ -117,27 +119,39 @@ namespace DepartmentEmployee.GUI.ControlWindows
 		private async void EditCurrentTask(TreeNode node)
 		{
 
-			int ID = int.Parse(node.Tag.ToString());
+            int ID = int.Parse(node.Tag.ToString());
 
-			//Получаем значение столбцов для выбранного задания
-			DataTable table = await connection.GetDataAdapterAsync("select Tasks.id as id, Tasks.Name as Name, Tasks.Description as Description, Tasks.Complexity as Complexity, Tasks.Date_Delivery as Date_Delivery, Priority.Name as Priority from Tasks join Priority on Priority.id = Tasks.id_Priority where Tasks.id = '" + ID + "'");
-			DataRow lastrow = table.Rows[0];
+            //Получаем значение столбцов для выбранного задания
+            DataTable table = await connection.GetDataAdapterAsync("select Tasks.id as id, Tasks.Name as Name, Tasks.Description as Description, Tasks.id_Complexity as Complexity, Tasks.Date_Delivery as Date_Delivery, Priority.Name as Priority from Tasks join Priority on Priority.id = Tasks.id_Priority where Tasks.id = '" + ID + "'");
+            DataRow lastrow = table.Rows[0];
 
-			//Задаем переменные для столбцов этой строки
-			string complexity = lastrow["Complexity"].ToString();
-			string description = lastrow["Description"].ToString();
-			string Priority = lastrow["Priority"].ToString();
-			DateTime DataOfDelivery = DateTime.Parse(lastrow["Date_Delivery"].ToString());
+            //Задаем переменные для столбцов этой строки
+            string description = lastrow["Description"].ToString();
+            string Priority = lastrow["Priority"].ToString();
+            DateTime DataOfDelivery = DateTime.Parse(lastrow["Date_Delivery"].ToString());
 
-			AddEditTask tasks_form = new AddEditTask();
 
-			tasks_form.TextBox1.Text = node.Text;
-			tasks_form.richTextBox1.Text = description;
-			tasks_form.textBox3.Text = complexity;
-			tasks_form.comboBox1.Text = Priority;
-			tasks_form.dateTimePicker1.Value = DataOfDelivery;
+            int IdOrigComplexity = int.Parse(lastrow["Complexity"].ToString());
+            DataTable table2 = await connection.GetDataAdapterAsync("select Complexity_Qual1 as Complexity1, Complexity_Qual2 as Complexity2, Complexity_Qual3 as Complexity3, Complexity_Qual4 as Complexity4 from Complexity where id = '" + IdOrigComplexity + "'");
+            DataRow lastrow2 = table2.Rows[0];
 
-			if (tasks_form.ShowDialog() != DialogResult.OK)
+            string complexity1 = lastrow2["Complexity1"].ToString();
+            string complexity2 = lastrow2["Complexity2"].ToString();
+            string complexity3 = lastrow2["Complexity3"].ToString();
+            string complexity4 = lastrow2["Complexity4"].ToString();
+
+            AddEditTask tasks_form = new AddEditTask();
+
+            tasks_form.TextBox1.Text = node.Text;
+            tasks_form.richTextBox1.Text = description;
+            tasks_form.textBox2.Text = complexity1;
+            tasks_form.textBox3.Text = complexity2;
+            tasks_form.textBox4.Text = complexity3;
+            tasks_form.textBox5.Text = complexity4;
+            tasks_form.comboBox1.Text = Priority;
+            tasks_form.dateTimePicker1.Value = DataOfDelivery;
+
+            if (tasks_form.ShowDialog() != DialogResult.OK)
 			{
 				return;
 			}
@@ -149,21 +163,25 @@ namespace DepartmentEmployee.GUI.ControlWindows
 			}
 			if (string.IsNullOrEmpty(tasks_form.textBox3.Text) || string.IsNullOrWhiteSpace(tasks_form.textBox3.Text))
 			{
-				MessageBox.Show("Нужно верно заполните поле: " + tasks_form.label2.Text);
+				MessageBox.Show("Нужно верно заполните поле: " + tasks_form.label3.Text);
 				return;
 			}
 
 			else
 			{
-				string newname = tasks_form.TextBox1.Text.Replace("'", "''");
-				description = tasks_form.richTextBox1.Text.Replace("'", "''");
-				complexity = tasks_form.textBox3.Text.Replace("'", "''");
-				DataOfDelivery = tasks_form.dateTimePicker1.Value.Date;
-				Priority = tasks_form.comboBox1.Text.Replace("'", "''");
+                string newname = tasks_form.TextBox1.Text.Replace("'", "''");
+                description = tasks_form.richTextBox1.Text.Replace("'", "''");
+                complexity1 = tasks_form.textBox2.Text.Replace("'", "''");
+                complexity2 = tasks_form.textBox3.Text.Replace("'", "''");
+                complexity3 = tasks_form.textBox4.Text.Replace("'", "''");
+                complexity4 = tasks_form.textBox5.Text.Replace("'", "''");
+                DataOfDelivery = tasks_form.dateTimePicker1.Value.Date;
+                Priority = tasks_form.comboBox1.Text.Replace("'", "''");
 
-				int PriorityID = GetId(String.Format("Select id from Priority where Name = '{0}'", tasks_form.comboBox1.Text));
+                int PriorityID = GetId(String.Format("Select id from Priority where Name = '{0}'", tasks_form.comboBox1.Text));
 
-				DataTable newdt = new DataTable();
+                /*
+                DataTable newdt = new DataTable();
 				newdt = await connection.GetDataAdapterAsync("select Complexity from Tasks where id in (Select id_ParentTask from Tasks where id = '" + ID + "')");
 
 				string temp = "";
@@ -186,8 +204,11 @@ namespace DepartmentEmployee.GUI.ControlWindows
 
 					if (int.Parse(complexity) <= complexityParent)
 					{
-						bool sqlresult = await connection.ExecNonQueryAsync("UPDATE Tasks set Name ='" + newname + "', Description = '" + description + "', Complexity = '" + complexity + "', Date_Delivery = '" + DataOfDelivery + "', id_Priority = '" + PriorityID + "' WHERE id = '" + ID + "'");
-						node.Text = (newname);
+                    */
+                bool sqlresultComplexity = await connection.ExecNonQueryAsync("UPDATE Complexity set Complexity_Qual1 = '" + complexity1 + "', Complexity_Qual2 = '" + complexity2 + "', Complexity_Qual3 = '" + complexity3 + "', Complexity_Qual4 = '" + complexity4 + "' where id = '" + IdOrigComplexity + "'");
+                bool sqlresult = await connection.ExecNonQueryAsync("UPDATE Tasks set Name ='" + newname + "', Description = '" + description + "', id_Complexity = '" + IdOrigComplexity + "', Date_Delivery = '" + DataOfDelivery + "', id_Priority = '" + PriorityID + "' WHERE id = '" + ID + "'");
+                node.Text = (newname);
+                /*
 					}
 					else
 					{
@@ -200,7 +221,8 @@ namespace DepartmentEmployee.GUI.ControlWindows
 					bool sqlresult = await connection.ExecNonQueryAsync("UPDATE Tasks set Name ='" + newname + "', Description = '" + description + "', Complexity ='" + complexity + "', Date_Delivery = '" + DataOfDelivery + "', id_Priority = '" + PriorityID + "' WHERE id = '" + ID + "'");
 					node.Text = (newname);
 				}
-			}  
+                */
+            }  
 		}
 
 		//Кнопка редактирования задания
@@ -239,25 +261,30 @@ namespace DepartmentEmployee.GUI.ControlWindows
 			}
 			if (string.IsNullOrEmpty(tasks_form.textBox3.Text) || string.IsNullOrWhiteSpace(tasks_form.textBox3.Text))
 			{
-				MessageBox.Show("Нужно верно заполните поле: " + tasks_form.label2.Text);
+				MessageBox.Show("Нужно верно заполните поле: " + tasks_form.label3.Text);
 				return;
 			}
 			else
 			{
-				string name = tasks_form.TextBox1.Text.Replace("'", "''");
-				string description = tasks_form.richTextBox1.Text.Replace("'", "''");
-				string complexity = tasks_form.textBox3.Text.Replace("'", "''");
-				DateTime DataOfDelivery = tasks_form.dateTimePicker1.Value.Date;
-				int TaskManager = GetId(String.Format("Select id from Employees where Login = '" + _user.Username + "' AND Password = '" + _user.Password + "'"));
-				int Priority = GetId(String.Format("Select id from Priority where Name = '{0}'", tasks_form.comboBox1.Text));
-				string tag = "";
-				
+                string name = tasks_form.TextBox1.Text.Replace("'", "''");
+                string description = tasks_form.richTextBox1.Text.Replace("'", "''");
+                string complexity1 = tasks_form.textBox2.Text.Replace("'", "''");
+                string complexity2 = tasks_form.textBox3.Text.Replace("'", "''");
+                string complexity3 = tasks_form.textBox4.Text.Replace("'", "''");
+                string complexity4 = tasks_form.textBox5.Text.Replace("'", "''");
+                DateTime DataOfDelivery = tasks_form.dateTimePicker1.Value.Date;
+                int TaskManager = GetId(String.Format("Select id from Employees where Login = '" + _user.Username + "' AND Password = '" + _user.Password + "'"));
+                int Priority = GetId(String.Format("Select id from Priority where Name = '{0}'", tasks_form.comboBox1.Text));
+                string tag = "";
 
-				if (TreeView1.SelectedNode == null)
+
+                if (TreeView1.SelectedNode == null)
 				{
-					tag = "";
-					bool sqlresult = await connection.ExecNonQueryAsync("INSERT into Tasks(id, Name, Description, Complexity, Date_Delivery, id_TaskManager, id_Priority) VALUES('" + id + "', '" + name + "','" + description + "', '" + complexity + "', '" + DataOfDelivery + "', '" + TaskManager + "','" + Priority + "')");
-				}
+                    tag = "";
+                    bool sqlresultComplexity = await connection.ExecNonQueryAsync("INSERT into Complexity(Complexity_Qual1, Complexity_Qual2, Complexity_Qual3, Complexity_Qual4) VALUES('" + complexity1 + "','" + complexity2 + "', '" + complexity3 + "', '" + complexity4 + "')");
+                    int ComplexityID = GetId(String.Format("SELECT id FROM Complexity ORDER BY id DESC LIMIT 1"));
+                    bool sqlresult = await connection.ExecNonQueryAsync("INSERT into Tasks(id, Name, Description, id_Complexity, Date_Delivery, id_TaskManager, id_Priority) VALUES('" + id + "', '" + name + "','" + description + "', '" + ComplexityID + "', '" + DataOfDelivery + "', '" + TaskManager + "','" + Priority + "')");
+                }
 
 				else
 				{
@@ -265,6 +292,7 @@ namespace DepartmentEmployee.GUI.ControlWindows
 					//Записываем в переменную Tag, Tag текущего выбраного элемента (это его ID в базе, которое мы будем использовать чтобы задать родителя нашего нового добавляемого элемента)
 					tag = TreeView1.SelectedNode.Tag.ToString();
 
+                    /*
 					///
 					DataTable newdt = new DataTable();
 					newdt = await connection.GetDataAdapterAsync("Select Complexity from Tasks where id = '" + tag + "'");
@@ -287,15 +315,21 @@ namespace DepartmentEmployee.GUI.ControlWindows
 					///
 					if(int.Parse(complexity) <= complexityParent)
 					{
-						//Записываем в базу новую строчку, задав поля имя и parent ID
-						bool sqlresult = await connection.ExecNonQueryAsync("INSERT into Tasks(id, Name, id_ParentTask, Description, Complexity, Date_Delivery, id_TaskManager, id_Priority) VALUES('" + id + "', '" + name + "','" + tag + "', '" + description + "', '" + complexity + "', '" + DataOfDelivery + "', '" + TaskManager + "','" + Priority + "')");
-					}
+                    */
+                    //Записываем в базу новую строчку, задав поля имя и parent ID
+                    bool sqlresultComplexity = await connection.ExecNonQueryAsync("INSERT into Complexity(Complexity_Qual1, Complexity_Qual2, Complexity_Qual3, Complexity_Qual4) VALUES('" + complexity1 + "','" + complexity2 + "', '" + complexity3 + "', '" + complexity4 + "')");
+                    int ComplexityID = GetId(String.Format("SELECT id FROM Complexity ORDER BY id DESC LIMIT 1"));
+                    //Записываем в базу новую строчку, задав поля имя и parent ID
+                    bool sqlresult = await connection.ExecNonQueryAsync("INSERT into Tasks(id, Name, id_ParentTask, Description, id_Complexity, Date_Delivery, id_TaskManager, id_Priority) VALUES('" + id + "', '" + name + "','" + tag + "', '" + description + "', '" + ComplexityID + "', '" + DataOfDelivery + "', '" + TaskManager + "','" + Priority + "')");
+                    /*
+                }
 					else
 					{
 						MessageBox.Show("Трудоёмкость выполнения подзадания не может быть больше трудоёмкости выполнения основного задания", "Error", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
 						return;
 					}  
-				} 
+                    */
+                } 
 			}
 
 		   

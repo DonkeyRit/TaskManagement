@@ -31,20 +31,20 @@ namespace DepartmentEmployee.GUI.ControlWindows
 			var id = TaskEmployee.ID;
 
 			//Выводим подробную информацию по назначенному заданию по конкретному сотруднику
-			DataTable dt1 = await connection.GetDataAdapterAsync("select AssignedTasks.Date_Start as Дата_выдачи, Tasks.Date_Delivery as Дата_сдачи, AssignedTasks.Date_End as Дата_завершения, Employees.FIO AS TaskManager, Results.Name as Результат, Priority.Name as Priority from Tasks join Employees on Employees.id = Tasks.id_TaskManager join Priority on Priority.id = Tasks.id_Priority join AssignedTasks on Tasks.id = AssignedTasks.id_Task join Results on Results.id = AssignedTasks.id_Result where AssignedTasks.id = '" + id + "'");
+			DataTable dt1 = await connection.GetDataAdapterAsync("select AssignedTasks.Date_Start as Дата_выдачи, Tasks.Date_Delivery as Дата_сдачи, AssignedTasks.Date_End as Дата_завершения, Employees.FIO AS TaskManager, Results.id as Результат, Priority.Name as Priority from Tasks join Employees on Employees.id = Tasks.id_TaskManager join Priority on Priority.id = Tasks.id_Priority join AssignedTasks on Tasks.id = AssignedTasks.id_Task join Results on Results.id = AssignedTasks.id_Result where AssignedTasks.id = '" + id + "'");
 			DataGridView1.DataSource = dt1; //Присвеиваем DataTable в качестве источника данных DataGridView
 
 			try
 			{
-				//Заголовки таблицы
-				DataGridView1.Columns["Дата_выдачи"].HeaderText = "Дата назначения";
-				DataGridView1.Columns["Дата_сдачи"].HeaderText = "Планируемая дата сдачи";
-				DataGridView1.Columns["Дата_завершения"].HeaderText = "Фактическая дата сдачи";
-				DataGridView1.Columns["TaskManager"].HeaderText = "Руководитель";
-				DataGridView1.Columns["TaskManager"].Width = 200;
-				DataGridView1.Columns["Результат"].HeaderText = "Прогресс выполнения";
-				DataGridView1.Columns["Priority"].HeaderText = "Приоритет";
-			}
+                DataGridView1.Columns["Результат"].Visible = false;
+                //Заголовки таблицы
+                DataGridView1.Columns["Дата_выдачи"].HeaderText = "Дата назначения";
+                DataGridView1.Columns["Дата_сдачи"].HeaderText = "Планируемая дата сдачи";
+                DataGridView1.Columns["Дата_завершения"].HeaderText = "Фактическая дата сдачи";
+                DataGridView1.Columns["TaskManager"].HeaderText = "Руководитель";
+                DataGridView1.Columns["TaskManager"].Width = 200;
+                DataGridView1.Columns["Priority"].HeaderText = "Приоритет";
+            }
 			catch { }
 
 			//Получаем ID задания, которое выполняет сотрудник
@@ -63,7 +63,7 @@ namespace DepartmentEmployee.GUI.ControlWindows
 			string EmployeeUser = String.Join("", name);
 			
 			//Выводим всех сотрудников, выполняющих совместно данное задание
-			DataTable dt2 = await connection.GetDataAdapterAsync("Select Employees.FIO as Employee, Qualifications.Name as Qualification, AssignedTasks.Date_Start as Data_Start, (select Name from Results where id = (select id_Result from Tasks where id = '" + TaskID + "')) As Result from Employees join Qualifications on Qualifications.id = Employees.id_Qualification join AssignedTasks on AssignedTasks.id_Employee = Employees.id where AssignedTasks.id_Task = '" + TaskID + "'");
+			DataTable dt2 = await connection.GetDataAdapterAsync("Select Employees.FIO as Employee, Qualifications.Name as Qualification, AssignedTasks.Date_Start as Data_Start, (select id from Results where id = (select id_Result from Tasks where id = '" + TaskID + "') As Result from Employees join Qualifications on Qualifications.id = Employees.id_Qualification join AssignedTasks on AssignedTasks.id_Employee = Employees.id where AssignedTasks.id_Task = '" + TaskID + "'");
 			dataGridView2.DataSource = dt2; //Присвеиваем DataTable в качестве источника данных DataGridView
 
 			dataGridView2.CurrentCell = null;
@@ -88,8 +88,25 @@ namespace DepartmentEmployee.GUI.ControlWindows
 			}
 			catch { }
 
-			//Получаем количество "человеко-часов" необходимых для выполнения задания
-			int Complexity= GetId(String.Format("Select complexity from Tasks where id = '" + TaskID + "'"));
+            //Выводим общий прогресс выполнения задания
+            DataTable dt3 = await connection.GetDataAdapterAsync("select SUM(Results.Result_Qual1) as Result_Qual1, SUM(Results.Result_Qual2) as Result_Qual2, SUM(Results.Result_Qual3) as Result_Qual3, SUM(Results.Result_Qual4) as Result_Qual4 from Results join AssignedTasks on AssignedTasks.id_Result = Results.id where AssignedTasks.id_Task = '" + TaskID + "'");
+            dataGridView3.DataSource = dt3; //Присвеиваем DataTable в качестве источника данных DataGridView
+
+            try
+            {
+                //dataGridView3.Columns["Result"].Visible = false;
+                //Заголовки таблицы
+                dataGridView3.Columns["Result_Qual1"].HeaderText = "Кол-во часов 'Инженера 3-категории'";
+                dataGridView3.Columns["Result_Qual2"].HeaderText = "Кол-во часов 'Инженера 2-категории'";
+                dataGridView3.Columns["Result_Qual3"].HeaderText = "Кол-во часов 'Инженера 1-категории'";
+                dataGridView3.Columns["Result_Qual4"].HeaderText = "Кол-во часов 'Главного инженера'";
+            }
+
+            catch { }
+
+            /*
+            //Получаем количество "человеко-часов" необходимых для выполнения задания
+            int Complexity= GetId(String.Format("Select complexity from Tasks where id = '" + TaskID + "'"));
 
 			//Получаем и выводим название задания
 
@@ -103,6 +120,7 @@ namespace DepartmentEmployee.GUI.ControlWindows
 			string TextLabel = String.Join("", task_name);
 			label1.Text = "Описание задания: " + TextLabel + " (Трудоёмкость: " + Complexity + " часов)";
 
+    */
 			//Получаем и выводим описание к заданию
 			DataTable newdt = await connection.GetDataAdapterAsync("Select Tasks.Description as description from AssignedTasks join Tasks on AssignedTasks.id_Task = Tasks.id where AssignedTasks.id = '" + id + "'");
 

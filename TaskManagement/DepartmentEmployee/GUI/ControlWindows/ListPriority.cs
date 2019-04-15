@@ -32,7 +32,8 @@ namespace DepartmentEmployee.GUI.ControlWindows
 
 				//Заголовки таблицы
 				dataGridView1.Columns["Name"].HeaderText = "Наименование";
-			}
+                dataGridView1.Columns["Coefficient"].HeaderText = "Коэффициент";
+            }
 			catch { }
 
 			// выбираем первую строчку
@@ -53,8 +54,9 @@ namespace DepartmentEmployee.GUI.ControlWindows
 			{ return; }
 
 			string ResultName = form.textBox1.Text.Replace("'", "''");
+            string Coeff = form.textBox2.Text.Replace("'", "''");
 
-			if (string.IsNullOrEmpty(ResultName) || string.IsNullOrWhiteSpace(ResultName))
+            if (string.IsNullOrEmpty(ResultName) || string.IsNullOrWhiteSpace(ResultName))
 			{
 				MessageBox.Show("Нужно верно заполните поле 'Наименование'");
 			}
@@ -64,10 +66,10 @@ namespace DepartmentEmployee.GUI.ControlWindows
 			}
 			else
 			{
-				//записываем данные из текстбоксов AddEditStudent.Form в наши переменные
-				// А потом экранируем кавычечку
-				bool sqlresult = await connection.ExecNonQueryAsync("INSERT into Priority(Name) values('" + ResultName + "')");
-			}
+                //записываем данные из текстбоксов AddEditStudent.Form в наши переменные
+                // А потом экранируем кавычечку
+                bool sqlresult = await connection.ExecNonQueryAsync("INSERT into Priority(Name, Coefficient) values('" + ResultName + "', '" + Coeff + "')");
+            }
 			RefreshGrid();
 		}
 
@@ -76,8 +78,9 @@ namespace DepartmentEmployee.GUI.ControlWindows
 		{
 			string ID = "";
 			string ResultName;
+            string Coeff;
 
-			try
+            try
 			{
 				ID = dataGridView1.CurrentRow.Cells["id"].Value.ToString();
 			}
@@ -89,15 +92,17 @@ namespace DepartmentEmployee.GUI.ControlWindows
 
 			AddEditPriority form = new AddEditPriority();
 
-			//Заполняем в AddEditStudent.Form поля для того чтобы было что редактировать.
-			form.textBox1.Text = dataGridView1.CurrentRow.Cells["Name"].Value.ToString();
+            //Заполняем в AddEditStudent.Form поля для того чтобы было что редактировать.
+            form.textBox1.Text = dataGridView1.CurrentRow.Cells["Name"].Value.ToString();
+            form.textBox2.Text = dataGridView1.CurrentRow.Cells["Coefficient"].Value.ToString();
 
-			if (form.ShowDialog() != DialogResult.OK)
+            if (form.ShowDialog() != DialogResult.OK)
 			{ return; }
 
-			ResultName = form.textBox1.Text.Replace("'", "''");
+            ResultName = form.textBox1.Text.Replace("'", "''");
+            Coeff = form.textBox2.Text.Replace("'", "''");
 
-			if (string.IsNullOrEmpty(ResultName) || string.IsNullOrWhiteSpace(ResultName))
+            if (string.IsNullOrEmpty(ResultName) || string.IsNullOrWhiteSpace(ResultName))
 			{
 				MessageBox.Show("Нужно верно заполните поле 'Наименование'");
 			}
@@ -107,8 +112,8 @@ namespace DepartmentEmployee.GUI.ControlWindows
 			}
 			else
 			{
-				bool sqlresult = await connection.ExecNonQueryAsync("UPDATE Priority set Name ='" + ResultName + "' where ID = '" + ID + "'");
-			}
+                bool sqlresult = await connection.ExecNonQueryAsync("UPDATE Priority set Name ='" + ResultName + "', Coefficient = '" + Coeff + "' where ID = '" + ID + "'");
+            }
 
 			RefreshGrid();
 		}
