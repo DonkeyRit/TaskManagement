@@ -37,7 +37,7 @@ namespace DepartmentEmployee.GUI
 
         private void AssigmentTaskToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
-            AssigmentTask newForm = new AssigmentTask();
+            AssignmentTask newForm = new AssignmentTask();
             newForm.Show();
             Hide();
         }

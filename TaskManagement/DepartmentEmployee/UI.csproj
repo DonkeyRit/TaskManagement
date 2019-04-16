@@ -121,11 +121,11 @@
     <Compile Include="GUI\ControlWindows\ListEmployee.Designer.cs">
       <DependentUpon>ListEmployee.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\ControlWindows\AssigmentTask.cs">
+    <Compile Include="GUI\ControlWindows\AssignmentTask.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GUI\ControlWindows\AssigmentTask.Designer.cs">
-      <DependentUpon>AssigmentTask.cs</DependentUpon>
+    <Compile Include="GUI\ControlWindows\AssignmentTask.Designer.cs">
+      <DependentUpon>AssignmentTask.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\ModalWindows\AddEditTask.cs">
       <SubType>Form</SubType>
@@ -180,8 +180,8 @@
     <EmbeddedResource Include="GUI\ControlWindows\ListEmployee.resx">
       <DependentUpon>ListEmployee.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\ControlWindows\AssigmentTask.resx">
-      <DependentUpon>AssigmentTask.cs</DependentUpon>
+    <EmbeddedResource Include="GUI\ControlWindows\AssignmentTask.resx">
+      <DependentUpon>AssignmentTask.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\ModalWindows\AddEditTask.resx">
       <DependentUpon>AddEditTask.cs</DependentUpon>

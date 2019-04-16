@@ -18,7 +18,7 @@ namespace DepartmentEmployee.GUI.ControlWindows
         //Функционал вывода всего списка
         private async void RefreshGrid()
         {
-            var id = AssigmentTask.IDTask;
+            var id = AssignmentTask.IdTask;
 
             //Выводим общий прогресс выполнения задания
             DataTable dt = await connection.GetDataAdapterAsync("select SUM(Results.Result_Qual1) as Result_Qual1, SUM(Results.Result_Qual2) as Result_Qual2, SUM(Results.Result_Qual3) as Result_Qual3, SUM(Results.Result_Qual4) as Result_Qual4 from Results join AssignedTasks on AssignedTasks.id_Result = Results.id where AssignedTasks.id_Task = '" + id + "'");

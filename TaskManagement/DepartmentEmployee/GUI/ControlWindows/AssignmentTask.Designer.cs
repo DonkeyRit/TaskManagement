@@ -1,7 +1,7 @@
 ﻿namespace DepartmentEmployee.GUI.ControlWindows
 {
     partial class AssignmentTask
-    {
+	{
         /// <summary>
         /// Required designer variable.
         /// </summary>
@@ -298,7 +298,7 @@
             this.button7.UseVisualStyleBackColor = true;
             this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
-            // AssignmentTask
+            // AssigmentTask
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -308,7 +308,7 @@
             this.Controls.Add(this.splitContainer1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(2);
-            this.Name = "AssignmentTask";
+            this.Name = "AssigmentTask";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Форма назначения заданий сотрудникам";
             ((System.ComponentModel.ISupportInitialize)(this.DataGridView1)).EndInit();
