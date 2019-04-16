@@ -486,15 +486,15 @@ namespace DepartmentEmployee.GUI.ControlWindows
 			else
 			{
 				int EmployeeID = GetId(String.Format("Select id from Employees where FIO  = '{0}'", assignment_form.comboBox1.Text));
-				DateTime Data_start = DateTime.Now;
+				string dataStart = DateTime.Now.ToString("yyyy-MM-dd");
 				string Comment = assignment_form.textBox1.Text.Replace("'", "''");
                 int ResultID;
 
                 //записываем данные из текстбоксов Form3 в наши переменные
                 // А потом экранируем кавычечку
                 bool sqlRes = await connection.ExecNonQueryAsync("INSERT into Results(Result_Qual1,Result_Qual2,Result_Qual3,Result_Qual4) values(0,0,0,0)");
-                ResultID = GetId(String.Format("Select id from Results ORDER BY id DESC LIMIT 1"));
-                bool sqlresult = await connection.ExecNonQueryAsync("INSERT into AssignedTasks(id_Task, id_Employee, Date_Start, id_Result, Comment) values('" + TaskID + "', '" + EmployeeID + "', '" + Data_start + "', '" + ResultID + "', '" + Comment + "')");
+                ResultID = GetId(String.Format("SELECT id FROM Results WHERE id = (SELECT max(id) FROM Results);"));
+                bool sqlresult = await connection.ExecNonQueryAsync("INSERT into AssignedTasks(id_Task, id_Employee, Date_Start, id_Result, Comment) values('" + TaskID + "', '" + EmployeeID + "', '" + dataStart + "', '" + ResultID + "', '" + Comment + "')");
 			}
 			refreshGrid();
 		}
