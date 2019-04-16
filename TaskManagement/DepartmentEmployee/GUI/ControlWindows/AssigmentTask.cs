@@ -430,7 +430,7 @@ namespace DepartmentEmployee.GUI.ControlWindows
 			try
 			{
 				string current_task_id = TreeView1.SelectedNode.Tag.ToString();
-				DataTable dt = await connection.GetDataAdapterAsync("select AssignedTasks.id as ID, Tasks.Name as Task, Employees.FIO as Employee, AssignedTasks.Date_Start as Дата_выдачи, Tasks.Date_Delivery as Date_Delivery, AssignedTasks.Date_End as Дата_сдачи,  Results.id as Результат from AssignedTasks join Tasks on Tasks.id = AssignedTasks.id_Task join Employees on Employees.id = AssignedTasks.id_Employee join Results on Results.id = AssignedTasks.id_Result WHERE id_Task = '" + current_task_id + "'");
+				DataTable dt = await connection.GetDataAdapterAsync("select AssignedTasks.id as ID, Tasks.Name as Task, Employees.FIO as Employee, AssignedTasks.Date_Start as Дата_выдачи, Tasks.Date_Delivery as Date_Delivery, AssignedTasks.Date_End as Дата_сдачи,  Results.id as Результат, AssignedTasks.Comment as Comment from AssignedTasks join Tasks on Tasks.id = AssignedTasks.id_Task join Employees on Employees.id = AssignedTasks.id_Employee join Results on Results.id = AssignedTasks.id_Result WHERE id_Task = '" + current_task_id + "'");
 
 			   
 				DataGridView1.DataSource = dt; //Присвеиваем DataTable в качестве источника данных DataGridView
@@ -438,7 +438,7 @@ namespace DepartmentEmployee.GUI.ControlWindows
 			catch
 			{
 
-				DataTable dt = await connection.GetDataAdapterAsync("select AssignedTasks.id as ID, Tasks.Name as Задание, Employees.FIO as Employee, AssignedTasks.Date_Start as Дата_выдачи, Tasks.Date_Delivery as Date_Delivery, AssignedTasks.Date_End as Дата_сдачи, Results.id as Результат from AssignedTasks join Tasks on Tasks.id = AssignedTasks.id_Task join Employees on Employees.id = AssignedTasks.id_Employee join Results on Results.id = AssignedTasks.id_Result");
+				DataTable dt = await connection.GetDataAdapterAsync("select AssignedTasks.id as ID, Tasks.Name as Задание, Employees.FIO as Employee, AssignedTasks.Date_Start as Дата_выдачи, Tasks.Date_Delivery as Date_Delivery, AssignedTasks.Date_End as Дата_сдачи, Results.id as Результат, AssignedTasks.Comment as Comment from AssignedTasks join Tasks on Tasks.id = AssignedTasks.id_Task join Employees on Employees.id = AssignedTasks.id_Employee join Results on Results.id = AssignedTasks.id_Result");
 				DataGridView1.DataSource = dt;
 			}
 
@@ -447,9 +447,10 @@ namespace DepartmentEmployee.GUI.ControlWindows
 				// Скроем столбец ненужные столбцы
 				DataGridView1.Columns["ID"].Visible = false;
 				DataGridView1.Columns["Task"].Visible = false;
-				
-				//Заголовки таблицы
-				DataGridView1.Columns["Employee"].HeaderText = "Сотрудник";
+                DataGridView1.Columns["Comment"].Visible = false;
+
+                //Заголовки таблицы
+                DataGridView1.Columns["Employee"].HeaderText = "Сотрудник";
                 DataGridView1.Columns["Employee"].Width = 200;
                 DataGridView1.Columns["Дата_выдачи"].HeaderText = "Дата назначения";
 				DataGridView1.Columns["Date_Delivery"].HeaderText = "Планируемая дата закрытия";
@@ -473,9 +474,10 @@ namespace DepartmentEmployee.GUI.ControlWindows
 
 			int TaskID = int.Parse(TreeView1.SelectedNode.Tag.ToString());
 
-			AddEditTaskAssignment assignment_form = new AddEditTaskAssignment(TaskID);
+			//AddEditTaskAssignment assignment_form = new AddEditTaskAssignment(TaskID);
+            AddEditTaskAssignment assignment_form = new AddEditTaskAssignment();
 
-			if (assignment_form.ShowDialog() != DialogResult.OK)
+            if (assignment_form.ShowDialog() != DialogResult.OK)
 			{ return; }
 
 			if (string.IsNullOrEmpty(assignment_form.comboBox1.Text) || string.IsNullOrWhiteSpace(assignment_form.comboBox1.Text))
@@ -486,15 +488,16 @@ namespace DepartmentEmployee.GUI.ControlWindows
 			else
 			{
 				int EmployeeID = GetId(String.Format("Select id from Employees where FIO  = '{0}'", assignment_form.comboBox1.Text));
-				string dataStart = DateTime.Now.ToString("yyyy-MM-dd");
-				string Comment = assignment_form.textBox1.Text.Replace("'", "''");
+                DateTime Data_start = DateTime.Now;
+                //string Data_start = DateTime.Now.ToString("yyyy-MM-dd");
+                string Comment = assignment_form.textBox1.Text.Replace("'", "''");
                 int ResultID;
 
                 //записываем данные из текстбоксов Form3 в наши переменные
                 // А потом экранируем кавычечку
                 bool sqlRes = await connection.ExecNonQueryAsync("INSERT into Results(Result_Qual1,Result_Qual2,Result_Qual3,Result_Qual4) values(0,0,0,0)");
-                ResultID = GetId(String.Format("SELECT id FROM Results WHERE id = (SELECT max(id) FROM Results);"));
-                bool sqlresult = await connection.ExecNonQueryAsync("INSERT into AssignedTasks(id_Task, id_Employee, Date_Start, id_Result, Comment) values('" + TaskID + "', '" + EmployeeID + "', '" + dataStart + "', '" + ResultID + "', '" + Comment + "')");
+                ResultID = GetId(String.Format("Select id from Results ORDER BY id DESC LIMIT 1"));
+                bool sqlresult = await connection.ExecNonQueryAsync("INSERT into AssignedTasks(id_Task, id_Employee, Date_Start, id_Result, Comment) values('" + TaskID + "', '" + EmployeeID + "', '" + Data_start + "', '" + ResultID + "', '" + Comment + "')");
 			}
 			refreshGrid();
 		}
@@ -521,7 +524,7 @@ namespace DepartmentEmployee.GUI.ControlWindows
 			//Заполняем в assignment_form поля для того чтобы было что редактировать.
 			int TaskID = int.Parse(TreeView1.SelectedNode.Tag.ToString());
 			assignment_form.comboBox1.Text = DataGridView1.CurrentRow.Cells["Employee"].Value.ToString();
-			assignment_form.textBox1.Text = DataGridView1.CurrentRow.Cells["Комментарий"].Value.ToString();
+			assignment_form.textBox1.Text = DataGridView1.CurrentRow.Cells["Comment"].Value.ToString();
 
 			if (assignment_form.ShowDialog() != DialogResult.OK)
 			{
