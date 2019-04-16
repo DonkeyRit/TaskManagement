@@ -73,6 +73,12 @@
     <Compile Include="GUI\ControlWindows\DetailedTaskAssigment.Designer.cs">
       <DependentUpon>DetailedTaskAssigment.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\ControlWindows\ImplementationProgress.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\ControlWindows\ImplementationProgress.Designer.cs">
+      <DependentUpon>ImplementationProgress.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\ControlWindows\ListQialifications.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -149,6 +155,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\ControlWindows\DetailedTaskAssigment.resx">
       <DependentUpon>DetailedTaskAssigment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\ControlWindows\ImplementationProgress.resx">
+      <DependentUpon>ImplementationProgress.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\ControlWindows\ListPriority.resx">
       <DependentUpon>ListPriority.cs</DependentUpon>

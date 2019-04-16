@@ -47,6 +47,7 @@
             this.BackwardToMainformToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ExitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.button7 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.DataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -72,10 +73,10 @@
             // Button6
             // 
             this.Button6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button6.Location = new System.Drawing.Point(435, 29);
+            this.Button6.Location = new System.Drawing.Point(334, 29);
             this.Button6.Margin = new System.Windows.Forms.Padding(2);
             this.Button6.Name = "Button6";
-            this.Button6.Size = new System.Drawing.Size(211, 34);
+            this.Button6.Size = new System.Drawing.Size(146, 34);
             this.Button6.TabIndex = 116;
             this.Button6.Text = "Удалить назначение";
             this.Button6.UseVisualStyleBackColor = true;
@@ -96,10 +97,10 @@
             // Button4
             // 
             this.Button4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button4.Location = new System.Drawing.Point(5, 29);
+            this.Button4.Location = new System.Drawing.Point(15, 29);
             this.Button4.Margin = new System.Windows.Forms.Padding(2);
             this.Button4.Name = "Button4";
-            this.Button4.Size = new System.Drawing.Size(211, 34);
+            this.Button4.Size = new System.Drawing.Size(146, 34);
             this.Button4.TabIndex = 114;
             this.Button4.Text = "Назначить задание сотруднику";
             this.Button4.UseVisualStyleBackColor = true;
@@ -162,7 +163,7 @@
             this.DataGridView1.RowTemplate.Height = 24;
             this.DataGridView1.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.DataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.DataGridView1.Size = new System.Drawing.Size(680, 400);
+            this.DataGridView1.Size = new System.Drawing.Size(681, 400);
             this.DataGridView1.TabIndex = 9;
             this.DataGridView1.Tag = "1";
             this.DataGridView1.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView1_CellDoubleClick);
@@ -228,6 +229,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.button7);
             this.groupBox1.Controls.Add(this.Button6);
             this.groupBox1.Controls.Add(this.Button4);
             this.groupBox1.Controls.Add(this.Button5);
@@ -241,10 +243,10 @@
             // Button5
             // 
             this.Button5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Button5.Location = new System.Drawing.Point(220, 29);
+            this.Button5.Location = new System.Drawing.Point(175, 29);
             this.Button5.Margin = new System.Windows.Forms.Padding(2);
             this.Button5.Name = "Button5";
-            this.Button5.Size = new System.Drawing.Size(211, 34);
+            this.Button5.Size = new System.Drawing.Size(146, 34);
             this.Button5.TabIndex = 115;
             this.Button5.Text = "Редактировать назначение";
             this.Button5.UseVisualStyleBackColor = true;
@@ -283,6 +285,18 @@
             this.menuStrip1.Size = new System.Drawing.Size(1020, 24);
             this.menuStrip1.TabIndex = 118;
             this.menuStrip1.Text = "menuStrip1";
+            // 
+            // button7
+            // 
+            this.button7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.button7.Location = new System.Drawing.Point(494, 29);
+            this.button7.Margin = new System.Windows.Forms.Padding(2);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(146, 34);
+            this.button7.TabIndex = 117;
+            this.button7.Text = "Узнать прогресс выполнения";
+            this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
             // AssigmentTask
             // 
@@ -327,6 +341,7 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.ToolStripMenuItem ExitToolStripMenuItem;
+        internal System.Windows.Forms.Button button7;
     }
 }
 

@@ -79,7 +79,7 @@
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.ControlText;
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.DataGridView1.DefaultCellStyle = dataGridViewCellStyle2;
-            this.DataGridView1.Location = new System.Drawing.Point(11, 27);
+            this.DataGridView1.Location = new System.Drawing.Point(16, 27);
             this.DataGridView1.Margin = new System.Windows.Forms.Padding(2);
             this.DataGridView1.Name = "DataGridView1";
             this.DataGridView1.ReadOnly = true;
@@ -95,16 +95,16 @@
             this.DataGridView1.RowTemplate.Height = 24;
             this.DataGridView1.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.DataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.DataGridView1.Size = new System.Drawing.Size(910, 51);
+            this.DataGridView1.Size = new System.Drawing.Size(906, 42);
             this.DataGridView1.TabIndex = 10;
             this.DataGridView1.Tag = "1";
             // 
             // richTextBox1
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(12, 394);
+            this.richTextBox1.Location = new System.Drawing.Point(16, 362);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.ReadOnly = true;
-            this.richTextBox1.Size = new System.Drawing.Size(910, 195);
+            this.richTextBox1.Size = new System.Drawing.Size(906, 227);
             this.richTextBox1.TabIndex = 17;
             this.richTextBox1.Text = "";
             // 
@@ -112,7 +112,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.Location = new System.Drawing.Point(12, 372);
+            this.label1.Location = new System.Drawing.Point(12, 340);
             this.label1.MaximumSize = new System.Drawing.Size(1100, 50);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(135, 19);
@@ -174,7 +174,7 @@
             this.dataGridView2.RowTemplate.Height = 24;
             this.dataGridView2.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.dataGridView2.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView2.Size = new System.Drawing.Size(911, 97);
+            this.dataGridView2.Size = new System.Drawing.Size(906, 97);
             this.dataGridView2.TabIndex = 20;
             this.dataGridView2.Tag = "1";
             // 
@@ -223,7 +223,7 @@
             this.dataGridView3.RowTemplate.Height = 24;
             this.dataGridView3.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.dataGridView3.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView3.Size = new System.Drawing.Size(907, 97);
+            this.dataGridView3.Size = new System.Drawing.Size(906, 42);
             this.dataGridView3.TabIndex = 21;
             this.dataGridView3.Tag = "1";
             // 
@@ -231,7 +231,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label3.Location = new System.Drawing.Point(12, 243);
+            this.label3.Location = new System.Drawing.Point(12, 252);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(268, 19);
             this.label3.TabIndex = 22;

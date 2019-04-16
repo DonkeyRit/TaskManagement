@@ -24,10 +24,7 @@ namespace DepartmentEmployee.GUI.ModalWindows
 
 			AssigmentTask newform = new AssigmentTask();
 
-			int Complexity = newform.GetId(String.Format("Select Complexity from Tasks where id  = '{0}'", TaskID));
-
-			DateTime CurrentTime = DateTime.UtcNow;
-			dateTimePicker1.Value = CurrentTime; // Задаем в поле с выбором Даты выдачи задания текущую дату
+			//int Complexity = newform.GetId(String.Format("Select Complexity from Tasks where id  = '{0}'", TaskID));
 
 			// Выводим в comboBox1 сотрудников
 
@@ -43,22 +40,6 @@ namespace DepartmentEmployee.GUI.ModalWindows
 			for (int i = 0; i < employees.Count; i++)
 			{
 				comboBox1.Items.Add(employees[i].ToString());
-			}
-
-			// Выводим в comboBox2 список результатов
-
-			table = connection.GetDataAdapter("Select Name from Results");
-			List<object> results = table.GetColumnValuesDataTable(0, CellType.String);
-
-			//reader = Workflow.connection.Select("Select Name from Results");
-			//List<object> results = reader.GetValue(0, true);
-			//reader.Close();
-
-			comboBox2.Items.Clear();
-
-			for (int i = 0; i < results.Count; i++)
-			{
-				comboBox2.Items.Add(results[i].ToString());
 			}
 		}
 
@@ -83,22 +64,6 @@ namespace DepartmentEmployee.GUI.ModalWindows
 			for (int i = 0; i < employees.Count; i++)
 			{
 				comboBox1.Items.Add(employees[i].ToString());
-			}
-
-			// Выводим в comboBox2 список результатов
-
-			table = connection.GetDataAdapter("Select Name from Results");
-			List<object> results = table.GetColumnValuesDataTable(0, CellType.String);
-
-			//reader = Workflow.connection.Select("Select Name from Results");
-			//List<object> results = reader.GetValue(0, true);
-			//reader.Close();
-
-			comboBox2.Items.Clear();
-
-			for (int i = 0; i < results.Count; i++)
-			{
-				comboBox2.Items.Add(results[i].ToString());
 			}
 		}
 
