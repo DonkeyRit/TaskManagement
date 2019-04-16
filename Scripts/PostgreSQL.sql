@@ -88,6 +88,7 @@ insert into Tasks(Name, id_Complexity, Date_Delivery, id_TaskManager, id_Priorit
 
 insert into AssignedTasks(id_Task, id_Employee, Date_Start, id_Result) values (1,2,'01-04-2019',1), (2,3,'03-04-2019',2),(3,2,'10-04-2019',3), (4,3,'15-03-2019', 4);
 
+
 WITH RECURSIVE r AS (
    SELECT id, Task_name, id_ParentTask
    FROM Tasks
