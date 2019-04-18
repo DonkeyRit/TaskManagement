@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Windows.Forms;
+using System.Collections.Generic;
 using DepartmentEmployee.Controllers;
+using DepartmentEmployee.Model.Enums;
 using DepartmentEmployee.GUI.ControlWindows;
 using DepartmentEmployee.GUI.ModalWindows;
-using DepartmentEmployee.Model.Enums;
 
 namespace DepartmentEmployee.Model
 {
@@ -16,32 +16,6 @@ namespace DepartmentEmployee.Model
 		public AssignmentTaskModel(AssignmentTask form)
 		{
 			_form = form;
-		}
-
-		/// <summary>
-		/// Refresh Task Tree
-		/// </summary>
-		public async void RefreshTaskTree()
-		{
-			_form.TreeView1.Nodes.Clear();
-			var dtTt = await _form.Connection.GetDataAdapterAsync("SELECT id, Name, id_ParentTask FROM Tasks WHERE id_ParentTask IS NULL");
-
-			foreach (DataRow row in dtTt.Rows)
-			{
-				string currentRowId = row["id"].ToString(),
-					currentRowName = row["Name"].ToString();
-
-				var node = new TreeNode(currentRowName) { Tag = currentRowId };
-
-				_form.TreeView1.Nodes.Add(node);
-			}
-
-			foreach (TreeNode node in _form.TreeView1.Nodes)
-			{
-				_form.TreeView1.SelectedNode = node;
-			}
-
-			_form.TreeView1.ExpandAll();
 		}
 
 		#region ButtonControllers
@@ -85,9 +59,68 @@ namespace DepartmentEmployee.Model
 			RefreshTaskTree();
 		}
 
+		public async void AssignTask_Click()
+		{
+			var taskId = int.Parse(_form.TreeView1.SelectedNode.Tag.ToString());
+			var assignmentForm = new AddEditTaskAssignment();
+
+			if (assignmentForm.ShowDialog() != DialogResult.OK)
+			{ return; }
+
+			if (string.IsNullOrEmpty(assignmentForm.comboBox1.Text) || string.IsNullOrWhiteSpace(assignmentForm.comboBox1.Text))
+			{
+				MessageBox.Show(@"Need to choose an employee");
+				return;
+			}
+
+			var employeeId = UtilityController.GetId($"SELECT id FROM Employees WHERE FIO  = '{assignmentForm.comboBox1.Text}'", _form.Connection);
+			var dataStart = DateTime.Now.ToString("yyyy-MM-dd");
+			var comment = assignmentForm.textBox1.Text;
+
+			var query = "INSERT into Results " +
+								"(Result_Qual1, Result_Qual2, Result_Qual3, Result_Qual4) " +
+								"VALUES (0, 0, 0, 0); " +
+							"INSERT into AssignedTasks " +
+								"(id_Task, id_Employee, Date_Start, id_Result, Comment) " +
+								$"SELECT {taskId}, {employeeId}, '{dataStart}', id, '{comment}' " +
+									"FROM Results " +
+									"WHERE id = (SELECT max(id) FROM Results);" +
+							"INSERT into EventLog" +
+								"(Date, id_LastStatus, id_CurrentStatus, id_Employee, id_Task) " +
+								$"SELECT '{dataStart}', id_LastStatus, {(int) Status.Assigned}, {employeeId}, {taskId} " +
+									"FROM EventLog " +
+									$"WHERE id_Employee={employeeId} AND id_Task={taskId};";
+
+			await _form.Connection.ExecNonQueryAsync(query);
+		}
 
 		#endregion
 
+		/// <summary>
+		/// Refresh Task Tree
+		/// </summary>
+		public async void RefreshTaskTree()
+		{
+			_form.TreeView1.Nodes.Clear();
+			var dtTt = await _form.Connection.GetDataAdapterAsync("SELECT id, Name, id_ParentTask FROM Tasks WHERE id_ParentTask IS NULL");
+
+			foreach (DataRow row in dtTt.Rows)
+			{
+				string currentRowId = row["id"].ToString(),
+					currentRowName = row["Name"].ToString();
+
+				var node = new TreeNode(currentRowName) { Tag = currentRowId };
+
+				_form.TreeView1.Nodes.Add(node);
+			}
+
+			foreach (TreeNode node in _form.TreeView1.Nodes)
+			{
+				_form.TreeView1.SelectedNode = node;
+			}
+
+			_form.TreeView1.ExpandAll();
+		}
 
 		private async void AddNewTask(IReadOnlyDictionary<string, string> fields, int taskManager, int priority)
 		{
@@ -110,17 +143,19 @@ namespace DepartmentEmployee.Model
 			string parentIdField = isSelectTask ? "id_ParentTask," : "",
 				parentIdValue = isSelectTask ? $"{tag}," : "";
 
-			await _form.Connection.ExecNonQueryAsync("INSERT into Complexity" +
+			var query = "INSERT into Complexity" +
 								"(Complexity_Qual1, Complexity_Qual2, Complexity_Qual3, Complexity_Qual4) " +
 								$"VALUES({complexity1},{complexity2},{complexity3},{complexity4}); " +
 							"INSERT into Tasks " +
 								$"({parentIdField}Name, Description, id_Complexity, Date_Delivery, id_TaskManager, id_Priority) " +
 								$"SELECT {parentIdValue}'{name}','{description}', id, '{dataOfDelivery}', {taskManager}, {priority} " +
-								"FROM Complexity WHERE id = (SELECT max(id) FROM Complexity); " +
+									"FROM Complexity WHERE id = (SELECT max(id) FROM Complexity); " +
 							"INSERT into EventLog" +
 								"(Date, id_LastStatus, id_Employee, id_Task)" +
-								$"SELECT {currentDate}, {(int) Status.Created}, {userId}, id " +
-								$"FROM Tasks WHERE Name = '{name}'");
+								$"SELECT '{currentDate}', {(int) Status.Created}, {userId}, id " +
+									$"FROM Tasks WHERE Name = '{name}'";
+
+			await _form.Connection.ExecNonQueryAsync(query);
 		}
 	}
 }

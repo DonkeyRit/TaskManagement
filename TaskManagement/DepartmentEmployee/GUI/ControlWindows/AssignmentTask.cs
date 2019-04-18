@@ -271,29 +271,9 @@ namespace DepartmentEmployee.GUI.ControlWindows
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private async void Button4_Click(object sender, EventArgs e)
+		private void AssignTask_Click(object sender, EventArgs e)
 		{
-
-			var taskId = int.Parse(TreeView1.SelectedNode.Tag.ToString());
-			var assignmentForm = new AddEditTaskAssignment();
-
-			if (assignmentForm.ShowDialog() != DialogResult.OK)
-			{ return; }
-
-			if (string.IsNullOrEmpty(assignmentForm.comboBox1.Text) || string.IsNullOrWhiteSpace(assignmentForm.comboBox1.Text))
-			{
-				MessageBox.Show("Нужно выбрать сотрудника");
-				return;
-			}
-
-			var employeeId = UtilityController.GetId($"Select id from Employees where FIO  = '{assignmentForm.comboBox1.Text}'", Connection);
-			var dataStart = DateTime.Now.ToString("yyyy-MM-dd");
-			var comment = assignmentForm.textBox1.Text.Replace("'", "''");
-
-			await Connection.ExecNonQueryAsync("INSERT into Results(Result_Qual1,Result_Qual2,Result_Qual3,Result_Qual4) values(0,0,0,0)");
-			var resultId = UtilityController.GetId("SELECT id FROM Results WHERE id = (SELECT max(id) FROM Results);", Connection);
-			await Connection.ExecNonQueryAsync("INSERT into AssignedTasks(id_Task, id_Employee, Date_Start, id_Result, Comment) values('" + taskId + "', '" + employeeId + "', '" + dataStart + "', '" + resultId + "', '" + comment + "')");
-
+			_model.AssignTask_Click();
 			RefreshGrid();
 		}
 

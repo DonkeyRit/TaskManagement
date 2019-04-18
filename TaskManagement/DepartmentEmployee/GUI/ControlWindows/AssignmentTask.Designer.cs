@@ -35,7 +35,7 @@
 			this.AddNewTask = new System.Windows.Forms.Button();
 			this.Button6 = new System.Windows.Forms.Button();
 			this.RemoveTask = new System.Windows.Forms.Button();
-			this.Button4 = new System.Windows.Forms.Button();
+			this.AssignTask = new System.Windows.Forms.Button();
 			this.EditTask = new System.Windows.Forms.Button();
 			this.DataGridView1 = new System.Windows.Forms.DataGridView();
 			this.TreeView1 = new System.Windows.Forms.TreeView();
@@ -94,17 +94,17 @@
 			this.RemoveTask.UseVisualStyleBackColor = true;
 			this.RemoveTask.Click += new System.EventHandler(this.RemoveTaskButton_Click);
 			// 
-			// Button4
+			// AssignTask
 			// 
-			this.Button4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.Button4.Location = new System.Drawing.Point(15, 29);
-			this.Button4.Margin = new System.Windows.Forms.Padding(2);
-			this.Button4.Name = "Button4";
-			this.Button4.Size = new System.Drawing.Size(146, 34);
-			this.Button4.TabIndex = 114;
-			this.Button4.Text = "Назначить задание сотруднику";
-			this.Button4.UseVisualStyleBackColor = true;
-			this.Button4.Click += new System.EventHandler(this.Button4_Click);
+			this.AssignTask.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.AssignTask.Location = new System.Drawing.Point(15, 29);
+			this.AssignTask.Margin = new System.Windows.Forms.Padding(2);
+			this.AssignTask.Name = "AssignTask";
+			this.AssignTask.Size = new System.Drawing.Size(146, 34);
+			this.AssignTask.TabIndex = 114;
+			this.AssignTask.Text = "Назначить задание сотруднику";
+			this.AssignTask.UseVisualStyleBackColor = true;
+			this.AssignTask.Click += new System.EventHandler(this.AssignTask_Click);
 			// 
 			// EditTask
 			// 
@@ -163,7 +163,7 @@
 			this.DataGridView1.RowTemplate.Height = 24;
 			this.DataGridView1.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.True;
 			this.DataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-			this.DataGridView1.Size = new System.Drawing.Size(684, 400);
+			this.DataGridView1.Size = new System.Drawing.Size(685, 400);
 			this.DataGridView1.TabIndex = 9;
 			this.DataGridView1.Tag = "1";
 			this.DataGridView1.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView1_CellDoubleClick);
@@ -231,7 +231,7 @@
 			// 
 			this.groupBox1.Controls.Add(this.button7);
 			this.groupBox1.Controls.Add(this.Button6);
-			this.groupBox1.Controls.Add(this.Button4);
+			this.groupBox1.Controls.Add(this.AssignTask);
 			this.groupBox1.Controls.Add(this.Button5);
 			this.groupBox1.Location = new System.Drawing.Point(6, 421);
 			this.groupBox1.Name = "groupBox1";
@@ -337,7 +337,7 @@
         private System.Windows.Forms.ToolStripMenuItem редактированиеБазыЗнаниToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem BackwardToMainformToolStripMenuItem;
         private System.Windows.Forms.MenuStrip menuStrip1;
-        public System.Windows.Forms.Button Button4;
+        public System.Windows.Forms.Button AssignTask;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.ToolStripMenuItem ExitToolStripMenuItem;

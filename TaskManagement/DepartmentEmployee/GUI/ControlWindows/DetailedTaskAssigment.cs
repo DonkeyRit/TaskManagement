@@ -28,7 +28,7 @@ namespace DepartmentEmployee.GUI.ControlWindows
 
 			string login = _currentUser.Username;
 			string password = _currentUser.Password;
-			var id = TaskEmployee.ID;
+			var id = TaskEmployee.Id;
 
 			//Выводим подробную информацию по назначенному заданию по конкретному сотруднику
 			DataTable dt1 = await connection.GetDataAdapterAsync("select AssignedTasks.Date_Start as Дата_выдачи, Tasks.Date_Delivery as Дата_сдачи, AssignedTasks.Date_End as Дата_завершения, Employees.FIO AS TaskManager, Results.id as Результат, Priority.Name as Priority from Tasks join Employees on Employees.id = Tasks.id_TaskManager join Priority on Priority.id = Tasks.id_Priority join AssignedTasks on Tasks.id = AssignedTasks.id_Task join Results on Results.id = AssignedTasks.id_Result where AssignedTasks.id = '" + id + "'");
