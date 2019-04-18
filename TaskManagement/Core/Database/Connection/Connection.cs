@@ -93,6 +93,28 @@ namespace Core.Database.Connection
 			}
 		}
 
+		public DbDataReader GetDataReader(string sqlCommand)
+		{
+			if (_connection.State != ConnectionState.Open)
+			{
+				ConnectionOpen();
+			}
+
+			try
+			{
+				var command = _connection.CreateCommand();
+				command.CommandText = sqlCommand;
+
+				var reader = command.ExecuteReader();
+				return reader;
+
+			}
+			catch (Exception ex)
+			{
+				throw new Exception("Exception", ex);
+			}
+		}
+
 		public async Task<DataTable> GetDataAdapterAsync(string sqlCommand)
 		{
 			return await Task.Run(() => GetDataAdapter(sqlCommand));

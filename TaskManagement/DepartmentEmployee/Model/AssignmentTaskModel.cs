@@ -21,10 +21,10 @@ namespace DepartmentEmployee.Model
 		/// <summary>
 		/// Refresh Task Tree
 		/// </summary>
-		public void RefreshTaskTree()
+		public async void RefreshTaskTree()
 		{
 			_form.TreeView1.Nodes.Clear();
-			var dtTt = _form.Connection.GetDataAdapter("SELECT id, Name, id_ParentTask FROM Tasks WHERE id_ParentTask IS NULL");
+			var dtTt = await _form.Connection.GetDataAdapterAsync("SELECT id, Name, id_ParentTask FROM Tasks WHERE id_ParentTask IS NULL");
 
 			foreach (DataRow row in dtTt.Rows)
 			{
@@ -82,26 +82,7 @@ namespace DepartmentEmployee.Model
 				priority = UtilityController.GetId($"Select id from Priority where Name = '{tasksForm.comboBox1.Text}'", _form.Connection);
 
 			AddNewTask(fields, taskManager, priority);
-
-			var dtTt = _form.Connection.GetDataAdapter("SELECT id, Name FROM Tasks WHERE id = (SELECT max(id) FROM Tasks);");
-
-			var lastRowIndex = dtTt.Rows.Count - 1;
-			var lastRow = dtTt.Rows[lastRowIndex];
-
-			string lastRowId = lastRow["id"].ToString(),
-				lastRowName = lastRow["Name"].ToString();
-
-			var node = new TreeNode(lastRowName) { Tag = lastRowId };
-			if (_form.TreeView1.SelectedNode == null)
-			{
-				_form.TreeView1.Nodes.Add(node);
-			}
-			else
-			{
-				_form.TreeView1.SelectedNode.Nodes.Add(node);
-				_form.TreeView1.SelectedNode.Expand();
-			}
-
+			RefreshTaskTree();
 		}
 
 
