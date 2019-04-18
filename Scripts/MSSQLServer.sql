@@ -16,42 +16,47 @@ Complexity_Qual4 int
 
 create table Priority(
 id int PRIMARY KEY NOT NULL IDENTITY,
-Name varchar(250) not null,
+Name varchar(20) not null,
 Coefficient int not null
 );
 
 create table Qualifications(
 id int PRIMARY KEY NOT NULL IDENTITY,
-Name varchar(250) not null,
+Name varchar(30) not null,
 Coefficient decimal(2,1) not null
 );
 
 create table Type(
 id int PRIMARY KEY NOT NULL IDENTITY,
-Name varchar(250) not null
+Name varchar(20) not null
+);
+
+create table Status(
+id int PRIMARY KEY NOT NULL IDENTITY,
+Name varchar(20) not null
 );
 
 create table Tasks(
 id int PRIMARY KEY NOT NULL IDENTITY,
-Name varchar(250) not null,
+Name varchar(200) not null,
 id_ParentTask int,
 Description text,
 id_Complexity int not null,
 Date_Delivery date not null,
 id_TaskManager int not null,
 id_Priority int not null,
-FOREIGN KEY (id_ParentTask) REFERENCES Tasks (id),
+FOREIGN KEY (id_ParentTask) REFERENCES Tasks (id) ON DELETE CASCADE,
 FOREIGN KEY (id_Complexity) REFERENCES Complexity (id) ON DELETE CASCADE,
 FOREIGN KEY (id_Priority) REFERENCES Priority (id) ON DELETE CASCADE
 );
 
 create table Employees(
 id int PRIMARY KEY NOT NULL IDENTITY,
-FIO varchar(250) not null,
+FIO varchar(60) not null,
 DateOfBirth date not null,
 id_Qualification int not null,
-Login varchar(250) not null unique,
-Password varchar(250) not null unique,
+Login varchar(20) not null unique,
+Password varchar(20) not null unique,
 id_Type int not null,
 FOREIGN KEY (id_Qualification) REFERENCES Qualifications (id) ON DELETE CASCADE,
 FOREIGN KEY (id_Type) REFERENCES Type (id) ON DELETE CASCADE
@@ -68,6 +73,20 @@ Comment text,
 FOREIGN KEY (id_Task) REFERENCES Tasks (id) ON DELETE CASCADE, 
 FOREIGN KEY (id_Employee) REFERENCES Employees (id) ON DELETE CASCADE,
 FOREIGN KEY (id_Result) REFERENCES Results (id) ON DELETE CASCADE
+);
+
+create table EventLog(
+id int PRIMARY KEY NOT NULL IDENTITY,
+Date datetime not null,
+id_LastStatus int not null,
+id_CurrentStatus int not null,
+id_Complexity int not null,
+id_Employee int not null,
+id_Task int not null,
+FOREIGN KEY (id_LastStatus) REFERENCES Status (id) ON DELETE CASCADE,
+FOREIGN KEY (id_CurrentStatus) REFERENCES Status (id) ON DELETE CASCADE,
+FOREIGN KEY (id_Employee) REFERENCES Employees (id) ON DELETE CASCADE,
+FOREIGN KEY (id_Task) REFERENCES Tasks (id) ON DELETE CASCADE
 );
 
 insert into Qualifications(Name, Coefficient) values
