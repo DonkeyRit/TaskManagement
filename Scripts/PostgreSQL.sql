@@ -16,24 +16,29 @@ Complexity_Qual4 int
 
 create table Priority(
 id serial PRIMARY KEY NOT NULL,
-Name text not null,
+Name varchar(20) not null,
 Coefficient int not null
 );
 
 create table Qualifications(
 id serial PRIMARY KEY NOT NULL,
-Name text not null,
+Name varchar(30) not null,
 Coefficient decimal(2,1) not null
 );
 
 create table Type(
 id serial PRIMARY KEY NOT NULL,
-Name text not null
+Name varchar(20) not null
+);
+
+create table Status(
+id serial PRIMARY KEY NOT NULL,
+Name varchar(20) not null
 );
 
 create table Tasks(
 id serial PRIMARY KEY NOT NULL,
-Name text not null,
+Name varchar(200) not null,
 id_ParentTask int,
 Description text,
 id_Complexity int not null,
@@ -47,15 +52,16 @@ FOREIGN KEY (id_Priority) REFERENCES Priority (id) ON DELETE CASCADE
 
 create table Employees(
 id serial PRIMARY KEY NOT NULL,
-FIO text not null,
+FIO varchar(60) not null,
 DateOfBirth date not null,
 id_Qualification int not null,
-Login text not null unique,
-Password text not null unique,
+Login varchar(20) not null unique,
+Password varchar(20) not null unique,
 id_Type int not null,
 FOREIGN KEY (id_Qualification) REFERENCES Qualifications (id) ON DELETE CASCADE,
 FOREIGN KEY (id_Type) REFERENCES Type (id) ON DELETE CASCADE
 );
+
 
 create table AssignedTasks(
 id serial PRIMARY KEY NOT NULL,
@@ -70,7 +76,23 @@ FOREIGN KEY (id_Employee) REFERENCES Employees (id) ON DELETE CASCADE,
 FOREIGN KEY (id_Result) REFERENCES Results (id) ON DELETE CASCADE
 );
 
+create table EventLog(
+id serial PRIMARY KEY NOT NULL,
+Date datetime not null,
+id_LastStatus int not null,
+id_CurrentStatus int not null,
+id_Complexity int not null,
+id_Employee int not null,
+id_Task int not null,
+FOREIGN KEY (id_LastStatus) REFERENCES Status (id) ON DELETE CASCADE,
+FOREIGN KEY (id_CurrentStatus) REFERENCES Status (id) ON DELETE CASCADE,
+FOREIGN KEY (id_Employee) REFERENCES Employees (id) ON DELETE CASCADE,
+FOREIGN KEY (id_Task) REFERENCES Tasks (id) ON DELETE CASCADE
+);
+
 insert into Qualifications(Name, Coefficient) values('Инженер 3-категории', 1.0),('Инженер 2-категории', 1.2),('Инженер 1-категории', 1.4),('Главный инженер', 1.5);
+
+insert into Status(Name) values('Создан'),('Назначен'),('На выполнении'),('Приостановлен'),('Завершен');
 
 insert into Complexity(Complexity_Qual1,Complexity_Qual2,Complexity_Qual3,Complexity_Qual4) values(10, 0, 0, 10),(20, 10, 0, 0),(0, 0, 0, 20),(10, 0, 30, 10);
 
