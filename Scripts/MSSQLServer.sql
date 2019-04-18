@@ -45,7 +45,7 @@ id_Complexity int not null,
 Date_Delivery date not null,
 id_TaskManager int not null,
 id_Priority int not null,
-FOREIGN KEY (id_ParentTask) REFERENCES Tasks (id) ON DELETE CASCADE,
+FOREIGN KEY (id_ParentTask) REFERENCES Tasks (id),
 FOREIGN KEY (id_Complexity) REFERENCES Complexity (id) ON DELETE CASCADE,
 FOREIGN KEY (id_Priority) REFERENCES Priority (id) ON DELETE CASCADE
 );
@@ -83,10 +83,10 @@ id_CurrentStatus int not null,
 id_Complexity int not null,
 id_Employee int not null,
 id_Task int not null,
-FOREIGN KEY (id_LastStatus) REFERENCES Status (id) ON DELETE CASCADE,
-FOREIGN KEY (id_CurrentStatus) REFERENCES Status (id) ON DELETE CASCADE,
-FOREIGN KEY (id_Employee) REFERENCES Employees (id) ON DELETE CASCADE,
-FOREIGN KEY (id_Task) REFERENCES Tasks (id) ON DELETE CASCADE
+FOREIGN KEY (id_LastStatus) REFERENCES Status (id),
+FOREIGN KEY (id_CurrentStatus) REFERENCES Status (id),
+FOREIGN KEY (id_Employee) REFERENCES Employees (id),
+FOREIGN KEY (id_Task) REFERENCES Tasks (id)
 );
 
 insert into Qualifications(Name, Coefficient) values
