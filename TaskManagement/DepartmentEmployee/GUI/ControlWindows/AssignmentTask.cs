@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using Core.Model;
 using System.Data;
 using System.Drawing;
 using Core.Database.Utils;
 using System.Windows.Forms;
 using Core.Database.Connection;
+using System.Collections.Generic;
 using DepartmentEmployee.Context;
 using DepartmentEmployee.Controllers;
 using DepartmentEmployee.GUI.ModalWindows;
@@ -25,46 +25,30 @@ namespace DepartmentEmployee.GUI.ControlWindows
 			_user = CustomContext.GetInstance().CurrentUser;
 			_connection = Connection.CreateConnection();
 
-			RefreshDeparts(); // Обновляем список заданий.
+			RefreshTaskTree();
 		}
 
-
-		/// <summary>
-		/// Работа с деревом заданий
-		/// Функционал для обновления дерева со списком заданий
-		/// </summary>
-		private async void RefreshDeparts()
+		private void RefreshTaskTree()
 		{
-			//Очищаем treeview на случай если там что-то есть
 			TreeView1.Nodes.Clear();
+			var dtTt = _connection.GetDataAdapter("SELECT id, Name, id_ParentTask FROM Tasks WHERE id_ParentTask IS NULL");
 
-			//Этим этапом (всей этой функцией рефреша) мы подгружаем только корневые ноды. Тоесть те у которых ParentID = null, остальные (внутренние) мы подгружаем с помощью обработки события выделения ноды TreeView1_AfterSelect.
-
-			//Получаем datatable из соответвующей функции - получаем только корневые папки - где парект ID = 0
-			var dtTt = await _connection.GetDataAdapterAsync("SELECT id, Name, id_ParentTask FROM Tasks WHERE id_ParentTask IS NULL");
-
-			// для каждого элемента в datatable
 			foreach (DataRow row in dtTt.Rows)
 			{
-				//объявляем переменные с ячейками текущей перебираемой строки
 				string currentRowId = row["id"].ToString(),
 					currentRowName = row["Name"].ToString();
 
-				var node = new TreeNode(currentRowName);
-				//Присваиваем Tag этому элементу равный текущему ID                    
-				node.Tag = currentRowId;
-				//Добавляем его в treeview
+				var node = new TreeNode(currentRowName) {Tag = currentRowId};
+
 				TreeView1.Nodes.Add(node);
 			}
 
-			// Пройдемся по всем корневым нодам выделением, чтобы сработало событие выделения ноды и подгрузились дочерние элементы
 			foreach (TreeNode node in TreeView1.Nodes)
 			{
 				TreeView1.SelectedNode = node;
 			}
-			//Раскроем все свернутые ноды
+
 			TreeView1.ExpandAll();
-			//=================Конец Обновление корня departments=================
 		}
 
 		//Функционал, обрабатывающий событие, что при выборе элемента, в нем мы снова перебираем Datatable в поисках элементов parentID которых соответвует TagID пункта меню от которого сработало это событие
@@ -191,7 +175,7 @@ namespace DepartmentEmployee.GUI.ControlWindows
 		}
 
 		//Кнопка редактирования задания
-		private void Button2_Click(object sender, EventArgs e)
+		private void EditTaskButton_Click(object sender, EventArgs e)
 		{
 			//Если не выбран элемент который мы собираемся удалять выходим
 			if (TreeView1.SelectedNode == null)
@@ -203,21 +187,19 @@ namespace DepartmentEmployee.GUI.ControlWindows
 			EditCurrentTask(TreeView1.SelectedNode);
 		}
 
-		//Функционал добавления нового задания/подзадания
-		private async void Button1_Click(object sender, EventArgs e)
+		/// <summary>
+		/// Add new task or subTask
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private async void AddNewTaskButton_Click(object sender, EventArgs e)
 		{
 			var tasksForm = new AddEditTask();
+
 			if (tasksForm.ShowDialog() != DialogResult.OK)
 			{
 				return;
 			}
-
-			var dtTtT = await _connection.GetDataAdapterAsync("select id from Tasks order by id Desc limit 1");
-			var lastRowW = dtTtT.Rows[0];
-
-			// Задаем переменные для столбцов этой строчки
-			var id = int.Parse(lastRowW["id"].ToString());
-			id++;
 
 			if (string.IsNullOrEmpty(tasksForm.TextBox1.Text) || string.IsNullOrWhiteSpace(tasksForm.TextBox1.Text))
 			{
@@ -236,7 +218,8 @@ namespace DepartmentEmployee.GUI.ControlWindows
 				complexity2 = tasksForm.textBox3.Text.Replace("'", "''"),
 				complexity3 = tasksForm.textBox4.Text.Replace("'", "''"),
 				complexity4 = tasksForm.textBox5.Text.Replace("'", "''");
-			var dataOfDelivery = tasksForm.dateTimePicker1.Value.Date;
+
+			var dataOfDelivery = tasksForm.dateTimePicker1.Value.Date.ToString("yyyy-MM-dd");
 			int taskManager = GetId("Select id from Employees where Login = '" + _user.Username + "' AND Password = '" + _user.Password + "'"),
 				priority = GetId($"Select id from Priority where Name = '{tasksForm.comboBox1.Text}'");
 
@@ -244,66 +227,45 @@ namespace DepartmentEmployee.GUI.ControlWindows
 			if (TreeView1.SelectedNode == null)
 			{
 				var sqlResultComplexity = await _connection.ExecNonQueryAsync("INSERT into Complexity(Complexity_Qual1, Complexity_Qual2, Complexity_Qual3, Complexity_Qual4) VALUES('" + complexity1 + "','" + complexity2 + "', '" + complexity3 + "', '" + complexity4 + "')");
-				var complexityId = GetId(String.Format("SELECT id FROM Complexity ORDER BY id DESC LIMIT 1"));
-				var sqlResult = await _connection.ExecNonQueryAsync("INSERT into Tasks(id, Name, Description, id_Complexity, Date_Delivery, id_TaskManager, id_Priority) VALUES('" + id + "', '" + name + "','" + description + "', '" + complexityId + "', '" + dataOfDelivery + "', '" + taskManager + "','" + priority + "')");
+				var complexityId = GetId("SELECT id FROM Complexity WHERE id = (SELECT max(id) FROM Complexity);");
+				var sqlResult = await _connection.ExecNonQueryAsync("INSERT into Tasks(Name, Description, id_Complexity, Date_Delivery, id_TaskManager, id_Priority) VALUES('" + name + "','" + description + "', '" + complexityId + "', '" + dataOfDelivery + "', '" + taskManager + "','" + priority + "')");
 
 				CheckSqlResults(sqlResultComplexity);
 				CheckSqlResults(sqlResult);
 			}
-
 			else
 			{
-
-				//Записываем в переменную Tag, Tag текущего выбраного элемента (это его ID в базе, которое мы будем использовать чтобы задать родителя нашего нового добавляемого элемента)
 				var tag = TreeView1.SelectedNode.Tag.ToString();
 
-				//Записываем в базу новую строчку, задав поля имя и parent ID
 				var sqlResultComplexity = await _connection.ExecNonQueryAsync("INSERT into Complexity(Complexity_Qual1, Complexity_Qual2, Complexity_Qual3, Complexity_Qual4) VALUES('" + complexity1 + "','" + complexity2 + "', '" + complexity3 + "', '" + complexity4 + "')");
-				var complexityId = GetId("SELECT id FROM Complexity ORDER BY id DESC LIMIT 1");
-				//Записываем в базу новую строчку, задав поля имя и parent ID
-				var sqlResult = await _connection.ExecNonQueryAsync("INSERT into Tasks(id, Name, id_ParentTask, Description, id_Complexity, Date_Delivery, id_TaskManager, id_Priority) VALUES('" + id + "', '" + name + "','" + tag + "', '" + description + "', '" + complexityId + "', '" + dataOfDelivery + "', '" + taskManager + "','" + priority + "')");
+				var complexityId = GetId("SELECT id FROM Complexity WHERE id = (SELECT max(id) FROM Complexity);");
+				var sqlResult = await _connection.ExecNonQueryAsync("INSERT into Tasks(Name, id_ParentTask, Description, id_Complexity, Date_Delivery, id_TaskManager, id_Priority) VALUES('" + name + "','" + tag + "', '" + description + "', '" + complexityId + "', '" + dataOfDelivery + "', '" + taskManager + "','" + priority + "')");
 
 				CheckSqlResults(sqlResultComplexity);
 				CheckSqlResults(sqlResult);
-
 			}
 
-
-			//Получаем данные обратно из базы
-			//Получаем datatable из функции 
-			//сразу выборка из таблицы - получаем последнюю строчку - она и есть та которую мы только что добавили
-			var dtTt = await _connection.GetDataAdapterAsync("SELECT id, Name, id_ParentTask FROM Tasks WHERE id = '" + id + "'");
-
-			//Находим последнюю запись в таблице, - она и есть та которую мы только что добавили
-			//Получаем индекс последней записи в нашем массиве
+			var dtTt = await _connection.GetDataAdapterAsync("SELECT id, Name FROM Tasks WHERE id = (SELECT max(id) FROM Tasks);");
 			var lastRowIndex = dtTt.Rows.Count - 1;
-
-			// Получаем последнюю строчку по этому индексу
 			var lastRow = dtTt.Rows[lastRowIndex];
 
-			// Задаем переменные для столбцов этой строчки
 			string lastRowId = lastRow["id"].ToString(),
 				lastRowName = lastRow["Name"].ToString();
 
-			//Тут будем добавлять это в наш treeview
-			var node = new TreeNode(lastRowName) {Tag = lastRowId}; //созадем объект node с именем из базы
-			//присваиваем ему tag, который соответвует его ID в базе
-
-			//Если ниче не выделено то добавляем ноду в корень treeview
+			var node = new TreeNode(lastRowName) {Tag = lastRowId}; 
 			if (TreeView1.SelectedNode == null)
 			{
 				TreeView1.Nodes.Add(node);
-			// А если выделено то добавляем в то место которое выделено 
 			 }
 			else
 			{
 				TreeView1.SelectedNode.Nodes.Add(node);
-				TreeView1.SelectedNode.Expand(); // И разворачиваем 
+				TreeView1.SelectedNode.Expand();
 			}
 		}
 
 		//Функционал удаления выбранного задания
-		private async void Button3_Click(object sender, EventArgs e)
+		private async void RemoveTaskButton_Click(object sender, EventArgs e)
 		{
 			//Если не выбран элемент который мы собираемся удалять выходим
 			if (TreeView1.SelectedNode == null)
@@ -397,13 +359,15 @@ namespace DepartmentEmployee.GUI.ControlWindows
 			}
 		}
 
-		//Функционал добавления нового назначения задания студенту
+		/// <summary>
+		/// Add new Assignment for Task
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private async void Button4_Click(object sender, EventArgs e)
 		{
 
 			var taskId = int.Parse(TreeView1.SelectedNode.Tag.ToString());
-
-			//AddEditTaskAssignment assignment_form = new AddEditTaskAssignment(TaskID);
 			var assignmentForm = new AddEditTaskAssignment();
 
 			if (assignmentForm.ShowDialog() != DialogResult.OK)
@@ -416,13 +380,11 @@ namespace DepartmentEmployee.GUI.ControlWindows
 			}
 
 			var employeeId = GetId($"Select id from Employees where FIO  = '{assignmentForm.comboBox1.Text}'");
-			var dataStart = DateTime.Now;
+			var dataStart = DateTime.Now.ToString("yyyy-MM-dd"); ;
 			var comment = assignmentForm.textBox1.Text.Replace("'", "''");
 
-			//записываем данные из текстбоксов Form3 в наши переменные
-			// А потом экранируем кавычечку
 			var sqlRes = await _connection.ExecNonQueryAsync("INSERT into Results(Result_Qual1,Result_Qual2,Result_Qual3,Result_Qual4) values(0,0,0,0)");
-			var resultId = GetId("Select id from Results ORDER BY id DESC LIMIT 1");
+			var resultId = GetId("SELECT id FROM Results WHERE id = (SELECT max(id) FROM Results);");
 			var sqlResult = await _connection.ExecNonQueryAsync("INSERT into AssignedTasks(id_Task, id_Employee, Date_Start, id_Result, Comment) values('" + taskId + "', '" + employeeId + "', '" + dataStart + "', '" + resultId + "', '" + comment + "')");
 
 			CheckSqlResults(sqlResult);
