@@ -1,0 +1,145 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Windows.Forms;
+using DepartmentEmployee.Controllers;
+using DepartmentEmployee.GUI.ControlWindows;
+using DepartmentEmployee.GUI.ModalWindows;
+using DepartmentEmployee.Model.Enums;
+
+namespace DepartmentEmployee.Model
+{
+	public class AssignmentTaskModel
+	{
+		private readonly AssignmentTask _form;
+
+		public AssignmentTaskModel(AssignmentTask form)
+		{
+			_form = form;
+		}
+
+		/// <summary>
+		/// Refresh Task Tree
+		/// </summary>
+		public void RefreshTaskTree()
+		{
+			_form.TreeView1.Nodes.Clear();
+			var dtTt = _form.Connection.GetDataAdapter("SELECT id, Name, id_ParentTask FROM Tasks WHERE id_ParentTask IS NULL");
+
+			foreach (DataRow row in dtTt.Rows)
+			{
+				string currentRowId = row["id"].ToString(),
+					currentRowName = row["Name"].ToString();
+
+				var node = new TreeNode(currentRowName) { Tag = currentRowId };
+
+				_form.TreeView1.Nodes.Add(node);
+			}
+
+			foreach (TreeNode node in _form.TreeView1.Nodes)
+			{
+				_form.TreeView1.SelectedNode = node;
+			}
+
+			_form.TreeView1.ExpandAll();
+		}
+
+		#region ButtonControllers
+
+		public void AddNewTaskButton_Click()
+		{
+			var tasksForm = new AddEditTask();
+
+			if (tasksForm.ShowDialog() != DialogResult.OK)
+				return;
+
+			if (string.IsNullOrEmpty(tasksForm.TextBox1.Text) || string.IsNullOrWhiteSpace(tasksForm.TextBox1.Text))
+			{
+				MessageBox.Show(@"It is necessary to fill the field correctly: " + tasksForm.Label1.Text);
+				return;
+			}
+			if (string.IsNullOrEmpty(tasksForm.textBox3.Text) || string.IsNullOrWhiteSpace(tasksForm.textBox3.Text))
+			{
+				MessageBox.Show(@"It is necessary to fill the field correctly: " + tasksForm.label3.Text);
+				return;
+			}
+
+
+			var fields = new Dictionary<string, string>
+			{
+				{ "name", tasksForm.TextBox1.Text},
+				{ "description", tasksForm.richTextBox1.Text},
+				{ "complexity1", tasksForm.textBox2.Text},
+				{ "complexity2", tasksForm.textBox3.Text},
+				{ "complexity3", tasksForm.textBox4.Text},
+				{ "complexity4", tasksForm.textBox5.Text},
+				{ "dataOfDelivery", tasksForm.dateTimePicker1.Value.Date.ToString("yyyy-MM-dd")},
+			};
+
+			int taskManager = UtilityController.GetId(
+					$"Select id from Employees where Login = '{_form.User.Username}' AND Password = '{_form.User.Password}'", 
+					_form.Connection),
+				priority = UtilityController.GetId($"Select id from Priority where Name = '{tasksForm.comboBox1.Text}'", _form.Connection);
+
+			AddNewTask(fields, taskManager, priority);
+
+			var dtTt = _form.Connection.GetDataAdapter("SELECT id, Name FROM Tasks WHERE id = (SELECT max(id) FROM Tasks);");
+
+			var lastRowIndex = dtTt.Rows.Count - 1;
+			var lastRow = dtTt.Rows[lastRowIndex];
+
+			string lastRowId = lastRow["id"].ToString(),
+				lastRowName = lastRow["Name"].ToString();
+
+			var node = new TreeNode(lastRowName) { Tag = lastRowId };
+			if (_form.TreeView1.SelectedNode == null)
+			{
+				_form.TreeView1.Nodes.Add(node);
+			}
+			else
+			{
+				_form.TreeView1.SelectedNode.Nodes.Add(node);
+				_form.TreeView1.SelectedNode.Expand();
+			}
+
+		}
+
+
+		#endregion
+
+
+		private async void AddNewTask(IReadOnlyDictionary<string, string> fields, int taskManager, int priority)
+		{
+			string complexity1 = fields["complexity1"],
+				complexity2 = fields["complexity2"],
+				complexity3 = fields["complexity3"],
+				complexity4 = fields["complexity4"],
+				name = fields["name"],
+				description = fields["description"],
+				dataOfDelivery = fields["dataOfDelivery"];
+
+			var currentDate = DateTime.Now.ToString("yyyy-MM-dd");
+			var userId = UtilityController.GetId(
+				$"SELECT id FROM Employees WHERE Login = '{_form.User.Username}' AND Password = '{_form.User.Password}'",
+				_form.Connection);
+
+			var tag = _form.TreeView1.SelectedNode?.Tag.ToString();
+			var isSelectTask = _form.TreeView1.SelectedNode != null;
+
+			string parentIdField = isSelectTask ? "id_ParentTask," : "",
+				parentIdValue = isSelectTask ? $"{tag}," : "";
+
+			await _form.Connection.ExecNonQueryAsync("INSERT into Complexity" +
+								"(Complexity_Qual1, Complexity_Qual2, Complexity_Qual3, Complexity_Qual4) " +
+								$"VALUES({complexity1},{complexity2},{complexity3},{complexity4}); " +
+							"INSERT into Tasks " +
+								$"({parentIdField}Name, Description, id_Complexity, Date_Delivery, id_TaskManager, id_Priority) " +
+								$"SELECT {parentIdValue}'{name}','{description}', id, '{dataOfDelivery}', {taskManager}, {priority} " +
+								"FROM Complexity WHERE id = (SELECT max(id) FROM Complexity); " +
+							"INSERT into EventLog" +
+								"(Date, id_LastStatus, id_Employee, id_Task)" +
+								$"SELECT {currentDate}, {(int) Status.Created}, {userId}, id " +
+								$"FROM Tasks WHERE Name = '{name}'");
+		}
+	}
+}

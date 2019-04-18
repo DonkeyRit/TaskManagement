@@ -86,7 +86,7 @@ namespace DepartmentEmployee.GUI.ControlWindows
 			}
 			catch
 			{
-				MessageBox.Show("Сначала выберите вид приоритета", "Error", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
+				MessageBox.Show("Сначала выберите вид приоритета", @"Error", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
 				return;
 			}
 
@@ -129,12 +129,12 @@ namespace DepartmentEmployee.GUI.ControlWindows
 			}
 			catch
 			{
-				MessageBox.Show("Сначала выберите вид приоритета", "Error", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
+				MessageBox.Show("Сначала выберите вид приоритета", @"Error", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
 				return;
 			}
 
 			//Удаляем из базы
-			if ((DialogResult = MessageBox.Show("Вы действительно хотите удалить данный вид приоритета: " + dataGridView1.CurrentRow.Cells["id"].Value + "?", "Delete Priority", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1)) == DialogResult.Yes)
+			if ((DialogResult = MessageBox.Show("Вы действительно хотите удалить данный вид приоритета: " + dataGridView1.CurrentRow.Cells["id"].Value + "?", @"Delete Priority", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1)) == DialogResult.Yes)
 			{
 				bool sqlresult = await connection.ExecNonQueryAsync("DELETE FROM Priority where id = '" + ID + "'");
 			}

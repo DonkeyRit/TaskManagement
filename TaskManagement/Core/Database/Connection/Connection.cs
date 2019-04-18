@@ -106,11 +106,11 @@ namespace Core.Database.Connection
 
 			try
 			{
+				var results = new DataTable();
 				var command = _connection.CreateCommand();
 				command.CommandText = sqlCommand;
 
 				var adapter = CreateAdapter(command);
-				var results = new DataTable();
 
 				adapter?.Fill(results);
 

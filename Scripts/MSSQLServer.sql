@@ -78,9 +78,8 @@ FOREIGN KEY (id_Result) REFERENCES Results (id) ON DELETE CASCADE
 create table EventLog(
 id int PRIMARY KEY NOT NULL IDENTITY,
 Date datetime not null,
-id_LastStatus int not null,
-id_CurrentStatus int not null,
-id_Complexity int not null,
+id_LastStatus int,
+id_CurrentStatus int,
 id_Employee int not null,
 id_Task int not null,
 FOREIGN KEY (id_LastStatus) REFERENCES Status (id),
@@ -92,6 +91,11 @@ FOREIGN KEY (id_Task) REFERENCES Tasks (id)
 insert into Qualifications(Name, Coefficient) values
 	('Инженер 3-категории', 1.0),('Инженер 2-категории', 1.2),
 	('Инженер 1-категории', 1.4),('Главный инженер', 1.5);
+	
+insert into Status(Name) values
+	('Создан'),('Назначен'),
+	('На выполнении'),('Приостановлен'),
+	('Завершен');
 
 insert into Complexity(Complexity_Qual1,Complexity_Qual2,Complexity_Qual3,Complexity_Qual4) values
 	(10, 0, 0, 10),(20, 10, 0, 0),

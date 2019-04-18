@@ -82,7 +82,7 @@ namespace DepartmentEmployee.GUI.ControlWindows
 			}
 			catch
 			{
-				MessageBox.Show("Сначала выберите задание, по которому хотите посмотреть подробную информацию", "Error", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
+				MessageBox.Show("Сначала выберите задание, по которому хотите посмотреть подробную информацию", @"Error", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
 				return;
 			}
 

@@ -55,6 +55,7 @@
     <Compile Include="Controllers\DataTableController.cs" />
     <Compile Include="Controllers\FieldController.cs" />
     <Compile Include="Controllers\ModalDialogController.cs" />
+    <Compile Include="Controllers\UtilityController.cs" />
     <Compile Include="GUI\ControlWindows\AnalysisToWork.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -145,6 +146,8 @@
     <Compile Include="GUI\ModalWindows\AddEditTaskAssignment.Designer.cs">
       <DependentUpon>AddEditTaskAssignment.cs</DependentUpon>
     </Compile>
+    <Compile Include="Model\AssignmentTaskModel.cs" />
+    <Compile Include="Model\Enums\Status.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="GUI\ControlWindows\AnalysisToWork.resx">
