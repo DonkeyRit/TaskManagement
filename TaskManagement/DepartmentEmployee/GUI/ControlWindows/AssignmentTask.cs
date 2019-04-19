@@ -32,6 +32,32 @@ namespace DepartmentEmployee.GUI.ControlWindows
 			_model.RefreshTaskTree();
 		}
 
+		/// <summary>
+		/// Add new task or subTask
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void AddNewTaskButton_Click(object sender, EventArgs e) => _model.AddNewTaskButton_Click();
+
+		/// <summary>
+		/// Add new Assignment for Task
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void AssignTask_Click(object sender, EventArgs e)
+		{
+			_model.AssignTask_Click();
+			RefreshGrid();
+		}
+
+		/// <summary>
+		/// Show summary progress for concrete task
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void ShowSummaryProgress_Click(object sender, EventArgs e) => _model.ShowSummaryProgress_Click();
+
+
 		//Функционал, обрабатывающий событие, что при выборе элемента, в нем мы снова перебираем Datatable в поисках элементов parentID которых соответвует TagID пункта меню от которого сработало это событие
 		private void TreeView1_AfterSelect(object sender, TreeViewEventArgs e)
 		{
@@ -168,14 +194,6 @@ namespace DepartmentEmployee.GUI.ControlWindows
 			EditCurrentTask(TreeView1.SelectedNode);
 		}
 
-		/// <summary>
-		/// Add new task or subTask
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		private void AddNewTaskButton_Click(object sender, EventArgs e) => _model.AddNewTaskButton_Click();
-		
-
 		//Функционал удаления выбранного задания
 		private async void RemoveTaskButton_Click(object sender, EventArgs e)
 		{
@@ -266,17 +284,6 @@ namespace DepartmentEmployee.GUI.ControlWindows
 			}
 		}
 
-		/// <summary>
-		/// Add new Assignment for Task
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		private void AssignTask_Click(object sender, EventArgs e)
-		{
-			_model.AssignTask_Click();
-			RefreshGrid();
-		}
-
 		//Функционал редактирования назначения
 		private async void Button5_Click(object sender, EventArgs e)
 		{
@@ -347,38 +354,6 @@ namespace DepartmentEmployee.GUI.ControlWindows
 			//Удаляем из DataGridView
 			if (DataGridView1.CurrentRow != null) DataGridView1.Rows.Remove(DataGridView1.CurrentRow);
 		}
-
-		// Функционал для просмотра общего прогресса выполнения задания
-		private void button7_Click(object sender, EventArgs e)
-		{
-
-			//Если не выбран элемент который мы собираемся удалять выходим
-			if (TreeView1.SelectedNode == null)
-			{
-				return;
-			}
-
-			//Запускаем функцию редактирования папки и передаем её текущую ноду которую будем редактировать
-			DetailedResults(TreeView1.SelectedNode);
-		}
-
-		private void DetailedResults(TreeNode node)
-		{
-
-			try
-			{
-				IdTask = int.Parse(node.Tag.ToString());
-			}
-			   
-			catch
-			{
-				MessageBox.Show("Сначала выберите задание по которому хотите посмотреть прогресс выполнения", @"Error", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
-				return;
-			}
-
-			var form = new ImplementationProgress();
-		}
-
 
 		#region Helper Methods
 
@@ -454,8 +429,6 @@ namespace DepartmentEmployee.GUI.ControlWindows
 			}
 		}
 
-		private void TreeView1_DragEnter(object sender, DragEventArgs e) => e.Effect = DragDropEffects.Move;
-		private void DataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e) => Button5_Click(sender, e);
 		private void DataGridView1_KeyDown(object sender, KeyEventArgs e)
 		{
 			if (e.KeyCode == Keys.Enter)
@@ -464,7 +437,6 @@ namespace DepartmentEmployee.GUI.ControlWindows
 			}
 
 		}
-		private void TreeView1_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e) => EditCurrentTask(e.Node);
 		private void DataGridView1_KeyPress(object sender, KeyPressEventArgs e)
 		{
 			if (e.KeyChar == Convert.ToChar(Keys.Enter))
@@ -481,8 +453,7 @@ namespace DepartmentEmployee.GUI.ControlWindows
 			};
 			newForm.Show();
 			Hide();
-		}
-		private void ExitToolStripMenuItem_Click(object sender, EventArgs e) => Application.Exit();
+		}	
 		private void TreeView1_MouseUp(object sender, MouseEventArgs e)
 		{
 			if (TreeView1.GetNodeAt(e.X, e.Y) == null)
@@ -490,6 +461,11 @@ namespace DepartmentEmployee.GUI.ControlWindows
 				TreeView1.SelectedNode = null;
 			}
 		}
+
+		private void TreeView1_DragEnter(object sender, DragEventArgs e) => e.Effect = DragDropEffects.Move;
+		private void DataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e) => Button5_Click(sender, e);
+		private void TreeView1_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e) => EditCurrentTask(e.Node);
+		private void ExitToolStripMenuItem_Click(object sender, EventArgs e) => Application.Exit();
 
 		#endregion
 	}

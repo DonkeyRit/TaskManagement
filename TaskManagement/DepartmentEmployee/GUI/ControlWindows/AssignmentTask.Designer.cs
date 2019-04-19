@@ -42,7 +42,7 @@
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
-			this.button7 = new System.Windows.Forms.Button();
+			this.ShowSummaryProgress = new System.Windows.Forms.Button();
 			this.Button5 = new System.Windows.Forms.Button();
 			this.редактированиеБазыЗнаниToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.BackwardToMainformToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -163,7 +163,7 @@
 			this.DataGridView1.RowTemplate.Height = 24;
 			this.DataGridView1.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.True;
 			this.DataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-			this.DataGridView1.Size = new System.Drawing.Size(685, 400);
+			this.DataGridView1.Size = new System.Drawing.Size(686, 400);
 			this.DataGridView1.TabIndex = 9;
 			this.DataGridView1.Tag = "1";
 			this.DataGridView1.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView1_CellDoubleClick);
@@ -229,7 +229,7 @@
 			// 
 			// groupBox1
 			// 
-			this.groupBox1.Controls.Add(this.button7);
+			this.groupBox1.Controls.Add(this.ShowSummaryProgress);
 			this.groupBox1.Controls.Add(this.Button6);
 			this.groupBox1.Controls.Add(this.AssignTask);
 			this.groupBox1.Controls.Add(this.Button5);
@@ -240,17 +240,17 @@
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "Операции со списком назначений";
 			// 
-			// button7
+			// ShowSummaryProgress
 			// 
-			this.button7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.button7.Location = new System.Drawing.Point(494, 29);
-			this.button7.Margin = new System.Windows.Forms.Padding(2);
-			this.button7.Name = "button7";
-			this.button7.Size = new System.Drawing.Size(146, 34);
-			this.button7.TabIndex = 117;
-			this.button7.Text = "Узнать прогресс выполнения";
-			this.button7.UseVisualStyleBackColor = true;
-			this.button7.Click += new System.EventHandler(this.button7_Click);
+			this.ShowSummaryProgress.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.ShowSummaryProgress.Location = new System.Drawing.Point(494, 29);
+			this.ShowSummaryProgress.Margin = new System.Windows.Forms.Padding(2);
+			this.ShowSummaryProgress.Name = "ShowSummaryProgress";
+			this.ShowSummaryProgress.Size = new System.Drawing.Size(146, 34);
+			this.ShowSummaryProgress.TabIndex = 117;
+			this.ShowSummaryProgress.Text = "Узнать прогресс выполнения";
+			this.ShowSummaryProgress.UseVisualStyleBackColor = true;
+			this.ShowSummaryProgress.Click += new System.EventHandler(this.ShowSummaryProgress_Click);
 			// 
 			// Button5
 			// 
@@ -341,7 +341,7 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.ToolStripMenuItem ExitToolStripMenuItem;
-        internal System.Windows.Forms.Button button7;
+        internal System.Windows.Forms.Button ShowSummaryProgress;
     }
 }
 

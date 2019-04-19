@@ -4,8 +4,8 @@ using System.Windows.Forms;
 using System.Collections.Generic;
 using DepartmentEmployee.Controllers;
 using DepartmentEmployee.Model.Enums;
-using DepartmentEmployee.GUI.ControlWindows;
 using DepartmentEmployee.GUI.ModalWindows;
+using DepartmentEmployee.GUI.ControlWindows;
 
 namespace DepartmentEmployee.Model
 {
@@ -92,6 +92,30 @@ namespace DepartmentEmployee.Model
 									$"WHERE id_Employee={employeeId} AND id_Task={taskId};";
 
 			_form.Connection.ExecNonQuery(query);
+		}
+
+		public void ShowSummaryProgress_Click()
+		{
+			if (_form.TreeView1.SelectedNode == null)
+				return;
+
+			try
+			{
+				AssignmentTask.IdTask = int.Parse(_form.TreeView1.SelectedNode.Tag.ToString());
+			}
+			catch
+			{
+				MessageBox.Show(
+					"Сначала выберите задание по которому хотите посмотреть прогресс выполнения",
+					@"Error",
+					MessageBoxButtons.OK,
+					MessageBoxIcon.Information,
+					MessageBoxDefaultButton.Button1);
+
+				return;
+			}
+
+			var form = new ImplementationProgress();
 		}
 
 		#endregion
