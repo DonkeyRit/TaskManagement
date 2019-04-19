@@ -78,7 +78,7 @@ FOREIGN KEY (id_Result) REFERENCES Results (id) ON DELETE CASCADE
 
 create table EventLog(
 id serial PRIMARY KEY NOT NULL,
-Date datetime not null,
+Date timestamp not null,
 id_LastStatus int,
 id_CurrentStatus int,
 id_Employee int not null,

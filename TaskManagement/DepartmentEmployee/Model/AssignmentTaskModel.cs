@@ -74,8 +74,9 @@ namespace DepartmentEmployee.Model
 			}
 
 			var employeeId = UtilityController.GetId($"SELECT id FROM Employees WHERE FIO  = '{assignmentForm.comboBox1.Text}'", _form.Connection);
-			var dataStart = DateTime.Now.ToString("yyyy-MM-dd");
-			var comment = assignmentForm.textBox1.Text;
+			string dataStart = DateTime.Now.ToString("yyyy-MM-dd"),
+				dataTimeStart = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+				comment = assignmentForm.textBox1.Text;
 
 			var query = "INSERT into Results " +
 								"(Result_Qual1, Result_Qual2, Result_Qual3, Result_Qual4) " +
@@ -87,9 +88,7 @@ namespace DepartmentEmployee.Model
 									"WHERE id = (SELECT max(id) FROM Results);" +
 							"INSERT into EventLog" +
 								"(Date, id_LastStatus, id_CurrentStatus, id_Employee, id_Task) " +
-								$"SELECT '{dataStart}', id_LastStatus, {(int) Status.Assigned}, {employeeId}, {taskId} " +
-									"FROM EventLog " +
-									$"WHERE id_Employee={employeeId} AND id_Task={taskId};";
+								$"VALUES ('{dataTimeStart}', {(int) Status.Created}, {(int)Status.Assigned}, {employeeId}, {taskId} )";
 
 			_form.Connection.ExecNonQuery(query);
 		}
@@ -156,7 +155,7 @@ namespace DepartmentEmployee.Model
 				description = fields["description"],
 				dataOfDelivery = fields["dataOfDelivery"];
 
-			var currentDate = DateTime.Now.ToString("yyyy-MM-dd");
+			var currentDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 			var userId = UtilityController.GetId(
 				$"SELECT id FROM Employees WHERE Login = '{_form.User.Username}' AND Password = '{_form.User.Password}'",
 				_form.Connection);
