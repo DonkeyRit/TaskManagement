@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Data;
 using DepartmentEmployee.Context;
 using DepartmentEmployee.Controllers;
+using DepartmentEmployee.Model.Enums;
 
 namespace DepartmentEmployee.GUI.ControlWindows
 {
@@ -28,7 +29,7 @@ namespace DepartmentEmployee.GUI.ControlWindows
 
 		private async void RefreshGrid()
 		{
-			var query = "select AssignedTasks.id as id, Tasks.Name as Name, AssignedTasks.Date_Start as Date_Start, Tasks.Date_Delivery as Date_Delivery " +
+			var query = "select AssignedTasks.id_Task as id, Tasks.Name as Name, AssignedTasks.Date_Start as Date_Start, Tasks.Date_Delivery as Date_Delivery " +
 				"from AssignedTasks " +
 				"join Tasks on Tasks.id = AssignedTasks.id_Task join Employees " +
 				$"on Employees.id = AssignedTasks.id_Employee where Employees.id  = (select id from Employees where Login = '{_currentUser.Username}' AND Password = '{_currentUser.Password}') " +
@@ -99,17 +100,35 @@ namespace DepartmentEmployee.GUI.ControlWindows
 
 			var uniqueIds = GetListOfTaskId(table, "id");
 			var valueSection = "(" +  string.Join(",", uniqueIds) + ")";
-			var query = "SELECT EventLog.id, Name FROM EventLog " +
-						"JOIN Status " +
-						"ON EventLog.id_CurrentStatus = Status.id " +
-						$"AND id_Task IN {valueSection} " +
-						$"AND id_Employee = (select id from Employees where Login = '{_currentUser.Username}' AND Password = '{_currentUser.Password}');";
+
+			var query ="SELECT id_Task, id_CurrentStatus " +
+						"FROM EventLog " +
+						"WHERE id = (" +
+							"SELECT max(id) " +
+							"FROM EventLog " +
+							$"WHERE id_Task IN {valueSection} " +
+								$"AND id_Employee = (select id from Employees where Login = '{_currentUser.Username}' AND Password = '{_currentUser.Password}'))";
 
 			var statusTable = _connection.GetDataAdapter(query);
-			MessageBox.Show(statusTable.ToString());
+			FillColumnValuesFromAnotherTable(table, statusTable);
 		}
 
-		private static List<string> GetListOfTaskId(DataTable table, string columnName)
+		private static void FillColumnValuesFromAnotherTable(DataTable original, DataTable values)
+		{
+			foreach (DataRow valuesRow in values.Rows)
+			{
+				var taskId = valuesRow["id_Task"].ToString();
+				var status = (Status) valuesRow["id_CurrentStatus"];
+
+				foreach (DataRow originalRow in original.Rows)
+				{
+					if (originalRow["id"].ToString().Equals(taskId))
+						originalRow["Статус"] = status.ToString();
+				}
+			}
+		}
+
+		private static IEnumerable<string> GetListOfTaskId(DataTable table, string columnName)
 		{
 			var list = new List<string>();
 
