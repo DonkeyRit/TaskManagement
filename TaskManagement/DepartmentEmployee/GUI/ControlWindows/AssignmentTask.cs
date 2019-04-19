@@ -40,7 +40,7 @@ namespace DepartmentEmployee.GUI.ControlWindows
 
 			//Получаем datatable
 			//DataTable dt_tt = connection.GetDataAdapter("SELECT id, Name, id_ParentTask FROM Tasks WHERE id_TaskManager = '" + TaskManager + "' AND id_ParentTask = '" + e.Node.Tag.ToString() + "'");
-			DataTable dtTt = Connection.GetDataAdapter("SELECT id, Name, id_ParentTask FROM Tasks WHERE id_ParentTask = '" + e.Node.Tag + "'");
+			var dtTt = Connection.GetDataAdapter($"SELECT id, Name, id_ParentTask FROM Tasks WHERE id_ParentTask = {e.Node.Tag}");
 
 			// Перебираем строки в таблице datatable
 			foreach (DataRow row in dtTt.Rows) {

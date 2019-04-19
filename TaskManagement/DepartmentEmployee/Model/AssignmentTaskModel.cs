@@ -59,7 +59,7 @@ namespace DepartmentEmployee.Model
 			RefreshTaskTree();
 		}
 
-		public async void AssignTask_Click()
+		public void AssignTask_Click()
 		{
 			var taskId = int.Parse(_form.TreeView1.SelectedNode.Tag.ToString());
 			var assignmentForm = new AddEditTaskAssignment();
@@ -91,7 +91,7 @@ namespace DepartmentEmployee.Model
 									"FROM EventLog " +
 									$"WHERE id_Employee={employeeId} AND id_Task={taskId};";
 
-			await _form.Connection.ExecNonQueryAsync(query);
+			_form.Connection.ExecNonQuery(query);
 		}
 
 		#endregion
@@ -99,10 +99,10 @@ namespace DepartmentEmployee.Model
 		/// <summary>
 		/// Refresh Task Tree
 		/// </summary>
-		public async void RefreshTaskTree()
+		public void RefreshTaskTree()
 		{
 			_form.TreeView1.Nodes.Clear();
-			var dtTt = await _form.Connection.GetDataAdapterAsync("SELECT id, Name, id_ParentTask FROM Tasks WHERE id_ParentTask IS NULL");
+			var dtTt = _form.Connection.GetDataAdapter("SELECT id, Name, id_ParentTask FROM Tasks WHERE id_ParentTask IS NULL");
 
 			foreach (DataRow row in dtTt.Rows)
 			{
@@ -122,7 +122,7 @@ namespace DepartmentEmployee.Model
 			_form.TreeView1.ExpandAll();
 		}
 
-		private async void AddNewTask(IReadOnlyDictionary<string, string> fields, int taskManager, int priority)
+		private void AddNewTask(IReadOnlyDictionary<string, string> fields, int taskManager, int priority)
 		{
 			string complexity1 = fields["complexity1"],
 				complexity2 = fields["complexity2"],
@@ -155,7 +155,7 @@ namespace DepartmentEmployee.Model
 								$"SELECT '{currentDate}', {(int) Status.Created}, {userId}, id " +
 									$"FROM Tasks WHERE Name = '{name}'";
 
-			await _form.Connection.ExecNonQueryAsync(query);
+			_form.Connection.ExecNonQuery(query);
 		}
 	}
 }
