@@ -43,11 +43,13 @@
 			// 
 			// menuStrip1
 			// 
+			this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.TOOLToolStripMenuItem});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
-			this.menuStrip1.Size = new System.Drawing.Size(731, 24);
+			this.menuStrip1.Padding = new System.Windows.Forms.Padding(8, 2, 0, 2);
+			this.menuStrip1.Size = new System.Drawing.Size(975, 28);
 			this.menuStrip1.TabIndex = 3;
 			this.menuStrip1.Text = "menuStrip1";
 			// 
@@ -57,20 +59,20 @@
             this.BackwardToMainformToolStripMenuItem,
             this.ExitToolStripMenuItem});
 			this.TOOLToolStripMenuItem.Name = "TOOLToolStripMenuItem";
-			this.TOOLToolStripMenuItem.Size = new System.Drawing.Size(95, 20);
+			this.TOOLToolStripMenuItem.Size = new System.Drawing.Size(115, 24);
 			this.TOOLToolStripMenuItem.Text = "Инструменты";
 			// 
 			// BackwardToMainformToolStripMenuItem
 			// 
 			this.BackwardToMainformToolStripMenuItem.Name = "BackwardToMainformToolStripMenuItem";
-			this.BackwardToMainformToolStripMenuItem.Size = new System.Drawing.Size(250, 22);
+			this.BackwardToMainformToolStripMenuItem.Size = new System.Drawing.Size(306, 26);
 			this.BackwardToMainformToolStripMenuItem.Text = "Вернуться на главную страницу";
 			this.BackwardToMainformToolStripMenuItem.Click += new System.EventHandler(this.BackwardToMainformToolStripMenuItem_Click);
 			// 
 			// ExitToolStripMenuItem
 			// 
 			this.ExitToolStripMenuItem.Name = "ExitToolStripMenuItem";
-			this.ExitToolStripMenuItem.Size = new System.Drawing.Size(250, 22);
+			this.ExitToolStripMenuItem.Size = new System.Drawing.Size(306, 26);
 			this.ExitToolStripMenuItem.Text = "Выйти из программы";
 			this.ExitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
 			// 
@@ -103,10 +105,9 @@
 			dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.ControlText;
 			dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
 			this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle2;
-			this.dataGridView1.Location = new System.Drawing.Point(11, 26);
-			this.dataGridView1.Margin = new System.Windows.Forms.Padding(2);
+			this.dataGridView1.Location = new System.Drawing.Point(15, 32);
+			this.dataGridView1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
 			this.dataGridView1.Name = "dataGridView1";
-			this.dataGridView1.ReadOnly = true;
 			dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
 			dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
 			dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -119,15 +120,16 @@
 			this.dataGridView1.RowTemplate.Height = 24;
 			this.dataGridView1.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.True;
 			this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-			this.dataGridView1.Size = new System.Drawing.Size(709, 255);
+			this.dataGridView1.Size = new System.Drawing.Size(945, 314);
 			this.dataGridView1.TabIndex = 13;
 			this.dataGridView1.Tag = "1";
 			// 
 			// ShowGeneralInfo
 			// 
-			this.ShowGeneralInfo.Location = new System.Drawing.Point(210, 286);
+			this.ShowGeneralInfo.Location = new System.Drawing.Point(280, 352);
+			this.ShowGeneralInfo.Margin = new System.Windows.Forms.Padding(4);
 			this.ShowGeneralInfo.Name = "ShowGeneralInfo";
-			this.ShowGeneralInfo.Size = new System.Drawing.Size(310, 41);
+			this.ShowGeneralInfo.Size = new System.Drawing.Size(413, 50);
 			this.ShowGeneralInfo.TabIndex = 118;
 			this.ShowGeneralInfo.Text = "Показать подробную информацию по назначению";
 			this.ShowGeneralInfo.UseVisualStyleBackColor = true;
@@ -135,12 +137,13 @@
 			// 
 			// TaskEmployee
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(731, 334);
+			this.ClientSize = new System.Drawing.Size(975, 411);
 			this.Controls.Add(this.ShowGeneralInfo);
 			this.Controls.Add(this.dataGridView1);
 			this.Controls.Add(this.menuStrip1);
+			this.Margin = new System.Windows.Forms.Padding(4);
 			this.Name = "TaskEmployee";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "Ваши задачи";
@@ -160,5 +163,5 @@
         private System.Windows.Forms.ToolStripMenuItem ExitToolStripMenuItem;
         internal System.Windows.Forms.DataGridView dataGridView1;
         internal System.Windows.Forms.Button ShowGeneralInfo;
-    }
+	}
 }

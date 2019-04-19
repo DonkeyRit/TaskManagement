@@ -101,40 +101,61 @@ namespace DepartmentEmployee.GUI.ControlWindows
 
 			var query ="SELECT id_Task, id_CurrentStatus " +
 						"FROM EventLog " +
-						"WHERE id = (" +
+						"WHERE id IN (" +
 							"SELECT max(id) " +
 							"FROM EventLog " +
 							$"WHERE id_Task IN {valueSection} " +
-								$"AND id_Employee = (select id from Employees where Login = '{_currentUser.Username}' AND Password = '{_currentUser.Password}'))";
+								$"AND id_Employee = (select id from Employees where Login = '{_currentUser.Username}' AND Password = '{_currentUser.Password}')" +
+								"group by id_Task, id_Employee)";
 
 			var statusTable = _connection.GetDataAdapter(query);
+			var statuses = GetOrderListOfStatuses(table, statusTable);
 
-			AddNewColumn("Статус",table, statusTable);
+			AddNewColumn("Статус", table, statusTable);
+			int i = 0;
+
+			foreach(DataGridViewRow row in dataGridView1.Rows)
+			{
+				row.Cells["Status"].Value = statuses[i];
+				i++;
+			}
+		}
+
+		private List<string> GetOrderListOfStatuses(DataTable original, DataTable values)
+		{
+			var statuses = new List<string>();
+
+			foreach (DataRow originalRow in original.Rows)
+			{
+				var id = (int)originalRow["id"];
+				foreach (DataRow valueRow in values.Rows)
+				{
+					var taskId = (int)valueRow["id_Task"];
+					var status = (Status)valueRow["id_CurrentStatus"];
+
+					if (id == taskId)
+						statuses.Add(status.ToString());
+				}
+			}
+
+			return statuses;
 		}
 
 		private void AddNewColumn(string name, DataTable original, DataTable values)
 		{
-			var tempTable = new DataTable();
-			tempTable.Columns.Add(new DataColumn("Статус"));
-
-			foreach (DataRow originalRow in original.Rows)
-			{
-				var id = (int) originalRow["id"];
-				foreach (DataRow valueRow in values.Rows)
-				{
-					var taskId = (int) valueRow["id_Task"];
-					var status = (Status)valueRow["id_CurrentStatus"];
-
-					if (id == taskId)
-						tempTable.Rows.Add(status.ToString());
-				}
-			}
-
 			var cmb = new DataGridViewComboBoxColumn
 			{
-				Name = "Статус",
-				DataSource = tempTable
+				HeaderText = "Статус",
+				Name = "Status",
+				MaxDropDownItems = 4,
+				
 			};
+
+			cmb.Items.AddRange(
+				Status.Assigned.ToString(), 
+				Status.Completed.ToString(), 
+				Status.OnExecution.ToString(), 
+				Status.Suspended.ToString());
 
 			dataGridView1.Columns.Add(cmb);
 		}
@@ -150,7 +171,6 @@ namespace DepartmentEmployee.GUI.ControlWindows
 
 			return list;
 		}
-
 
 		private void ExitToolStripMenuItem_Click(object sender, EventArgs e) => Application.Exit();
 
