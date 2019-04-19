@@ -1,6 +1,6 @@
 ﻿namespace DepartmentEmployee.GUI.ControlWindows
 {
-    partial class DetailedTaskAssigment
+    partial class DetailedTaskAssignment
     {
         /// <summary>
         /// Required designer variable.
@@ -37,7 +37,7 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DetailedTaskAssigment));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DetailedTaskAssignment));
             this.DataGridView1 = new System.Windows.Forms.DataGridView();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -237,7 +237,7 @@
             this.label3.TabIndex = 22;
             this.label3.Text = "Общий прогресс выполнения задания";
             // 
-            // DetailedTaskAssigment
+            // DetailedTaskAssignment
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -250,7 +250,7 @@
             this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.DataGridView1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "DetailedTaskAssigment";
+            this.Name = "DetailedTaskAssignment";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Детальная информация по назначенной задаче";
             ((System.ComponentModel.ISupportInitialize)(this.DataGridView1)).EndInit();

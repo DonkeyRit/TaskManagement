@@ -14,7 +14,7 @@ namespace DepartmentEmployee.Controllers
 				var element = elements[column];
 
 				if (element != null)
-					element.Visible  = true;
+					element.Visible  = value;
 			}
 		}
 
@@ -28,7 +28,6 @@ namespace DepartmentEmployee.Controllers
 
 				if (element != null)
 					element.HeaderText = pair.Value;
-
 			}
 		}
 	}

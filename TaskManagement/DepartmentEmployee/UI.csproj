@@ -68,11 +68,11 @@
     <Compile Include="GUI\ControlWindows\Authorization.Designer.cs">
       <DependentUpon>Authorization.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\ControlWindows\DetailedTaskAssigment.cs">
+    <Compile Include="GUI\ControlWindows\DetailedTaskAssignment.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GUI\ControlWindows\DetailedTaskAssigment.Designer.cs">
-      <DependentUpon>DetailedTaskAssigment.cs</DependentUpon>
+    <Compile Include="GUI\ControlWindows\DetailedTaskAssignment.Designer.cs">
+      <DependentUpon>DetailedTaskAssignment.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\ControlWindows\ImplementationProgress.cs">
       <SubType>Form</SubType>
@@ -156,8 +156,8 @@
     <EmbeddedResource Include="GUI\ControlWindows\Authorization.resx">
       <DependentUpon>Authorization.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\ControlWindows\DetailedTaskAssigment.resx">
-      <DependentUpon>DetailedTaskAssigment.cs</DependentUpon>
+    <EmbeddedResource Include="GUI\ControlWindows\DetailedTaskAssignment.resx">
+      <DependentUpon>DetailedTaskAssignment.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\ControlWindows\ImplementationProgress.resx">
       <DependentUpon>ImplementationProgress.cs</DependentUpon>
