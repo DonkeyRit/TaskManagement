@@ -37,10 +37,11 @@ namespace DepartmentEmployee.GUI.ControlWindows
 
 			var dt = await _connection.GetDataAdapterAsync(query);
 
-			AddStatusColumn(dt);
-
 			if (dataGridView1.CurrentRow != null) Id = int.Parse(dataGridView1.CurrentRow.Cells["id"].Value.ToString());
 			dataGridView1.DataSource = dt;
+
+			AddStatusColumn(dt);
+
 			try
 			{
 				dataGridView1.SetVisible(false, "id");
@@ -95,9 +96,6 @@ namespace DepartmentEmployee.GUI.ControlWindows
 
 		private void AddStatusColumn(DataTable table)
 		{
-			var statusOfTask = new DataColumn("Статус");
-			table.Columns.Add(statusOfTask);
-
 			var uniqueIds = GetListOfTaskId(table, "id");
 			var valueSection = "(" +  string.Join(",", uniqueIds) + ")";
 
@@ -110,22 +108,35 @@ namespace DepartmentEmployee.GUI.ControlWindows
 								$"AND id_Employee = (select id from Employees where Login = '{_currentUser.Username}' AND Password = '{_currentUser.Password}'))";
 
 			var statusTable = _connection.GetDataAdapter(query);
-			FillColumnValuesFromAnotherTable(table, statusTable);
+
+			AddNewColumn("Статус",table, statusTable);
 		}
 
-		private static void FillColumnValuesFromAnotherTable(DataTable original, DataTable values)
+		private void AddNewColumn(string name, DataTable original, DataTable values)
 		{
-			foreach (DataRow valuesRow in values.Rows)
-			{
-				var taskId = valuesRow["id_Task"].ToString();
-				var status = (Status) valuesRow["id_CurrentStatus"];
+			var tempTable = new DataTable();
+			tempTable.Columns.Add(new DataColumn("Статус"));
 
-				foreach (DataRow originalRow in original.Rows)
+			foreach (DataRow originalRow in original.Rows)
+			{
+				var id = (int) originalRow["id"];
+				foreach (DataRow valueRow in values.Rows)
 				{
-					if (originalRow["id"].ToString().Equals(taskId))
-						originalRow["Статус"] = status.ToString();
+					var taskId = (int) valueRow["id_Task"];
+					var status = (Status)valueRow["id_CurrentStatus"];
+
+					if (id == taskId)
+						tempTable.Rows.Add(status.ToString());
 				}
 			}
+
+			var cmb = new DataGridViewComboBoxColumn
+			{
+				Name = "Статус",
+				DataSource = tempTable
+			};
+
+			dataGridView1.Columns.Add(cmb);
 		}
 
 		private static IEnumerable<string> GetListOfTaskId(DataTable table, string columnName)
