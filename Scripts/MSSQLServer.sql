@@ -89,13 +89,13 @@ FOREIGN KEY (id_Task) REFERENCES Tasks (id)
 );
 
 insert into Qualifications(Name, Coefficient) values
-	('Инженер 3-категории', 1.0),('Инженер 2-категории', 1.2),
-	('Инженер 1-категории', 1.4),('Главный инженер', 1.5);
+	('3-category engineer', 1.0),('2-category engineer', 1.2),
+	('1-category engineer', 1.4),('Chief Engineer', 1.5);
 	
 insert into Status(Name) values
-	('Создан'),('Назначен'),
-	('На выполнении'),('Приостановлен'),
-	('Завершен');
+	('Created'),('Assigned'),
+	('On execution'),('Suspended'),
+	('Completed');
 
 insert into Complexity(Complexity_Qual1,Complexity_Qual2,Complexity_Qual3,Complexity_Qual4) values
 	(10, 0, 0, 10),(20, 10, 0, 0),
@@ -106,30 +106,24 @@ insert into Results(Result_Qual1,Result_Qual2,Result_Qual3,Result_Qual4) values
 	(0, 0, 0, 10),(2, 0, 3, 5);
 
 insert into Priority(Name, Coefficient) values
-	('Низкий', 1),('Средний', 2),
-	('Высокий', 3),('Срочный', 4);
+	('Low', 1),('Medium', 2),
+	('High', 3),('Urgent', 4);
 
 insert into Type(Name) values ('Admin'),('Director'),('User');
 
 insert into Employees(FIO, DateOfBirth, id_Qualification, Login, Password, id_Type) values 
-	('Дынин Николай Вадимович', '1996-01-16', 4, 'Admin','Admin', 1),
-	('Алексеев Дмитрий Андреевич', '1996-09-24', 3, 'abdc50','123456',2), 
-	('Свечников Егор Александрович', '1995-06-15', 1, 'user','user',3); 
+	('Dynin Nick Vadimovich', '1996-01-16', 4, 'Admin','Admin', 1),
+	('Alekseev Dima Andreevich', '1996-09-24', 3, 'abdc50','123456',2), 
+	('Svechnikov Egor Aleksandrovich', '1995-06-15', 1, 'user','user',3); 
 
 insert into Tasks(Name, id_Complexity, Date_Delivery, id_TaskManager, id_Priority) values
-	('Автоматизированные информационные системы управления', 1, '2019-06-01', 1, 3),
-	('Предназначение адаптивного матричного мультипликатора', 2, '2019-05-01', 1, 1),
-	('Адекватность и объективность моделирования информационной системы управления', 3, '2019-04-19', 1, 2),
-	('Мониторинговый алгоритм состояния сети передачи данных', 4, '2019-04-19', 1, 2),
-	('Сущность и особенности алгоритма работы блока ввода и обработки данных', 1, '2019-04-19', 1, 3), 
-	('Оценка интенсивности трафика', 2, '2019-04-19', 1, 2),
-	('Оценка качества связи на основании принятия информационных сигналов', 3, '2019-04-19', 1, 4),
-	('Особенности математического и программного обеспечения систем управления', 4,'2019-04-19', 1, 1),
-	('Оценка надежности системы с общей резервацией элементов', 1, '2019-04-19', 1, 3), 
-	('Характерные особенности моделирования систем передачи информации особой важности', 2, '2019-04-19', 1, 1);
-
-insert into AssignedTasks(id_Task, id_Employee, Date_Start, id_Result) values 
-	(1,2,'2019-04-19',1), 
-	(2,3,'2019-04-19',2),
-	(3,2,'2019-04-19',3), 
-	(4,3,'2019-04-19', 4);
+	('Automated Information Management Systems', 1, '2019-06-01', 1, 3),
+	('Purpose of the adaptive matrix multiplier', 2, '2019-05-01', 1, 1),
+	('Adequacy and objectivity of modeling an information management system', 3, '2019-04-19', 1, 2),
+	('The monitoring algorithm of the state of the data transmission network', 4, '2019-04-19', 1, 2),
+	('The essence and features of the algorithm of the data input and processing unit', 1, '2019-04-19', 1, 3), 
+	('Estimation of traffic intensity', 2, '2019-04-19', 1, 2),
+	('Evaluation of the quality of communication based on the adoption of information signals', 3, '2019-04-19', 1, 4),
+	('Features of mathematical and software control systems', 4,'2019-04-19', 1, 1),
+	('Evaluation of the reliability of the system with a general reservation of elements', 1, '2019-04-19', 1, 3), 
+	('Characteristics of modeling systems for the transmission of information of special importance', 2, '2019-04-19', 1, 1);

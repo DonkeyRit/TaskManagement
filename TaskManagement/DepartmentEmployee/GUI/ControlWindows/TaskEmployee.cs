@@ -3,6 +3,7 @@ using Core.Model;
 using System.Windows.Forms;
 using Core.Database.Connection;
 using System.Collections.Generic;
+using System.Data;
 using DepartmentEmployee.Context;
 using DepartmentEmployee.Controllers;
 
@@ -27,19 +28,18 @@ namespace DepartmentEmployee.GUI.ControlWindows
 
 		private async void RefreshGrid()
 		{
-
-			string login = _currentUser.Username,
-				password = _currentUser.Password;
-
-			var dt = await _connection.GetDataAdapterAsync(
-				"select AssignedTasks.id as id, Tasks.Name as Name, AssignedTasks.Date_Start as Date_Start, Tasks.Date_Delivery as Date_Delivery " +
+			var query = "select AssignedTasks.id as id, Tasks.Name as Name, AssignedTasks.Date_Start as Date_Start, Tasks.Date_Delivery as Date_Delivery " +
 				"from AssignedTasks " +
 				"join Tasks on Tasks.id = AssignedTasks.id_Task join Employees " +
-				$"on Employees.id = AssignedTasks.id_Employee where Employees.id  = (select id from Employees where Login = '{login}' AND Password = '{password}') " +
-				"ORDER BY Tasks.Date_Delivery ASC");
+				$"on Employees.id = AssignedTasks.id_Employee where Employees.id  = (select id from Employees where Login = '{_currentUser.Username}' AND Password = '{_currentUser.Password}') " +
+				"ORDER BY Tasks.Date_Delivery ASC";
 
-			dataGridView1.DataSource = dt;
+			var dt = await _connection.GetDataAdapterAsync(query);
+
+			AddStatusColumn(dt);
+
 			if (dataGridView1.CurrentRow != null) Id = int.Parse(dataGridView1.CurrentRow.Cells["id"].Value.ToString());
+			dataGridView1.DataSource = dt;
 			try
 			{
 				dataGridView1.SetVisible(false, "id");
@@ -70,7 +70,6 @@ namespace DepartmentEmployee.GUI.ControlWindows
 			newForm.Show();
 			Hide();
 		}
-
 		private void ShowGeneralInfo_Click(object sender, EventArgs e)
 		{
 			try
@@ -91,6 +90,40 @@ namespace DepartmentEmployee.GUI.ControlWindows
 			form.Show();
 		}
 
+		#region Helper methods
+
+		private void AddStatusColumn(DataTable table)
+		{
+			var statusOfTask = new DataColumn("Статус");
+			table.Columns.Add(statusOfTask);
+
+			var uniqueIds = GetListOfTaskId(table, "id");
+			var valueSection = "(" +  string.Join(",", uniqueIds) + ")";
+			var query = "SELECT EventLog.id, Name FROM EventLog " +
+						"JOIN Status " +
+						"ON EventLog.id_CurrentStatus = Status.id " +
+						$"AND id_Task IN {valueSection} " +
+						$"AND id_Employee = (select id from Employees where Login = '{_currentUser.Username}' AND Password = '{_currentUser.Password}');";
+
+			var statusTable = _connection.GetDataAdapter(query);
+			MessageBox.Show(statusTable.ToString());
+		}
+
+		private static List<string> GetListOfTaskId(DataTable table, string columnName)
+		{
+			var list = new List<string>();
+
+			foreach (DataRow row in table.Rows)
+			{
+				list.Add(row[columnName].ToString());
+			}
+
+			return list;
+		}
+
+
 		private void ExitToolStripMenuItem_Click(object sender, EventArgs e) => Application.Exit();
+
+		#endregion
 	}
 }
