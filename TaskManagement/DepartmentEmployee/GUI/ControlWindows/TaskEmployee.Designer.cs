@@ -123,6 +123,8 @@
 			this.dataGridView1.Size = new System.Drawing.Size(945, 314);
 			this.dataGridView1.TabIndex = 13;
 			this.dataGridView1.Tag = "1";
+			this.dataGridView1.CurrentCellDirtyStateChanged += new System.EventHandler(this.dataGridView1_CurrentCellDirtyStateChanged);
+			this.dataGridView1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellValueChanged);
 			// 
 			// ShowGeneralInfo
 			// 
