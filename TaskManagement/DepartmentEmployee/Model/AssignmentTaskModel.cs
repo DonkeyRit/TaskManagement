@@ -115,6 +115,7 @@ namespace DepartmentEmployee.Model
 			}
 
 			var form = new ImplementationProgress();
+			form.Show();
 		}
 
 		#endregion

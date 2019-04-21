@@ -147,6 +147,7 @@
       <DependentUpon>AddEditTaskAssignment.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\AssignmentTaskModel.cs" />
+    <Compile Include="Model\CountProgressModel.cs" />
     <Compile Include="Model\Enums\Status.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
