@@ -81,7 +81,9 @@ namespace DepartmentEmployee.GUI.ControlWindows
 			try
 			{
 				if (dataGridView1.CurrentRow != null)
-                    IdAssigment = int.Parse(dataGridView1.CurrentRow.Cells["idAssigment"].Value.ToString());
+					IdAssigment = int.Parse(dataGridView1.CurrentRow.Cells["idAssigment"].Value.ToString());
+				else
+					throw new Exception();
 			}
 			catch
 			{
@@ -116,7 +118,10 @@ namespace DepartmentEmployee.GUI.ControlWindows
 					$"SELECT '{currentDate}', id_CurrentStatus, {(int) currentStatus}, id_Employee, {taskId} " +
 					"FROM EventLog " +
 					$"WHERE id_Task = {taskId} " +
-						$"AND id = (SELECT MAX(id) FROM EventLog WHERE id_Task = {taskId});";
+						$"AND id = (SELECT MAX(id) FROM EventLog " +
+							$"WHERE id_Task = {taskId} AND id_Employee = " +
+							$"(SELECT id FROM Employees " +
+								$"WHERE Login = '{_currentUser.Username}' AND Password = '{_currentUser.Password}'));";
 
 				_connection.ExecNonQuery(query);
 			}
