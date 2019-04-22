@@ -17,7 +17,7 @@ namespace DepartmentEmployee.GUI.ControlWindows
 		private readonly User _currentUser;
 		private readonly Task _refreshGrid;
 
-		public static int Id;
+		public static int IdAssigment;
 
 		public TaskEmployee()
 		{
@@ -31,7 +31,7 @@ namespace DepartmentEmployee.GUI.ControlWindows
 
 		private async Task RefreshGrid()
 		{
-			var query = "select AssignedTasks.id_Task as id, Tasks.Name as Name, AssignedTasks.Date_Start as Date_Start, Tasks.Date_Delivery as Date_Delivery " +
+			var query = "select AssignedTasks.id_Task as id, AssignedTasks.id as idAssigment, Tasks.Name as Name, AssignedTasks.Date_Start as Date_Start, Tasks.Date_Delivery as Date_Delivery " +
 				"from AssignedTasks " +
 				"join Tasks on Tasks.id = AssignedTasks.id_Task join Employees " +
 				$"on Employees.id = AssignedTasks.id_Employee where Employees.id  = (select id from Employees where Login = '{_currentUser.Username}' AND Password = '{_currentUser.Password}') " +
@@ -39,7 +39,7 @@ namespace DepartmentEmployee.GUI.ControlWindows
 
 			var dt = await _connection.GetDataAdapterAsync(query);
 
-			if (dataGridView1.CurrentRow != null) Id = int.Parse(dataGridView1.CurrentRow.Cells["id"].Value.ToString());
+			if (dataGridView1.CurrentRow != null) IdAssigment = int.Parse(dataGridView1.CurrentRow.Cells["id"].Value.ToString());
 			dataGridView1.DataSource = dt;
 
 			AddStatusColumn(dt);
@@ -47,7 +47,8 @@ namespace DepartmentEmployee.GUI.ControlWindows
 			try
 			{
 				dataGridView1.SetVisible(false, "id");
-				dataGridView1.ChangeHeader(new Dictionary<string, string>
+                dataGridView1.SetVisible(false, "idAssigment");
+                dataGridView1.ChangeHeader(new Dictionary<string, string>
 				{
 					{"Name", "Задание"},
 					{"Date_Start", "Дата выдачи"},
@@ -80,7 +81,7 @@ namespace DepartmentEmployee.GUI.ControlWindows
 			try
 			{
 				if (dataGridView1.CurrentRow != null)
-					Id = int.Parse(dataGridView1.CurrentRow.Cells["id"].Value.ToString());
+                    IdAssigment = int.Parse(dataGridView1.CurrentRow.Cells["idAssigment"].Value.ToString());
 			}
 			catch
 			{

@@ -30,36 +30,39 @@ namespace DepartmentEmployee.GUI.ControlWindows
 
 			string login = _currentUser.Username,
 				password = _currentUser.Password;
-			var id = TaskEmployee.Id;
+			var id = TaskEmployee.IdAssigment;
 
-			var dt1 = await _connection.GetDataAdapterAsync(
-				"select " +
-					"AssignedTasks.Date_Start as Дата_выдачи, " +
-					"Tasks.Date_Delivery as Дата_сдачи, " +
-					"AssignedTasks.Date_End as Дата_завершения," +
-					"Employees.FIO AS TaskManager, " +
-					"Results.id as Результат, " +
-					"Priority.Name as Priority " +
-				"from Tasks " +
-				"join Employees " +
-					"on Employees.id = Tasks.id_TaskManager join Priority on Priority.id = Tasks.id_Priority " +
-				"join AssignedTasks " +
-				"	on Tasks.id = AssignedTasks.id_Task join Results on Results.id = AssignedTasks.id_Result " +
-				$"where AssignedTasks.id = {id}");
+            var dt1 = await _connection.GetDataAdapterAsync(
 
-			DataGridView1.DataSource = dt1; 
+                "select " +
+                        "AssignedTasks.Date_Start as Дата_выдачи, " +
+                        "Tasks.Date_Delivery as Дата_сдачи, " +
+                        "AssignedTasks.Date_End as Дата_завершения, " +
+                        "Qualifications.Name as Qualification, " +
+                        $"(select Employees.FIO from Tasks join Employees on Tasks.id_TaskManager = Employees.id join AssignedTasks on Tasks.id = AssignedTasks.id_Task where AssignedTasks.id = {id}) as TaskManager, " +
+                        $"(select Name from Priority where id = (select Tasks.id_Priority from Tasks join AssignedTasks on AssignedTasks.id_Task = Tasks.id where AssignedTasks.id = {id})) as Priority, " +
+                        "(Results.Result_Qual1 + Results.Result_Qual2 + Results.Result_Qual3 + Results.Result_Qual4) as Result " +
+                "from Employees " +
+                        "join Qualifications on Employees.id_Qualification = Qualifications.id " +
+                       "join AssignedTasks on AssignedTasks.id_Employee = Employees.id " +
+                        "join Tasks on Tasks.id = AssignedTasks.id_Task " +
+                        "join Results on AssignedTasks.id_Result = Results.id " +
+                        $"where Results.id in (Select id_Result from AssignedTasks where AssignedTasks.id = {id})");
+
+            DataGridView1.DataSource = dt1; 
 
 			try
 			{
-				DataGridView1.SetVisible(false, "Результат");
 				DataGridView1.ChangeHeader(new Dictionary<string, string>
 				{
 					{"Дата_выдачи","Дата назначения"},
 					{"Дата_сдачи","Планируемая дата сдачи"},
 					{"Дата_завершения","Фактическая дата сдачи"},
-					{"TaskManager","Руководитель"},
-					{"Priority","Приоритет"}
-				});
+                    {"Qualification","Квалификация"},
+                    {"TaskManager","Руководитель"},
+					{"Priority","Приоритет"},
+                    {"Result","Результат"}
+                });
 
 				if(DataGridView1.Columns["TaskManager"] != null)
 					DataGridView1.Columns["TaskManager"].Width = 200;
@@ -80,21 +83,21 @@ namespace DepartmentEmployee.GUI.ControlWindows
 
 			var name = table.GetColumnValuesDataTable(0, CellType.String);
 			var employeeUser = name[0].ToString();
-			
-			var dt2 = await _connection.GetDataAdapterAsync(
-				"Select " +
-								"Employees.FIO as Employee, " +
-								"Qualifications.Name as Qualification, " +
-								"AssignedTasks.Date_Start as Data_Start, " +
-						$"(select id from Results where id = (select id_Result from Tasks where id = {taskId})) As Result " +
-							"from Employees " +
-							"join Qualifications " +
-								"on Qualifications.id = Employees.id_Qualification " +
-							"join AssignedTasks " +
-								"on AssignedTasks.id_Employee = Employees.id " +
-						$"where AssignedTasks.id_Task = {taskId}");
 
-			dataGridView2.DataSource = dt2;
+            var dt2 = await _connection.GetDataAdapterAsync(
+
+                "select " +
+                        "Employees.FIO as Employee, " +
+                        "Qualifications.Name as Qualification, " +
+                        "AssignedTasks.Date_Start as Date_Start, " +
+                        "(Results.Result_Qual1 + Results.Result_Qual2 + Results.Result_Qual3 + Results.Result_Qual4) as Result " +
+                "from Employees " +
+                        "join Qualifications on Employees.id_Qualification = Qualifications.id " +
+                        "join AssignedTasks on AssignedTasks.id_Employee = Employees.id " +
+                        "join Results on AssignedTasks.id_Result = Results.id " +
+                        $"where Results.id in (Select id_Result from AssignedTasks where id_Task = {taskId})");
+
+            dataGridView2.DataSource = dt2;
 			dataGridView2.CurrentCell = null;
 
 			for (var i = 0; i < dataGridView2.Rows.Count; i++)
@@ -104,13 +107,13 @@ namespace DepartmentEmployee.GUI.ControlWindows
 			
 			try
 			{
-				dataGridView2.SetVisible(false, "Result");
 				dataGridView2.ChangeHeader(new Dictionary<string, string>
 				{
 					{"Employee","Сотрудник"},
 					{"Qualification","Квалификация"},
-					{"Data_Start", "Дата назначения"}
-				});
+					{"Date_Start", "Дата назначения"},
+                    {"Result", "Результат"}
+                });
 			}
 			catch
 			{
@@ -144,7 +147,7 @@ namespace DepartmentEmployee.GUI.ControlWindows
 			}
 
 			table = _connection.GetDataAdapter("Select Tasks.Name from AssignedTasks join Tasks on AssignedTasks.id_Task = Tasks.id where AssignedTasks.id = '" + id + "'");
-			string taskName = table.GetColumnValuesDataTable(0, CellType.String).ToString(),
+			string taskName = table.GetColumnValuesDataTable(0, CellType.String)[0].ToString(),
 				textLabel = taskName;
 			label1.Text = @"Описание задания: " + textLabel;
 

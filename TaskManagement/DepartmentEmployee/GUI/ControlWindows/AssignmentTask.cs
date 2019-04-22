@@ -250,15 +250,49 @@ namespace DepartmentEmployee.GUI.ControlWindows
 			try
 			{
 				var currentTaskId = TreeView1.SelectedNode.Tag.ToString();
-				var dt = await Connection.GetDataAdapterAsync("select AssignedTasks.id as ID, Tasks.Name as Task, Employees.FIO as Employee, AssignedTasks.Date_Start as Дата_выдачи, Tasks.Date_Delivery as Date_Delivery, AssignedTasks.Date_End as Дата_сдачи,  Results.id as Результат, AssignedTasks.Comment as Comment from AssignedTasks join Tasks on Tasks.id = AssignedTasks.id_Task join Employees on Employees.id = AssignedTasks.id_Employee join Results on Results.id = AssignedTasks.id_Result WHERE id_Task = '" + currentTaskId + "'");
+                var dt = await Connection.GetDataAdapterAsync(
 
+                    "select AssignedTasks.id as ID, " +
+                        "Tasks.Name as Task, " +
+                        "Employees.FIO as Employee, " +
+                        "AssignedTasks.Date_Start as Дата_выдачи, " +
+                        "Tasks.Date_Delivery as Date_Delivery, " +
+                        "AssignedTasks.Date_End as Дата_сдачи, " +
+                        "(Results.Result_Qual1 + Results.Result_Qual2 + Results.Result_Qual3 + Results.Result_Qual4) as Результат, " +
+                        "AssignedTasks.Comment as Comment " +
+                    "from AssignedTasks " +
+                        "join Results on AssignedTasks.id_Result = Results.id " +
+                        "join Tasks on Tasks.id = AssignedTasks.id_Task " +
+                        "join Employees on AssignedTasks.id_Employee = Employees.id " +
+                            "where Results.id in " +
+                            "(select id_Result from AssignedTasks " +
+                                $"where id_Task = {currentTaskId})");
+
+                //"select AssignedTasks.id as ID, Tasks.Name as Task, Employees.FIO as Employee, AssignedTasks.Date_Start as Дата_выдачи, Tasks.Date_Delivery as Date_Delivery, AssignedTasks.Date_End as Дата_сдачи,  Results.id as Результат, AssignedTasks.Comment as Comment from AssignedTasks join Tasks on Tasks.id = AssignedTasks.id_Task join Employees on Employees.id = AssignedTasks.id_Employee join Results on Results.id = AssignedTasks.id_Result WHERE id_Task = '" + currentTaskId + "'");
+                
 				DataGridView1.DataSource = dt; //Присвеиваем DataTable в качестве источника данных DataGridView
 			}
 			catch
 			{
 
-				var dt = await Connection.GetDataAdapterAsync("select AssignedTasks.id as ID, Tasks.Name as Задание, Employees.FIO as Employee, AssignedTasks.Date_Start as Дата_выдачи, Tasks.Date_Delivery as Date_Delivery, AssignedTasks.Date_End as Дата_сдачи, Results.id as Результат, AssignedTasks.Comment as Comment from AssignedTasks join Tasks on Tasks.id = AssignedTasks.id_Task join Employees on Employees.id = AssignedTasks.id_Employee join Results on Results.id = AssignedTasks.id_Result");
-				DataGridView1.DataSource = dt;
+				var dt = await Connection.GetDataAdapterAsync(
+
+                        "select AssignedTasks.id as ID, " +
+                            "Tasks.Name as Task, " +
+                            "Employees.FIO as Employee, " +
+                            "AssignedTasks.Date_Start as Data_Start, " +
+                            "Tasks.Date_Delivery as Date_Delivery, " +
+                            "AssignedTasks.Date_End as Date_End, " +
+                            "(Results.Result_Qual1 + Results.Result_Qual2 + Results.Result_Qual3 + Results.Result_Qual4) as Result, " +
+                            "AssignedTasks.Comment as Comment " +
+                        "from AssignedTasks " +
+                            "join Results on AssignedTasks.id_Result = Results.id " +
+                            "join Tasks on Tasks.id = AssignedTasks.id_Task " +
+                            "join Employees on AssignedTasks.id_Employee = Employees.id");
+
+                //"select AssignedTasks.id as ID, Tasks.Name as Задание, Employees.FIO as Employee, AssignedTasks.Date_Start as Дата_выдачи, Tasks.Date_Delivery as Date_Delivery, AssignedTasks.Date_End as Дата_сдачи, Results.id as Результат, AssignedTasks.Comment as Comment from AssignedTasks join Tasks on Tasks.id = AssignedTasks.id_Task join Employees on Employees.id = AssignedTasks.id_Employee join Results on Results.id = AssignedTasks.id_Result");
+
+                DataGridView1.DataSource = dt;
 			}
 
 			try
@@ -341,12 +375,12 @@ namespace DepartmentEmployee.GUI.ControlWindows
 			}
 			catch
 			{
-				MessageBox.Show("Сначала выберите студента", @"Error", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
+				MessageBox.Show("Сначала выберите сотрудника", @"Error", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
 				return;
 			}
 
 			//Удаляем из базы
-			if ((DialogResult = MessageBox.Show("Вы действительно хотите удалить студента: " + DataGridView1.CurrentRow?.Cells["ФИО_студента"].Value  + "?", @"Delete Employee", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1)) == DialogResult.Yes)
+			if ((DialogResult = MessageBox.Show("Вы действительно хотите удалить студента: " + DataGridView1.CurrentRow?.Cells["Employee"].Value  + "?", @"Delete Employee", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1)) == DialogResult.Yes)
 			{
 				await Connection.ExecNonQueryAsync("DELETE FROM AssignedTasks where id = '" + id + "'");
 			}
