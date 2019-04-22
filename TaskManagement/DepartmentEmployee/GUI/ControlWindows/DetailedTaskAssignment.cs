@@ -6,6 +6,7 @@ using Core.Database.Connection;
 using DepartmentEmployee.Context;
 using System.Collections.Generic;
 using DepartmentEmployee.Controllers;
+using DepartmentEmployee.Model;
 
 namespace DepartmentEmployee.GUI.ControlWindows
 {
@@ -19,6 +20,7 @@ namespace DepartmentEmployee.GUI.ControlWindows
 			InitializeComponent();
 			_currentUser = CustomContext.GetInstance().CurrentUser;
 			_connection = Connection.CreateConnection();
+			CountProgressModel.CountProgress(_connection, UtilityController.GetId($"Select id_Task from AssignedTasks where id = {TaskEmployee.IdAssigment}", _connection));
 			RefreshGrid();
 		}
 
