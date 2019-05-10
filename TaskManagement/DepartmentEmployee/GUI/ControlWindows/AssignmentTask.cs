@@ -520,17 +520,22 @@ namespace DepartmentEmployee.GUI.ControlWindows
             return quary;
         }
 
-        //Метод обновления дерева заданий
-        private void FullListTasks_Click(object sender, EventArgs e)
-        {
-            if (FullListTasks.Checked)
-            {
-                _model.RefreshTaskTree(Quary());
-            }
-            else
-            {
-                _model.RefreshTaskTree(Quary());
-            }
-        }
-    }
+		//Метод обновления дерева заданий
+		private void FullListTasks_Click(object sender, EventArgs e)
+		{
+			if (FullListTasks.Checked)
+			{
+				_model.RefreshTaskTree(Quary());
+			}
+			else
+			{
+				_model.RefreshTaskTree(Quary());
+			}
+		}
+
+		private void CheckCorrectness_Click(object sender, EventArgs e)
+		{
+
+		}
+	}
 }

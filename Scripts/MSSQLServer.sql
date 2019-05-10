@@ -90,12 +90,9 @@ insert into Status(Name) values
 	('Completed');
 
 insert into Complexity(Complexity_Qual1,Complexity_Qual2,Complexity_Qual3,Complexity_Qual4) values
-	(10, 0, 0, 10),(20, 10, 0, 0),
-	(0, 0, 0, 20),(10, 0, 30, 10);
-
-insert into Results(Result_Qual1,Result_Qual2,Result_Qual3,Result_Qual4) values
-	(5, 0, 0, 5),(10, 0, 0, 0),
-	(0, 0, 0, 10),(2, 0, 3, 5);
+	(0, 10, 10, 0),(30, 20, 0, 0),
+	(22, 25, 10, 0),(0, 0, 0, 35),
+	(60,0,0,0),(20,0,15,0);
 
 insert into Type(Name) values ('Admin'),('Director'),('User');
 
@@ -105,13 +102,9 @@ insert into Employees(FIO, DateOfBirth, id_Qualification, Login, Password, id_Ty
 	('Svechnikov Egor Aleksandrovich', '1995-06-15', 1, 'user','user',3); 
 
 insert into Tasks(Name, id_Complexity, Date_Delivery, id_TaskManager) values
-	('Automated Information Management Systems', 1, '2019-06-01', 1),
-	('Purpose of the adaptive matrix multiplier', 2, '2019-05-01', 1),
-	('Adequacy and objectivity of modeling an information management system', 3, '2019-04-19', 1),
-	('The monitoring algorithm of the state of the data transmission network', 4, '2019-04-19', 1),
-	('The essence and features of the algorithm of the data input and processing unit', 1, '2019-04-19', 1), 
-	('Estimation of traffic intensity', 2, '2019-04-19', 1),
-	('Evaluation of the quality of communication based on the adoption of information signals', 3, '2019-04-19', 1),
-	('Features of mathematical and software control systems', 4,'2019-04-19', 1),
-	('Evaluation of the reliability of the system with a general reservation of elements', 1, '2019-04-19', 1), 
-	('Characteristics of modeling systems for the transmission of information of special importance', 2, '2019-04-19', 1);
+	('Automated Information Management Systems', 1, '2019-06-15', 1),
+	('Purpose of the adaptive matrix multiplier', 2, '2019-05-31', 1),
+	('Adequacy and objectivity of modeling an information management system', 3, '2019-05-16', 1),
+	('The monitoring algorithm of the state of the data transmission network', 4, '2019-05-19', 1),
+	('The essence and features of the algorithm of the data input and processing unit', 5, '2019-05-26', 1), 
+	('Estimation of traffic intensity', 6, '2019-06-05', 1);
