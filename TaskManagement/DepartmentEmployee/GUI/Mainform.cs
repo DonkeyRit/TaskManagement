@@ -27,14 +27,6 @@ namespace DepartmentEmployee.GUI
             Hide();
         }
 
-
-        private void PriorityToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ListPriority newForm = new ListPriority();
-            newForm.Show();
-            Hide();
-        }
-
         private void AssigmentTaskToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
             AssignmentTask newForm = new AssignmentTask();

@@ -86,12 +86,6 @@
     <Compile Include="GUI\ControlWindows\ListQialifications.Designer.cs">
       <DependentUpon>ListQialifications.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\ControlWindows\ListPriority.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GUI\ControlWindows\ListPriority.Designer.cs">
-      <DependentUpon>ListPriority.cs</DependentUpon>
-    </Compile>
     <Compile Include="GUI\ControlWindows\TaskEmployee.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -103,12 +97,6 @@
     </Compile>
     <Compile Include="GUI\Mainform.Designer.cs">
       <DependentUpon>Mainform.cs</DependentUpon>
-    </Compile>
-    <Compile Include="GUI\ModalWindows\AddEditPriority.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GUI\ModalWindows\AddEditPriority.Designer.cs">
-      <DependentUpon>AddEditPriority.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\ModalWindows\AddEditQualification.cs">
       <SubType>Form</SubType>
@@ -163,9 +151,6 @@
     <EmbeddedResource Include="GUI\ControlWindows\ImplementationProgress.resx">
       <DependentUpon>ImplementationProgress.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\ControlWindows\ListPriority.resx">
-      <DependentUpon>ListPriority.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="GUI\ControlWindows\ListQialifications.resx">
       <DependentUpon>ListQialifications.cs</DependentUpon>
     </EmbeddedResource>
@@ -174,9 +159,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Mainform.resx">
       <DependentUpon>Mainform.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GUI\ModalWindows\AddEditPriority.resx">
-      <DependentUpon>AddEditPriority.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\ModalWindows\AddEditQualification.resx">
       <DependentUpon>AddEditQualification.cs</DependentUpon>

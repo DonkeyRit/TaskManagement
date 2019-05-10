@@ -42,7 +42,6 @@ namespace DepartmentEmployee.GUI.ControlWindows
                         "AssignedTasks.Date_End as Дата_завершения, " +
                         "Qualifications.Name as Qualification, " +
                         $"(select Employees.FIO from Tasks join Employees on Tasks.id_TaskManager = Employees.id join AssignedTasks on Tasks.id = AssignedTasks.id_Task where AssignedTasks.id = {id}) as TaskManager, " +
-                        $"(select Name from Priority where id = (select Tasks.id_Priority from Tasks join AssignedTasks on AssignedTasks.id_Task = Tasks.id where AssignedTasks.id = {id})) as Priority, " +
                         "(Results.Result_Qual1 + Results.Result_Qual2 + Results.Result_Qual3 + Results.Result_Qual4) as Result " +
                 "from Employees " +
                         "join Qualifications on Employees.id_Qualification = Qualifications.id " +
@@ -62,7 +61,6 @@ namespace DepartmentEmployee.GUI.ControlWindows
 					{"Дата_завершения","Фактическая дата сдачи"},
                     {"Qualification","Квалификация"},
                     {"TaskManager","Руководитель"},
-					{"Priority","Приоритет"},
                     {"Result","Результат"}
                 });
 

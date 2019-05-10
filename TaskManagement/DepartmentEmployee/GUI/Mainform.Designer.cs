@@ -32,7 +32,6 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.ToolDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ViewListStudentsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.PriorityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.QualificationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.DirectorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.AnalisisToWorkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -60,7 +59,6 @@
             // 
             this.ToolDataToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ViewListStudentsToolStripMenuItem,
-            this.PriorityToolStripMenuItem,
             this.QualificationsToolStripMenuItem});
             this.ToolDataToolStripMenuItem.Name = "ToolDataToolStripMenuItem";
             this.ToolDataToolStripMenuItem.Size = new System.Drawing.Size(122, 20);
@@ -72,13 +70,6 @@
             this.ViewListStudentsToolStripMenuItem.Size = new System.Drawing.Size(281, 22);
             this.ViewListStudentsToolStripMenuItem.Text = "Настройка списка сотрудников";
             this.ViewListStudentsToolStripMenuItem.Click += new System.EventHandler(this.ViewListStudentsToolStripMenuItem_Click);
-            // 
-            // PriorityToolStripMenuItem
-            // 
-            this.PriorityToolStripMenuItem.Name = "PriorityToolStripMenuItem";
-            this.PriorityToolStripMenuItem.Size = new System.Drawing.Size(281, 22);
-            this.PriorityToolStripMenuItem.Text = "Настройка выбираемых приоритетов";
-            this.PriorityToolStripMenuItem.Click += new System.EventHandler(this.PriorityToolStripMenuItem_Click);
             // 
             // QualificationsToolStripMenuItem
             // 
@@ -185,7 +176,6 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         internal System.Windows.Forms.ToolStripMenuItem ToolDataToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ViewListStudentsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem PriorityToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem QualificationsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem AnalisisToWorkToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem AssigmentTaskToolStripMenuItem;

@@ -24,7 +24,7 @@ namespace DepartmentEmployee.Model
 
 		private static void GetCountWorkHours(Connection _connection, int idEmployee, int idTask)
 		{
-			var query = $"SELECT * FROM EventLog WHERE id_Employee = {idEmployee} ORDER BY id";
+			var query = $"SELECT * FROM EventLog WHERE id_Employee = {idEmployee} AND id_Task = {idTask} ORDER BY id";
 			var dt = _connection.GetDataAdapter(query);
 			var rows = dt.Rows;
 

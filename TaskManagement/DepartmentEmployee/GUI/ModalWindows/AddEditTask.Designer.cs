@@ -36,8 +36,6 @@
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
-            this.label5 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label6 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label9 = new System.Windows.Forms.Label();
@@ -53,7 +51,7 @@
             // 
             // Button2
             // 
-            this.Button2.Location = new System.Drawing.Point(339, 592);
+            this.Button2.Location = new System.Drawing.Point(336, 492);
             this.Button2.Margin = new System.Windows.Forms.Padding(2);
             this.Button2.Name = "Button2";
             this.Button2.Size = new System.Drawing.Size(174, 26);
@@ -64,7 +62,7 @@
             // 
             // Button1
             // 
-            this.Button1.Location = new System.Drawing.Point(124, 592);
+            this.Button1.Location = new System.Drawing.Point(118, 492);
             this.Button1.Margin = new System.Windows.Forms.Padding(2);
             this.Button1.Name = "Button1";
             this.Button1.Size = new System.Drawing.Size(178, 26);
@@ -125,23 +123,6 @@
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.Size = new System.Drawing.Size(429, 20);
             this.dateTimePicker1.TabIndex = 18;
-            // 
-            // label5
-            // 
-            this.label5.Location = new System.Drawing.Point(11, 494);
-            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(153, 30);
-            this.label5.TabIndex = 19;
-            this.label5.Text = "Выберите приоритет выполнения задания";
-            // 
-            // comboBox1
-            // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(194, 494);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(429, 21);
-            this.comboBox1.TabIndex = 20;
             // 
             // label6
             // 
@@ -245,11 +226,9 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(645, 647);
+            this.ClientSize = new System.Drawing.Size(645, 560);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label6);
-            this.Controls.Add(this.comboBox1);
-            this.Controls.Add(this.label5);
             this.Controls.Add(this.dateTimePicker1);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.richTextBox1);
@@ -278,9 +257,7 @@
         internal System.Windows.Forms.Label label3;
         internal System.Windows.Forms.RichTextBox richTextBox1;
         internal System.Windows.Forms.Label label4;
-        internal System.Windows.Forms.Label label5;
         internal System.Windows.Forms.DateTimePicker dateTimePicker1;
-        internal System.Windows.Forms.ComboBox comboBox1;
         internal System.Windows.Forms.Label label6;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label9;

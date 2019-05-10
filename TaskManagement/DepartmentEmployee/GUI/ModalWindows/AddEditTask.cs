@@ -15,16 +15,6 @@ namespace DepartmentEmployee.GUI.ModalWindows
 
 			AcceptButton = Button1;
 			CancelButton = Button2;
-
-			var table = connection.GetDataAdapter("Select Name from Priority");
-			var priority = table.GetColumnValuesDataTable(0, CellType.String);
-
-			comboBox1.Items.Clear();
-
-			foreach (var t in priority)
-			{
-				comboBox1.Items.Add(t);
-			}
 		}
 
 		private void Button1_Click(object sender, EventArgs e)

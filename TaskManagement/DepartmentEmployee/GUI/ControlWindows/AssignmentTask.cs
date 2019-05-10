@@ -19,7 +19,9 @@ namespace DepartmentEmployee.GUI.ControlWindows
 		public Connection Connection { get; set; }
 		public User User { get; set; }
 
-		public static int IdTask;
+        public static string quary = "";
+
+        public static int IdTask;
 
 		public AssignmentTask()
 		{
@@ -29,8 +31,8 @@ namespace DepartmentEmployee.GUI.ControlWindows
 			User = CustomContext.GetInstance().CurrentUser;
 			_model = new AssignmentTaskModel(this);
 
-			_model.RefreshTaskTree();
-		}
+            _model.RefreshTaskTree(Quary());
+        }
 
 		/// <summary>
 		/// Add new task or subTask
@@ -113,16 +115,18 @@ namespace DepartmentEmployee.GUI.ControlWindows
 
 			//Получаем значение столбцов для выбранного задания
 			var table = await Connection.GetDataAdapterAsync(
-				"select Tasks.id as id, Tasks.Name as Name, Tasks.Description as Description, " +
-				"Tasks.id_Complexity as Complexity, Tasks.Date_Delivery as Date_Delivery, Priority.Name as Priority " +
-				$"from Tasks join Priority on Priority.id = Tasks.id_Priority where Tasks.id = {id}");
-			var lastRow = table.Rows[0];
+                            "select Tasks.id as id, " + 
+                                   "Tasks.Name as Name, " + 
+                                   "Tasks.Description as Description, " +
+                                   "Tasks.id_Complexity as Complexity, " + 
+                                   "Tasks.Date_Delivery as Date_Delivery " + 
+                            "from Tasks where Tasks.id = '" + id + "'");
 
-			//Задаем переменные для столбцов этой строки
-			string description = lastRow["Description"].ToString(),
-				priority = lastRow["Priority"].ToString();
+            var lastRow = table.Rows[0];
+
+            //Задаем переменные для столбцов этой строки
+            string description = lastRow["Description"].ToString();
 			var dataOfDelivery = DateTime.Parse(lastRow["Date_Delivery"].ToString());
-
 
 			var idOrigComplexity = int.Parse(lastRow["Complexity"].ToString());
 			var table2 = await Connection.GetDataAdapterAsync("select Complexity_Qual1 as Complexity1, Complexity_Qual2 as Complexity2, Complexity_Qual3 as Complexity3, Complexity_Qual4 as Complexity4 from Complexity where id = '" + idOrigComplexity + "'");
@@ -141,7 +145,6 @@ namespace DepartmentEmployee.GUI.ControlWindows
 				textBox3 = {Text = complexity2},
 				textBox4 = {Text = complexity3},
 				textBox5 = {Text = complexity4},
-				comboBox1 = {Text = priority},
 				dateTimePicker1 = {Value = dataOfDelivery}
 			};
 
@@ -171,10 +174,8 @@ namespace DepartmentEmployee.GUI.ControlWindows
 				complexity4 = tasksForm.textBox5.Text.Replace("'", "''");
 				dataOfDelivery = tasksForm.dateTimePicker1.Value.Date;
 
-				var priorityId = UtilityController.GetId($"Select id from Priority where Name = '{tasksForm.comboBox1.Text}'", Connection);
-
 				await Connection.ExecNonQueryAsync("UPDATE Complexity set Complexity_Qual1 = '" + complexity1 + "', Complexity_Qual2 = '" + complexity2 + "', Complexity_Qual3 = '" + complexity3 + "', Complexity_Qual4 = '" + complexity4 + "' where id = '" + idOrigComplexity + "'");
-				await Connection.ExecNonQueryAsync("UPDATE Tasks set Name ='" + newName + "', Description = '" + description + "', id_Complexity = '" + idOrigComplexity + "', Date_Delivery = '" + dataOfDelivery + "', id_Priority = '" + priorityId + "' WHERE id = '" + id + "'");
+				await Connection.ExecNonQueryAsync("UPDATE Tasks set Name ='" + newName + "', Description = '" + description + "', id_Complexity = '" + idOrigComplexity + "', Date_Delivery = '" + dataOfDelivery + "' WHERE id = '" + id + "'");
 				
 
 				node.Text = newName;
@@ -501,6 +502,35 @@ namespace DepartmentEmployee.GUI.ControlWindows
 		private void TreeView1_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e) => EditCurrentTask(e.Node);
 		private void ExitToolStripMenuItem_Click(object sender, EventArgs e) => Application.Exit();
 
-		#endregion
-	}
+        #endregion
+
+        //Метод для получения запроса на построения дерева с заданиями
+        public string Quary()
+        {
+
+            if (FullListTasks.Checked == false)
+            {
+                quary = "SELECT id, Name, id_ParentTask FROM Tasks WHERE id_ParentTask IS NULL";
+            }
+            else if (FullListTasks.Checked == true)
+            {
+                quary = "SELECT id, Name, id_ParentTask FROM Tasks WHERE id_ParentTask IS NULL AND Name not in((select Tasks.Name from Tasks join AssignedTasks on Tasks.id = AssignedTasks.id_Task))";
+            }
+
+            return quary;
+        }
+
+        //Метод обновления дерева заданий
+        private void FullListTasks_Click(object sender, EventArgs e)
+        {
+            if (FullListTasks.Checked)
+            {
+                _model.RefreshTaskTree(Quary());
+            }
+            else
+            {
+                _model.RefreshTaskTree(Quary());
+            }
+        }
+    }
 }

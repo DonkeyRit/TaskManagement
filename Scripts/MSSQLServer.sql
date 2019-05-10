@@ -14,12 +14,6 @@ Complexity_Qual3 int,
 Complexity_Qual4 int
 );
 
-create table Priority(
-id int PRIMARY KEY NOT NULL IDENTITY,
-Name varchar(20) not null,
-Coefficient int not null
-);
-
 create table Qualifications(
 id int PRIMARY KEY NOT NULL IDENTITY,
 Name varchar(30) not null,
@@ -44,10 +38,8 @@ Description text,
 id_Complexity int not null,
 Date_Delivery date not null,
 id_TaskManager int not null,
-id_Priority int not null,
 FOREIGN KEY (id_ParentTask) REFERENCES Tasks (id),
-FOREIGN KEY (id_Complexity) REFERENCES Complexity (id) ON DELETE CASCADE,
-FOREIGN KEY (id_Priority) REFERENCES Priority (id) ON DELETE CASCADE
+FOREIGN KEY (id_Complexity) REFERENCES Complexity (id) ON DELETE CASCADE
 );
 
 create table Employees(
@@ -105,10 +97,6 @@ insert into Results(Result_Qual1,Result_Qual2,Result_Qual3,Result_Qual4) values
 	(5, 0, 0, 5),(10, 0, 0, 0),
 	(0, 0, 0, 10),(2, 0, 3, 5);
 
-insert into Priority(Name, Coefficient) values
-	('Low', 1),('Medium', 2),
-	('High', 3),('Urgent', 4);
-
 insert into Type(Name) values ('Admin'),('Director'),('User');
 
 insert into Employees(FIO, DateOfBirth, id_Qualification, Login, Password, id_Type) values 
@@ -116,14 +104,14 @@ insert into Employees(FIO, DateOfBirth, id_Qualification, Login, Password, id_Ty
 	('Alekseev Dima Andreevich', '1996-09-24', 3, 'abdc50','123456',2), 
 	('Svechnikov Egor Aleksandrovich', '1995-06-15', 1, 'user','user',3); 
 
-insert into Tasks(Name, id_Complexity, Date_Delivery, id_TaskManager, id_Priority) values
-	('Automated Information Management Systems', 1, '2019-06-01', 1, 3),
-	('Purpose of the adaptive matrix multiplier', 2, '2019-05-01', 1, 1),
-	('Adequacy and objectivity of modeling an information management system', 3, '2019-04-19', 1, 2),
-	('The monitoring algorithm of the state of the data transmission network', 4, '2019-04-19', 1, 2),
-	('The essence and features of the algorithm of the data input and processing unit', 1, '2019-04-19', 1, 3), 
-	('Estimation of traffic intensity', 2, '2019-04-19', 1, 2),
-	('Evaluation of the quality of communication based on the adoption of information signals', 3, '2019-04-19', 1, 4),
-	('Features of mathematical and software control systems', 4,'2019-04-19', 1, 1),
-	('Evaluation of the reliability of the system with a general reservation of elements', 1, '2019-04-19', 1, 3), 
-	('Characteristics of modeling systems for the transmission of information of special importance', 2, '2019-04-19', 1, 1);
+insert into Tasks(Name, id_Complexity, Date_Delivery, id_TaskManager) values
+	('Automated Information Management Systems', 1, '2019-06-01', 1),
+	('Purpose of the adaptive matrix multiplier', 2, '2019-05-01', 1),
+	('Adequacy and objectivity of modeling an information management system', 3, '2019-04-19', 1),
+	('The monitoring algorithm of the state of the data transmission network', 4, '2019-04-19', 1),
+	('The essence and features of the algorithm of the data input and processing unit', 1, '2019-04-19', 1), 
+	('Estimation of traffic intensity', 2, '2019-04-19', 1),
+	('Evaluation of the quality of communication based on the adoption of information signals', 3, '2019-04-19', 1),
+	('Features of mathematical and software control systems', 4,'2019-04-19', 1),
+	('Evaluation of the reliability of the system with a general reservation of elements', 1, '2019-04-19', 1), 
+	('Characteristics of modeling systems for the transmission of information of special importance', 2, '2019-04-19', 1);

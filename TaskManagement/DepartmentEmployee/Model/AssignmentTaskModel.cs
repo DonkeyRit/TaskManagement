@@ -52,12 +52,11 @@ namespace DepartmentEmployee.Model
 
 			int taskManager = UtilityController.GetId(
 					$"Select id from Employees where Login = '{_form.User.Username}' AND Password = '{_form.User.Password}'", 
-					_form.Connection),
-				priority = UtilityController.GetId($"Select id from Priority where Name = '{tasksForm.comboBox1.Text}'", _form.Connection);
+					_form.Connection);
 
-			AddNewTask(fields, taskManager, priority);
-			RefreshTaskTree();
-		}
+			AddNewTask(fields, taskManager);
+            RefreshTaskTree(_form.Quary());
+        }
 
 		public void AssignTask_Click()
 		{
@@ -118,17 +117,18 @@ namespace DepartmentEmployee.Model
 			form.Show();
 		}
 
-		#endregion
+        #endregion
 
-		/// <summary>
-		/// Refresh Task Tree
-		/// </summary>
-		public void RefreshTaskTree()
-		{
-			_form.TreeView1.Nodes.Clear();
-			var dtTt = _form.Connection.GetDataAdapter("SELECT id, Name, id_ParentTask FROM Tasks WHERE id_ParentTask IS NULL");
+        /// <summary>
+        /// Refresh Task Tree
+        /// </summary>
+        public void RefreshTaskTree(string query)
+        {
 
-			foreach (DataRow row in dtTt.Rows)
+            _form.TreeView1.Nodes.Clear();
+            var dtTt = _form.Connection.GetDataAdapter(query);
+
+            foreach (DataRow row in dtTt.Rows)
 			{
 				string currentRowId = row["id"].ToString(),
 					currentRowName = row["Name"].ToString();
@@ -146,7 +146,7 @@ namespace DepartmentEmployee.Model
 			_form.TreeView1.ExpandAll();
 		}
 
-		private void AddNewTask(IReadOnlyDictionary<string, string> fields, int taskManager, int priority)
+		private void AddNewTask(IReadOnlyDictionary<string, string> fields, int taskManager)
 		{
 			string complexity1 = fields["complexity1"],
 				complexity2 = fields["complexity2"],
@@ -171,8 +171,8 @@ namespace DepartmentEmployee.Model
 								"(Complexity_Qual1, Complexity_Qual2, Complexity_Qual3, Complexity_Qual4) " +
 								$"VALUES({complexity1},{complexity2},{complexity3},{complexity4}); " +
 							"INSERT into Tasks " +
-								$"({parentIdField}Name, Description, id_Complexity, Date_Delivery, id_TaskManager, id_Priority) " +
-								$"SELECT {parentIdValue}'{name}','{description}', id, '{dataOfDelivery}', {taskManager}, {priority} " +
+								$"({parentIdField}Name, Description, id_Complexity, Date_Delivery, id_TaskManager) " +
+								$"SELECT {parentIdValue}'{name}','{description}', id, '{dataOfDelivery}', {taskManager} " +
 									"FROM Complexity WHERE id = (SELECT max(id) FROM Complexity); " +
 							"INSERT into EventLog" +
 								"(Date, id_LastStatus, id_Employee, id_Task)" +
