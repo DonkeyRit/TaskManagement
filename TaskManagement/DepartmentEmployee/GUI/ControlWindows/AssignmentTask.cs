@@ -1,6 +1,7 @@
 ﻿using System;
 using Core.Model;
 using System.Data;
+using System.Linq;
 using System.Drawing;
 using System.Windows.Forms;
 using DepartmentEmployee.Model;
@@ -19,9 +20,9 @@ namespace DepartmentEmployee.GUI.ControlWindows
 		public Connection Connection { get; set; }
 		public User User { get; set; }
 
-        public static string quary = "";
+		public static string quary = "";
 
-        public static int IdTask;
+		public static int IdTask;
 
 		public AssignmentTask()
 		{
@@ -31,8 +32,8 @@ namespace DepartmentEmployee.GUI.ControlWindows
 			User = CustomContext.GetInstance().CurrentUser;
 			_model = new AssignmentTaskModel(this);
 
-            _model.RefreshTaskTree(Quary());
-        }
+			_model.RefreshTaskTree(Quary());
+		}
 
 		/// <summary>
 		/// Add new task or subTask
@@ -115,17 +116,17 @@ namespace DepartmentEmployee.GUI.ControlWindows
 
 			//Получаем значение столбцов для выбранного задания
 			var table = await Connection.GetDataAdapterAsync(
-                            "select Tasks.id as id, " + 
-                                   "Tasks.Name as Name, " + 
-                                   "Tasks.Description as Description, " +
-                                   "Tasks.id_Complexity as Complexity, " + 
-                                   "Tasks.Date_Delivery as Date_Delivery " + 
-                            "from Tasks where Tasks.id = '" + id + "'");
+							"select Tasks.id as id, " +
+								   "Tasks.Name as Name, " +
+								   "Tasks.Description as Description, " +
+								   "Tasks.id_Complexity as Complexity, " +
+								   "Tasks.Date_Delivery as Date_Delivery " +
+							"from Tasks where Tasks.id = '" + id + "'");
 
-            var lastRow = table.Rows[0];
+			var lastRow = table.Rows[0];
 
-            //Задаем переменные для столбцов этой строки
-            string description = lastRow["Description"].ToString();
+			//Задаем переменные для столбцов этой строки
+			string description = lastRow["Description"].ToString();
 			var dataOfDelivery = DateTime.Parse(lastRow["Date_Delivery"].ToString());
 
 			var idOrigComplexity = int.Parse(lastRow["Complexity"].ToString());
@@ -139,13 +140,13 @@ namespace DepartmentEmployee.GUI.ControlWindows
 
 			var tasksForm = new AddEditTask
 			{
-				TextBox1 = {Text = node.Text},
-				richTextBox1 = {Text = description},
-				textBox2 = {Text = complexity1},
-				textBox3 = {Text = complexity2},
-				textBox4 = {Text = complexity3},
-				textBox5 = {Text = complexity4},
-				dateTimePicker1 = {Value = dataOfDelivery}
+				TextBox1 = { Text = node.Text },
+				richTextBox1 = { Text = description },
+				textBox2 = { Text = complexity1 },
+				textBox3 = { Text = complexity2 },
+				textBox4 = { Text = complexity3 },
+				textBox5 = { Text = complexity4 },
+				dateTimePicker1 = { Value = dataOfDelivery }
 			};
 
 
@@ -176,7 +177,7 @@ namespace DepartmentEmployee.GUI.ControlWindows
 
 				await Connection.ExecNonQueryAsync("UPDATE Complexity set Complexity_Qual1 = '" + complexity1 + "', Complexity_Qual2 = '" + complexity2 + "', Complexity_Qual3 = '" + complexity3 + "', Complexity_Qual4 = '" + complexity4 + "' where id = '" + idOrigComplexity + "'");
 				await Connection.ExecNonQueryAsync("UPDATE Tasks set Name ='" + newName + "', Description = '" + description + "', id_Complexity = '" + idOrigComplexity + "', Date_Delivery = '" + dataOfDelivery + "' WHERE id = '" + id + "'");
-				
+
 
 				node.Text = newName;
 			}
@@ -225,14 +226,14 @@ namespace DepartmentEmployee.GUI.ControlWindows
 			//Получаем DataTable
 			//сразу в запросе находим нужные строчки и добавляем в datatable посути одну нужнную строку
 
-			var dtTt = await Connection.GetDataAdapterAsync("SELECT id FROM Tasks WHERE ID = '" + currentTaskId + "'");            
+			var dtTt = await Connection.GetDataAdapterAsync("SELECT id FROM Tasks WHERE ID = '" + currentTaskId + "'");
 			// Перебираем все строчки в таблице
 
 			foreach (DataRow row in dtTt.Rows)
 			{
 				// объявляем переменную которая с ID шникном текущей строчки в таблице
 				var rowId = row["id"].ToString();
-				
+
 				//Если этот ID равен текущему Tag выбраного элемента, то удаляем эту строчку из базы
 
 				if (rowId == TreeView1.SelectedNode.Tag.ToString())
@@ -251,26 +252,26 @@ namespace DepartmentEmployee.GUI.ControlWindows
 			try
 			{
 				var currentTaskId = TreeView1.SelectedNode.Tag.ToString();
-                var dt = await Connection.GetDataAdapterAsync(
+				var dt = await Connection.GetDataAdapterAsync(
 
-                    "select AssignedTasks.id as ID, " +
-                        "Tasks.Name as Task, " +
-                        "Employees.FIO as Employee, " +
-                        "AssignedTasks.Date_Start as Дата_выдачи, " +
-                        "Tasks.Date_Delivery as Date_Delivery, " +
-                        "AssignedTasks.Date_End as Дата_сдачи, " +
-                        "(Results.Result_Qual1 + Results.Result_Qual2 + Results.Result_Qual3 + Results.Result_Qual4) as Результат, " +
-                        "AssignedTasks.Comment as Comment " +
-                    "from AssignedTasks " +
-                        "join Results on AssignedTasks.id_Result = Results.id " +
-                        "join Tasks on Tasks.id = AssignedTasks.id_Task " +
-                        "join Employees on AssignedTasks.id_Employee = Employees.id " +
-                            "where Results.id in " +
-                            "(select id_Result from AssignedTasks " +
-                                $"where id_Task = {currentTaskId})");
+					"select AssignedTasks.id as ID, " +
+						"Tasks.Name as Task, " +
+						"Employees.FIO as Employee, " +
+						"AssignedTasks.Date_Start as Дата_выдачи, " +
+						"Tasks.Date_Delivery as Date_Delivery, " +
+						"AssignedTasks.Date_End as Дата_сдачи, " +
+						"(Results.Result_Qual1 + Results.Result_Qual2 + Results.Result_Qual3 + Results.Result_Qual4) as Результат, " +
+						"AssignedTasks.Comment as Comment " +
+					"from AssignedTasks " +
+						"join Results on AssignedTasks.id_Result = Results.id " +
+						"join Tasks on Tasks.id = AssignedTasks.id_Task " +
+						"join Employees on AssignedTasks.id_Employee = Employees.id " +
+							"where Results.id in " +
+							"(select id_Result from AssignedTasks " +
+								$"where id_Task = {currentTaskId})");
 
-                //"select AssignedTasks.id as ID, Tasks.Name as Task, Employees.FIO as Employee, AssignedTasks.Date_Start as Дата_выдачи, Tasks.Date_Delivery as Date_Delivery, AssignedTasks.Date_End as Дата_сдачи,  Results.id as Результат, AssignedTasks.Comment as Comment from AssignedTasks join Tasks on Tasks.id = AssignedTasks.id_Task join Employees on Employees.id = AssignedTasks.id_Employee join Results on Results.id = AssignedTasks.id_Result WHERE id_Task = '" + currentTaskId + "'");
-                
+				//"select AssignedTasks.id as ID, Tasks.Name as Task, Employees.FIO as Employee, AssignedTasks.Date_Start as Дата_выдачи, Tasks.Date_Delivery as Date_Delivery, AssignedTasks.Date_End as Дата_сдачи,  Results.id as Результат, AssignedTasks.Comment as Comment from AssignedTasks join Tasks on Tasks.id = AssignedTasks.id_Task join Employees on Employees.id = AssignedTasks.id_Employee join Results on Results.id = AssignedTasks.id_Result WHERE id_Task = '" + currentTaskId + "'");
+
 				DataGridView1.DataSource = dt; //Присвеиваем DataTable в качестве источника данных DataGridView
 			}
 			catch
@@ -278,22 +279,22 @@ namespace DepartmentEmployee.GUI.ControlWindows
 
 				var dt = await Connection.GetDataAdapterAsync(
 
-                        "select AssignedTasks.id as ID, " +
-                            "Tasks.Name as Task, " +
-                            "Employees.FIO as Employee, " +
-                            "AssignedTasks.Date_Start as Data_Start, " +
-                            "Tasks.Date_Delivery as Date_Delivery, " +
-                            "AssignedTasks.Date_End as Date_End, " +
-                            "(Results.Result_Qual1 + Results.Result_Qual2 + Results.Result_Qual3 + Results.Result_Qual4) as Result, " +
-                            "AssignedTasks.Comment as Comment " +
-                        "from AssignedTasks " +
-                            "join Results on AssignedTasks.id_Result = Results.id " +
-                            "join Tasks on Tasks.id = AssignedTasks.id_Task " +
-                            "join Employees on AssignedTasks.id_Employee = Employees.id");
+						"select AssignedTasks.id as ID, " +
+							"Tasks.Name as Task, " +
+							"Employees.FIO as Employee, " +
+							"AssignedTasks.Date_Start as Data_Start, " +
+							"Tasks.Date_Delivery as Date_Delivery, " +
+							"AssignedTasks.Date_End as Date_End, " +
+							"(Results.Result_Qual1 + Results.Result_Qual2 + Results.Result_Qual3 + Results.Result_Qual4) as Result, " +
+							"AssignedTasks.Comment as Comment " +
+						"from AssignedTasks " +
+							"join Results on AssignedTasks.id_Result = Results.id " +
+							"join Tasks on Tasks.id = AssignedTasks.id_Task " +
+							"join Employees on AssignedTasks.id_Employee = Employees.id");
 
-                //"select AssignedTasks.id as ID, Tasks.Name as Задание, Employees.FIO as Employee, AssignedTasks.Date_Start as Дата_выдачи, Tasks.Date_Delivery as Date_Delivery, AssignedTasks.Date_End as Дата_сдачи, Results.id as Результат, AssignedTasks.Comment as Comment from AssignedTasks join Tasks on Tasks.id = AssignedTasks.id_Task join Employees on Employees.id = AssignedTasks.id_Employee join Results on Results.id = AssignedTasks.id_Result");
+				//"select AssignedTasks.id as ID, Tasks.Name as Задание, Employees.FIO as Employee, AssignedTasks.Date_Start as Дата_выдачи, Tasks.Date_Delivery as Date_Delivery, AssignedTasks.Date_End as Дата_сдачи, Results.id as Результат, AssignedTasks.Comment as Comment from AssignedTasks join Tasks on Tasks.id = AssignedTasks.id_Task join Employees on Employees.id = AssignedTasks.id_Employee join Results on Results.id = AssignedTasks.id_Result");
 
-                DataGridView1.DataSource = dt;
+				DataGridView1.DataSource = dt;
 			}
 
 			try
@@ -308,7 +309,7 @@ namespace DepartmentEmployee.GUI.ControlWindows
 					{"Результат", "Результат"}
 				});
 
-				if(DataGridView1.Columns["Employee"] != null)
+				if (DataGridView1.Columns["Employee"] != null)
 					DataGridView1.Columns["Employee"].Width = 200;
 
 				DataGridView1.CurrentCell = DataGridView1.Rows[0].Cells[0];
@@ -322,7 +323,7 @@ namespace DepartmentEmployee.GUI.ControlWindows
 		//Функционал редактирования назначения
 		private async void Button5_Click(object sender, EventArgs e)
 		{
-			
+
 			var id = 0;
 
 			try
@@ -358,10 +359,10 @@ namespace DepartmentEmployee.GUI.ControlWindows
 			var comment = assignmentForm.textBox1.Text;
 
 			await Connection.ExecNonQueryAsync("UPDATE AssignedTasks set id_Task ='" + taskId + "', id_Employee = '" + employeeId + "', Comment = '" + comment + "' where id = '" + id + "'");
-			
+
 
 			RefreshGrid();
-			
+
 		}
 
 		//Функционал удаления назначения
@@ -381,7 +382,7 @@ namespace DepartmentEmployee.GUI.ControlWindows
 			}
 
 			//Удаляем из базы
-			if ((DialogResult = MessageBox.Show("Вы действительно хотите удалить студента: " + DataGridView1.CurrentRow?.Cells["Employee"].Value  + "?", @"Delete Employee", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1)) == DialogResult.Yes)
+			if ((DialogResult = MessageBox.Show("Вы действительно хотите удалить студента: " + DataGridView1.CurrentRow?.Cells["Employee"].Value + "?", @"Delete Employee", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1)) == DialogResult.Yes)
 			{
 				await Connection.ExecNonQueryAsync("DELETE FROM AssignedTasks where id = '" + id + "'");
 			}
@@ -419,7 +420,7 @@ namespace DepartmentEmployee.GUI.ControlWindows
 			}
 
 		}
-		
+
 		/// <summary>
 		/// Drag_Drop mechanism for TreeView
 		/// </summary>
@@ -488,7 +489,7 @@ namespace DepartmentEmployee.GUI.ControlWindows
 			};
 			newForm.Show();
 			Hide();
-		}	
+		}
 		private void TreeView1_MouseUp(object sender, MouseEventArgs e)
 		{
 			if (TreeView1.GetNodeAt(e.X, e.Y) == null)
@@ -502,23 +503,23 @@ namespace DepartmentEmployee.GUI.ControlWindows
 		private void TreeView1_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e) => EditCurrentTask(e.Node);
 		private void ExitToolStripMenuItem_Click(object sender, EventArgs e) => Application.Exit();
 
-        #endregion
+		#endregion
 
-        //Метод для получения запроса на построения дерева с заданиями
-        public string Quary()
-        {
+		//Метод для получения запроса на построения дерева с заданиями
+		public string Quary()
+		{
 
-            if (FullListTasks.Checked == false)
-            {
-                quary = "SELECT id, Name, id_ParentTask FROM Tasks WHERE id_ParentTask IS NULL";
-            }
-            else if (FullListTasks.Checked == true)
-            {
-                quary = "SELECT id, Name, id_ParentTask FROM Tasks WHERE id_ParentTask IS NULL AND Name not in((select Tasks.Name from Tasks join AssignedTasks on Tasks.id = AssignedTasks.id_Task))";
-            }
+			if (FullListTasks.Checked == false)
+			{
+				quary = "SELECT id, Name, id_ParentTask FROM Tasks WHERE id_ParentTask IS NULL";
+			}
+			else if (FullListTasks.Checked == true)
+			{
+				quary = "SELECT id, Name, id_ParentTask FROM Tasks WHERE id_ParentTask IS NULL AND Name not in((select Tasks.Name from Tasks join AssignedTasks on Tasks.id = AssignedTasks.id_Task))";
+			}
 
-            return quary;
-        }
+			return quary;
+		}
 
 		//Метод обновления дерева заданий
 		private void FullListTasks_Click(object sender, EventArgs e)
@@ -535,7 +536,60 @@ namespace DepartmentEmployee.GUI.ControlWindows
 
 		private void CheckCorrectness_Click(object sender, EventArgs e)
 		{
+			var tasksDataTable = Connection.GetDataAdapter(
+				"SELECT Tasks.id," +
+					"Complexity_Qual1, Complexity_Qual2, Complexity_Qual3, " +
+					"Complexity_Qual4, Date_Delivery " +
+				"FROM Tasks INNER JOIN Complexity " +
+					"ON id_Complexity = Complexity.id " +
+				"ORDER BY Date_Delivery DESC"
+			);
 
+			var tasksList = new List<Task>();
+			tasksList = (from DataRow row in tasksDataTable.Rows
+						 select new Task
+						 {
+							 Id = Convert.ToInt32(row["id"]),
+							 C1 = Convert.ToInt32(row["Complexity_Qual1"]),
+							 C2 = Convert.ToInt32(row["Complexity_Qual2"]),
+							 C3 = Convert.ToInt32(row["Complexity_Qual3"]),
+							 C4 = Convert.ToInt32(row["Complexity_Qual4"]),
+							 endDate = Convert.ToDateTime(row["Date_Delivery"])
+						 }).ToList();
+
+			for(int i = 0, n = tasksList.Count; i < n - 1; i++)
+			{
+				Task previous = tasksList[i + 1],
+					next = tasksList[i];
+
+				//int workHours = Convert.ToInt32(Math.Round((next.endDate - previous.endDate).TotalDays)) * 8;
+				int workHours = CalculateWorkDays(previous.endDate, next.endDate) * 8;
+				int maxComplexity = new [] { next.C1, next.C2, next.C3, next.C4 }.ToList().Max();
+				
+				if(workHours < maxComplexity)
+				{
+					ModalDialogController.Display("Mistakes " + next.Id + " " + previous.Id);
+				}
+
+			}
+
+		}
+
+		private static int CalculateWorkDays(DateTime fromDate, DateTime toDate)
+		{
+			DateTime temp = fromDate;
+			int count = 0;
+
+			while(temp != toDate)
+			{
+				if(temp.DayOfWeek != DayOfWeek.Saturday &&
+					temp.DayOfWeek != DayOfWeek.Sunday)
+					count++;
+
+				temp = temp.AddDays(1);
+			}
+
+			return count;
 		}
 	}
 }

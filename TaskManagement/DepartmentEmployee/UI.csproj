@@ -137,6 +137,7 @@
     <Compile Include="Model\AssignmentTaskModel.cs" />
     <Compile Include="Model\CountProgressModel.cs" />
     <Compile Include="Model\Enums\Status.cs" />
+    <Compile Include="Model\Task.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="GUI\ControlWindows\AnalysisToWork.resx">
