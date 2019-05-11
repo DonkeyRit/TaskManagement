@@ -536,8 +536,8 @@ namespace DepartmentEmployee.GUI.ControlWindows
 
 		private void CheckCorrectness_Click(object sender, EventArgs e)
 		{
-			var tasksDataTable = Connection.GetDataAdapter(
-				"SELECT Tasks.id," +
+ 			var tasksDataTable = Connection.GetDataAdapter(
+				"SELECT Tasks.id, Name, " +
 					"Complexity_Qual1, Complexity_Qual2, Complexity_Qual3, " +
 					"Complexity_Qual4, Date_Delivery " +
 				"FROM Tasks INNER JOIN Complexity " +
@@ -549,7 +549,8 @@ namespace DepartmentEmployee.GUI.ControlWindows
 			tasksList = (from DataRow row in tasksDataTable.Rows
 						 select new Task
 						 {
-							 Id = Convert.ToInt32(row["id"]),
+							 Id = row["id"].ToString(),
+							 Name = row["Name"].ToString(),
 							 C1 = Convert.ToInt32(row["Complexity_Qual1"]),
 							 C2 = Convert.ToInt32(row["Complexity_Qual2"]),
 							 C3 = Convert.ToInt32(row["Complexity_Qual3"]),
@@ -557,39 +558,8 @@ namespace DepartmentEmployee.GUI.ControlWindows
 							 endDate = Convert.ToDateTime(row["Date_Delivery"])
 						 }).ToList();
 
-			for(int i = 0, n = tasksList.Count; i < n - 1; i++)
-			{
-				Task previous = tasksList[i + 1],
-					next = tasksList[i];
+			bool result = new CheckAssignmentsController(tasksList).IsCorrect(out List<Task> additionalTasks);
 
-				//int workHours = Convert.ToInt32(Math.Round((next.endDate - previous.endDate).TotalDays)) * 8;
-				int workHours = CalculateWorkDays(previous.endDate, next.endDate) * 8;
-				int maxComplexity = new [] { next.C1, next.C2, next.C3, next.C4 }.ToList().Max();
-				
-				if(workHours < maxComplexity)
-				{
-					ModalDialogController.Display("Mistakes " + next.Id + " " + previous.Id);
-				}
-
-			}
-
-		}
-
-		private static int CalculateWorkDays(DateTime fromDate, DateTime toDate)
-		{
-			DateTime temp = fromDate;
-			int count = 0;
-
-			while(temp != toDate)
-			{
-				if(temp.DayOfWeek != DayOfWeek.Saturday &&
-					temp.DayOfWeek != DayOfWeek.Sunday)
-					count++;
-
-				temp = temp.AddDays(1);
-			}
-
-			return count;
 		}
 	}
 }
