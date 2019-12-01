@@ -25,8 +25,6 @@ namespace Core.Database.Connection
 			{
 				case "MSSQLProvider":
 					return new MssqlConnection(connectionParams);
-				case "Npgsql":
-					return new PostgreSqlConnection(connectionParams);
 				default:
 					throw new Exception("This database does not support now.");
 			}
