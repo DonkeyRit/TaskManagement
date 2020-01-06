@@ -2,27 +2,27 @@
 using Models;
 using Type = Models.Type;
 
-namespace DAL.MySQLProvider.taskmanagement
+namespace DAL.MySQLProvider
 {
-    public partial class taskmanagementContext : DbContext
+    public class MySqlDbContext : DbContext
     {
-        public taskmanagementContext()
+        public MySqlDbContext()
         {
         }
 
-        public taskmanagementContext(DbContextOptions<taskmanagementContext> options)
+        public MySqlDbContext(DbContextOptions<MySqlDbContext> options)
             : base(options)
         {
         }
 
-        public virtual DbSet<Assignedtasks> Assignedtasks { get; set; }
+        public virtual DbSet<AssignedTask> AssignedTasks { get; set; }
         public virtual DbSet<Complexity> Complexity { get; set; }
-        public virtual DbSet<Employees> Employees { get; set; }
-        public virtual DbSet<Eventlog> Eventlog { get; set; }
-        public virtual DbSet<Qualifications> Qualifications { get; set; }
-        public virtual DbSet<Results> Results { get; set; }
+        public virtual DbSet<Employee> Employees { get; set; }
+        public virtual DbSet<EventLog> EventLog { get; set; }
+        public virtual DbSet<Qualification> Qualifications { get; set; }
+        public virtual DbSet<Result> Results { get; set; }
         public virtual DbSet<Status> Status { get; set; }
-        public virtual DbSet<Tasks> Tasks { get; set; }
+        public virtual DbSet<Task> Tasks { get; set; }
         public virtual DbSet<Type> Type { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -36,7 +36,7 @@ namespace DAL.MySQLProvider.taskmanagement
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Assignedtasks>(entity =>
+            modelBuilder.Entity<AssignedTask>(entity =>
             {
                 entity.ToTable("assignedtasks");
 
@@ -120,7 +120,7 @@ namespace DAL.MySQLProvider.taskmanagement
                     .HasColumnType("int(11)");
             });
 
-            modelBuilder.Entity<Employees>(entity =>
+            modelBuilder.Entity<Employee>(entity =>
             {
                 entity.ToTable("employees");
 
@@ -182,7 +182,7 @@ namespace DAL.MySQLProvider.taskmanagement
                     .HasConstraintName("employees_ibfk_2");
             });
 
-            modelBuilder.Entity<Eventlog>(entity =>
+            modelBuilder.Entity<EventLog>(entity =>
             {
                 entity.ToTable("eventlog");
 
@@ -243,7 +243,7 @@ namespace DAL.MySQLProvider.taskmanagement
                     .HasConstraintName("eventlog_ibfk_4");
             });
 
-            modelBuilder.Entity<Qualifications>(entity =>
+            modelBuilder.Entity<Qualification>(entity =>
             {
                 entity.ToTable("qualifications");
 
@@ -260,7 +260,7 @@ namespace DAL.MySQLProvider.taskmanagement
                     .HasCollation("utf8mb4_0900_ai_ci");
             });
 
-            modelBuilder.Entity<Results>(entity =>
+            modelBuilder.Entity<Result>(entity =>
             {
                 entity.ToTable("results");
 
@@ -300,7 +300,7 @@ namespace DAL.MySQLProvider.taskmanagement
                     .HasCollation("utf8mb4_0900_ai_ci");
             });
 
-            modelBuilder.Entity<Tasks>(entity =>
+            modelBuilder.Entity<Task>(entity =>
             {
                 entity.ToTable("tasks");
 
@@ -367,10 +367,6 @@ namespace DAL.MySQLProvider.taskmanagement
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_0900_ai_ci");
             });
-
-            OnModelCreatingPartial(modelBuilder);
         }
-
-        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }

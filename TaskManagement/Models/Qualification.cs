@@ -2,17 +2,17 @@
 
 namespace Models
 {
-    public partial class Qualifications
+    public class Qualification
     {
-        public Qualifications()
+        public Qualification()
         {
-            Employees = new HashSet<Employees>();
+            Employees = new HashSet<Employee>();
         }
 
         public int Id { get; set; }
         public string Name { get; set; }
         public decimal Coefficient { get; set; }
 
-        public virtual ICollection<Employees> Employees { get; set; }
+        public virtual ICollection<Employee> Employees { get; set; }
     }
 }

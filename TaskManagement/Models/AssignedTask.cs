@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Models
 {
-    public partial class Assignedtasks
+    public class AssignedTask
     {
         public int Id { get; set; }
         public int IdTask { get; set; }
@@ -13,8 +13,8 @@ namespace Models
         public int? IdResult { get; set; }
         public string Comment { get; set; }
 
-        public virtual Employees IdEmployeeNavigation { get; set; }
-        public virtual Results IdResultNavigation { get; set; }
-        public virtual Tasks IdTaskNavigation { get; set; }
+        public virtual Employee IdEmployeeNavigation { get; set; }
+        public virtual Result IdResultNavigation { get; set; }
+        public virtual Task IdTaskNavigation { get; set; }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Models
 {
-    public partial class Eventlog
+    public class EventLog
     {
         public int Id { get; set; }
         public DateTime Date { get; set; }
@@ -12,8 +12,8 @@ namespace Models
         public int IdTask { get; set; }
 
         public virtual Status IdCurrentStatusNavigation { get; set; }
-        public virtual Employees IdEmployeeNavigation { get; set; }
+        public virtual Employee IdEmployeeNavigation { get; set; }
         public virtual Status IdLastStatusNavigation { get; set; }
-        public virtual Tasks IdTaskNavigation { get; set; }
+        public virtual Task IdTaskNavigation { get; set; }
     }
 }

@@ -2,11 +2,11 @@
 
 namespace Models
 {
-    public partial class Results
+    public class Result
     {
-        public Results()
+        public Result()
         {
-            Assignedtasks = new HashSet<Assignedtasks>();
+            Assignedtasks = new HashSet<AssignedTask>();
         }
 
         public int Id { get; set; }
@@ -15,6 +15,6 @@ namespace Models
         public int? ResultQual3 { get; set; }
         public int? ResultQual4 { get; set; }
 
-        public virtual ICollection<Assignedtasks> Assignedtasks { get; set; }
+        public virtual ICollection<AssignedTask> Assignedtasks { get; set; }
     }
 }

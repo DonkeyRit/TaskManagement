@@ -2,18 +2,18 @@
 
 namespace Models
 {
-    public partial class Status
+    public class Status
     {
         public Status()
         {
-            EventlogIdCurrentStatusNavigation = new HashSet<Eventlog>();
-            EventlogIdLastStatusNavigation = new HashSet<Eventlog>();
+            EventlogIdCurrentStatusNavigation = new HashSet<EventLog>();
+            EventlogIdLastStatusNavigation = new HashSet<EventLog>();
         }
 
         public int Id { get; set; }
         public string Name { get; set; }
 
-        public virtual ICollection<Eventlog> EventlogIdCurrentStatusNavigation { get; set; }
-        public virtual ICollection<Eventlog> EventlogIdLastStatusNavigation { get; set; }
+        public virtual ICollection<EventLog> EventlogIdCurrentStatusNavigation { get; set; }
+        public virtual ICollection<EventLog> EventlogIdLastStatusNavigation { get; set; }
     }
 }
