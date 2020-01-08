@@ -216,6 +216,10 @@
       <Project>{860b2bf0-22c5-46bc-a2d0-fa1ac37ca85b}</Project>
       <Name>Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DAL.MySQLProvider\DAL.MySQLProvider.csproj">
+      <Project>{6102c910-a2ae-476e-b3f0-bcf8f267074a}</Project>
+      <Name>DAL.MySQLProvider</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Models\Models.csproj">
       <Project>{2d85460d-1fcc-4cca-9f94-492d9efec03e}</Project>
       <Name>Models</Name>
